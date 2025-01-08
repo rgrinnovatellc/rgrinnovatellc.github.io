@@ -1,0 +1,1070 @@
+<h1 id="linux-troubleshooting-tools">Linux troubleshooting tools</h1>
+<h2 id="uptime">uptime</h2>
+<pre><code class="language-bash">upgautam@amd:~$ uptime
+ 20:09:14 up 1 day,  9:38,  1 user,  load average: 0.18, 0.33, 0.31
+</code></pre>
+<p> It tells the load average is 0.18 for 1 minutes, 0.33 for 5 minutes, and 0.31 for 10 minutes. 0.33 means less than 1 process is running in last 5 minutes. </p>
+<p> We can use stress command to increase these load average values. </p>
+<pre><code class="language-bash"> upgautam@amd:~$ stress --cpu 64
+stress: info: [156850] dispatching hogs: 64 cpu, 0 io, 0 vm, 0 hdd
+</code></pre>
+<p>This will saturate all 32 CPU (check using <code>nproc</code>).  We can also test this using System Monitor GUI tool. </p>
+<p>These are the uptime chronological outputs after stress command executed. </p>
+<pre><code class="language-bash">upgautam@amd:~$ uptime
+ 20:11:51 up 1 day,  9:41,  1 user,  load average: 10.35, 2.60, 1.07
+upgautam@amd:~$ uptime
+ 20:11:53 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
+upgautam@amd:~$ uptime
+ 20:11:55 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
+upgautam@amd:~$ uptime
+ 20:11:58 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
+upgautam@amd:~$ uptime
+ 20:12:07 up 1 day,  9:41,  1 user,  load average: 22.53, 5.67, 2.10
+upgautam@amd:~$ uptime
+ 20:12:17 up 1 day,  9:41,  1 user,  load average: 29.06, 7.63, 2.77
+upgautam@amd:~$ uptime
+ 20:12:19 up 1 day,  9:41,  1 user,  load average: 32.02, 8.60, 3.11
+upgautam@amd:~$ uptime
+ 20:12:22 up 1 day,  9:41,  1 user,  load average: 32.02, 8.60, 3.11
+upgautam@amd:~$ uptime
+ 20:12:24 up 1 day,  9:41,  1 user,  load average: 34.82, 9.57, 3.46
+upgautam@amd:~$ uptime
+ 20:12:30 up 1 day,  9:41,  1 user,  load average: 37.23, 10.49, 3.79
+upgautam@amd:~$ uptime
+ 20:12:32 up 1 day,  9:41,  1 user,  load average: 37.23, 10.49, 3.79
+upgautam@amd:~$ uptime
+ 20:12:34 up 1 day,  9:41,  1 user,  load average: 39.46, 11.39, 4.12
+upgautam@amd:~$ uptime
+ 20:12:35 up 1 day,  9:41,  1 user,  load average: 39.46, 11.39, 4.12
+upgautam@amd:~$ uptime
+ 20:12:37 up 1 day,  9:42,  1 user,  load average: 39.46, 11.39, 4.12
+upgautam@amd:~$ uptime
+ 20:13:16 up 1 day,  9:42,  1 user,  load average: 52.55, 18.27, 6.74
+upgautam@amd:~$ uptime
+ 20:13:35 up 1 day,  9:42,  1 user,  load average: 56.27, 21.35, 8.00
+upgautam@amd:~$ uptime
+ 20:13:55 up 1 day,  9:43,  1 user,  load average: 58.75, 24.18, 9.21
+upgautam@amd:~$ uptime
+ 20:15:25 up 1 day,  9:44,  1 user,  load average: 63.68, 34.80, 14.37
+upgautam@amd:~$ uptime
+ 20:15:39 up 1 day,  9:45,  1 user,  load average: 63.75, 36.23, 15.16
+upgautam@amd:~$ uptime
+ 20:16:12 up 1 day,  9:45,  1 user,  load average: 64.04, 38.93, 16.73
+upgautam@amd:~$ uptime
+ 20:16:45 up 1 day,  9:46,  1 user,  load average: 64.46, 41.81, 18.52
+</code></pre>
+<p>All values converse around 64, which is the total number of threads (2 times the total number of cores).
+When these numbers are higher than the number of cores, it means processes are competing for resources. </p>
+<h2 id="top">top</h2>
+<p>This displays the snapshot of system. </p>
+<pre><code class="language-bash">upgautam@amd:~$ stress --cpu 64
+stress: info: [156850] dispatching hogs: 64 cpu, 0 io, 0 vm, 0 hdd
+</code></pre>
+<p>now, we can check using top</p>
+<pre><code class="language-bash">upgautam@amd:~$ top
+
+top - 21:16:45 up 1 day, 10:46,  1 user,  load average: 64.64, 59.63, 50.94
+Tasks: 658 total,  65 running, 588 sleeping,   4 stopped,   1 zombie
+%Cpu(s): 99.5 us,  0.5 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem : 128541.6 total,  95745.2 free,  25684.1 used,   8468.9 buff/cache
+MiB Swap:  94670.0 total,  94670.0 free,      0.0 used. 102857.5 avail Mem
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 182561 upgautam  20   0    3624    268    268 R  96.4   0.0   4:22.05 stress
+ 182580 upgautam  20   0    3624    268    268 R  70.4   0.0   4:15.51 stress
+ 182571 upgautam  20   0    3624    268    268 R  67.8   0.0   4:29.10 stress
+ 182551 upgautam  20   0    3624    268    268 R  65.1   0.0   4:26.20 stress
+ 182563 upgautam  20   0    3624    268    268 R  65.1   0.0   4:23.85 stress
+ 182545 upgautam  20   0    3624    268    268 R  62.8   0.0   4:27.94 stress
+ 182595 upgautam  20   0    3624    268    268 R  59.9   0.0   4:13.85 stress
+ 182556 upgautam  20   0    3624    268    268 R  57.2   0.0   4:22.13 stress
+ 182544 upgautam  20   0    3624    268    268 R  55.6   0.0   4:19.44 stress
+ 182554 upgautam  20   0    3624    268    268 R  55.3   0.0   4:21.13 stress
+ 182570 upgautam  20   0    3624    268    268 R  55.3   0.0   4:19.09 stress
+ 182552 upgautam  20   0    3624    268    268 R  54.6   0.0   4:33.07 stress
+ 182578 upgautam  20   0    3624    268    268 R  54.3   0.0   4:21.30 stress
+ 182582 upgautam  20   0    3624    268    268 R  53.3   0.0   4:32.94 stress
+ 182575 upgautam  20   0    3624    268    268 R  53.0   0.0   4:25.18 stress
+ 182539 upgautam  20   0    3624    268    268 R  52.3   0.0   4:24.18 stress
+ 182567 upgautam  20   0    3624    268    268 R  52.0   0.0   4:34.91 stress
+ 182577 upgautam  20   0    3624    268    268 R  52.0   0.0   4:18.18 stress
+ 182576 upgautam  20   0    3624    268    268 R  51.6   0.0   4:18.20 stress
+ 182588 upgautam  20   0    3624    268    268 R  51.6   0.0   4:19.34 stress
+ 182553 upgautam  20   0    3624    268    268 R  51.0   0.0   4:25.67 stress
+ 182590 upgautam  20   0    3624    268    268 R  50.7   0.0   4:17.83 stress
+ 182560 upgautam  20   0    3624    268    268 R  50.0   0.0   4:22.09 stress
+ 182599 upgautam  20   0    3624    268    268 R  50.0   0.0   4:28.21 stress
+ 182548 upgautam  20   0    3624    268    268 R  49.3   0.0   4:27.87 stress
+ 182549 upgautam  20   0    3624    268    268 R  49.3   0.0   4:35.70 stress
+ 182579 upgautam  20   0    3624    268    268 R  49.3   0.0   4:21.66 stress
+ 182587 upgautam  20   0    3624    268    268 R  49.0   0.0   4:15.68 stress
+ 182543 upgautam  20   0    3624    268    268 R  48.7   0.0   4:25.76 stress
+ 182598 upgautam  20   0    3624    268    268 R  48.4   0.0   4:23.51 stress
+ 182538 upgautam  20   0    3624    268    268 R  48.0   0.0   4:15.70 stress
+ 182574 upgautam  20   0    3624    268    268 R  48.0   0.0   4:13.55 stress
+ 182547 upgautam  20   0    3624    268    268 R  47.7   0.0   4:27.98 stress
+ 182562 upgautam  20   0    3624    268    268 R  47.4   0.0   4:19.20 stress
+ 182583 upgautam  20   0    3624    268    268 R  47.4   0.0   4:24.88 stress
+ 182555 upgautam  20   0    3624    268    268 R  47.0   0.0   4:29.86 stress
+ 182581 upgautam  20   0    3624    268    268 R  47.0   0.0   4:34.90 stress
+ 182585 upgautam  20   0    3624    268    268 R  47.0   0.0   4:20.67 stress
+ 182589 upgautam  20   0    3624    268    268 R  47.0   0.0   4:24.43 stress
+ 182540 upgautam  20   0    3624    268    268 R  46.7   0.0   4:28.13 stress
+ 182568 upgautam  20   0    3624    268    268 R  46.7   0.0   4:24.50 stress
+ 182572 upgautam  20   0    3624    268    268 R  46.7   0.0   4:23.65 stress
+ 182584 upgautam  20   0    3624    268    268 R  46.7   0.0   4:14.29 stress
+ 182566 upgautam  20   0    3624    268    268 R  46.4   0.0   4:14.20 stress
+ 182591 upgautam  20   0    3624    268    268 R  46.4   0.0   4:19.88 stress
+ 182565 upgautam  20   0    3624    268    268 R  46.1   0.0   4:35.95 stress
+ 182600 upgautam  20   0    3624    268    268 R  46.1   0.0   4:19.81 stress
+ 182601 upgautam  20   0    3624    268    268 R  46.1   0.0   4:35.52 stress
+ 182550 upgautam  20   0    3624    268    268 R  45.7   0.0   4:12.80 stress
+ 182557 upgautam  20   0    3624    268    268 R  45.7   0.0   4:20.87 stress
+ 182564 upgautam  20   0    3624    268    268 R  45.7   0.0   4:17.79 stress
+ 182569 upgautam  20   0    3624    268    268 R  45.7   0.0   4:19.29 stress
+ 182573 upgautam  20   0    3624    268    268 R  45.7   0.0   4:33.64 stress
+ 182593 upgautam  20   0    3624    268    268 R  45.4   0.0   4:21.43 stress
+ 182596 upgautam  20   0    3624    268    268 R  45.1   0.0   4:19.38 stress
+ 182559 upgautam  20   0    3624    268    268 R  44.4   0.0   4:07.59 stress
+ 182594 upgautam  20   0    3624    268    268 R  44.4   0.0   4:24.91 stress
+ 182586 upgautam  20   0    3624    268    268 R  43.4   0.0   4:28.10 stress
+ 182542 upgautam  20   0    3624    268    268 R  35.9   0.0   4:17.32 stress
+ 182541 upgautam  20   0    3624    268    268 R  34.9   0.0   4:21.65 stress
+ 182592 upgautam  20   0    3624    268    268 R  34.9   0.0   4:19.09 stress
+ 182558 upgautam  20   0    3624    268    268 R  34.5   0.0   4:21.57 stress
+ 182546 upgautam  20   0    3624    268    268 R  34.2   0.0   4:15.11 stress
+ 182597 upgautam  20   0    3624    268    268 R  33.9   0.0   4:26.37 stress
+   4376 upgautam  20   0 4756980 622092 139724 S   6.2   0.5  26:34.20 gnome-shell
+ 157462 upgautam  20   0 1453416 239148  99756 S   4.3   0.2   2:38.21 gnome-system-mo
+   4109 upgautam  20   0   24.5g 141976  78908 S   3.6   0.1  34:01.36 Xorg
+ 105100 upgautam  20   0   12.4g   1.1g 332440 S   0.7   0.9  35:59.01 firefox
+ 115888 upgautam  20   0 3211704 489856 113588 S   0.7   0.4   5:52.38 Isolated Web Co
+ 147673 upgautam  20   0  818032  85608  50360 S   0.7   0.1   0:05.29 terminator
+ 182625 upgautam  20   0   23348   5972   3668 R   0.7   0.0   0:02.18 top
+   1434 root      20   0       0      0      0 S   0.3   0.0   6:42.93 nvidia-modeset/kthread_q
+   1440 root     -51   0       0      0      0 S   0.3   0.0   5:13.66 irq/137-nvidia
+   3989 upgautam  20   0  146888  38268  11288 S   0.3   0.0   3:29.91 pipewire-pulse
+ 123638 upgautam  20   0 2758716 156316 100240 S   0.3   0.1   0:43.87 Isolated Web Co
+ 149019 upgautam  20   0 2951096 500664 118024 S   0.3   0.4   2:11.72 Isolated Web Co
+      1 root      20   0   25020  15516   9200 S   0.0   0.0   0:07.11 systemd
+</code></pre>
+<h2 id="flags-summary">Flags summary</h2>
+<p>The flags in the top command represent various statistics that help you understand how processes are using system resources like CPU, memory, and time. Here&#39;s a quick summary of the columns:</p>
+<pre><code class="language-bash">PID: Process ID
+USER: User who owns the process
+PR: Priority
+NI: Nice value
+VIRT: Virtual memory used
+RES: Resident memory used (RAM) in MB
+SHR: Shared memory used in MB
+S: Process status (e.g., sleeping, running)
+%CPU: CPU usage percentage
+%MEM: Memory usage percentage
+TIME+: Total CPU time consumed
+COMMAND: Name of the process/command
+</code></pre>
+<h3 id="system-stats">System Stats</h3>
+<h3 id="load-average">Load Average</h3>
+<ul>
+<li><strong>Unit</strong>: None (Load average values represent the system&#39;s load over the last 1, 5, and 15 minutes)</li>
+<li>Example: <code>load average: 64.64, 59.63, 50.94</code></li>
+</ul>
+<h3 id="tasks">Tasks</h3>
+<ul>
+<li><strong>Unit</strong>: None (The number of tasks or processes)</li>
+<li>Example: <code>Tasks: 658 total,  65 running, 588 sleeping, 4 stopped, 1 zombie</code></li>
+</ul>
+<h3 id="cpus">%Cpu(s)</h3>
+<ul>
+<li><strong>Unit</strong>: Percentage (%)</li>
+<li>Example: <code>%Cpu(s): 99.5 us, 0.5 sy, 0.0 ni, 0.0 id, 0.0 wa, 0.0 hi, 0.0 si, 0.0 st</code><ul>
+<li>Breakdown:<ul>
+<li><strong>us</strong> (user space): 99.5% CPU time spent in user space</li>
+<li><strong>sy</strong> (system): 0.5% CPU time spent in kernel space</li>
+<li><strong>ni</strong> (nice): 0.0% CPU time spent on processes with changed priority</li>
+<li><strong>id</strong> (idle): 0.0% CPU time spent idle</li>
+<li><strong>wa</strong> (waiting): 0.0% CPU time spent waiting for I/O operations</li>
+<li><strong>hi</strong> (hardware interrupts): 0.0% CPU time spent handling hardware interrupts</li>
+<li><strong>si</strong> (software interrupts): 0.0% CPU time spent handling software interrupts</li>
+<li><strong>st</strong> (steal time): 0.0% time the virtual machine was waiting for the hypervisor</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="mib-mem">MiB Mem</h3>
+<ul>
+<li><strong>Unit</strong>: MiB (Mebibytes)</li>
+<li>Example: <code>MiB Mem : 128541.6 total, 95745.2 free, 25684.1 used, 8468.9 buff/cache</code></li>
+</ul>
+<h3 id="mib-swap">MiB Swap</h3>
+<ul>
+<li><strong>Unit</strong>: MiB (Mebibytes)</li>
+<li>Example: <code>MiB Swap: 94670.0 total, 94670.0 free, 0.0 used. 102857.5 avail Mem</code></li>
+</ul>
+<h3 id="pid-process-id">PID (Process ID)</h3>
+<ul>
+<li><strong>Unit</strong>: None (Integer representing a unique process identifier)</li>
+<li>Example: <code>182561</code></li>
+</ul>
+<h3 id="user">USER</h3>
+<ul>
+<li><strong>Unit</strong>: None (The username of the owner of the process)</li>
+<li>Example: <code>upgautam</code></li>
+</ul>
+<h3 id="pr-priority">PR (Priority)</h3>
+<ul>
+<li><strong>Unit</strong>: None (Integer representing the process&#39;s priority)</li>
+<li>Example: <code>20</code></li>
+</ul>
+<h3 id="ni-nice-value">NI (Nice value)</h3>
+<ul>
+<li><strong>Unit</strong>: None (Integer representing the &quot;niceness&quot; of the process)</li>
+<li>Example: <code>0</code>. Nice is similar to chainging process from low to high priority processeses.  Setting affinity is choosing CPU core.</li>
+</ul>
+<h3 id="virt-virtual-memory-used">VIRT (Virtual memory used)</h3>
+<ul>
+<li><strong>Unit</strong>: KiB (Kilobytes)</li>
+<li>Example: <code>3624</code></li>
+</ul>
+<h3 id="res-resident-memory-used">RES (Resident memory used)</h3>
+<ul>
+<li><strong>Unit</strong>: KiB (Kilobytes)</li>
+<li>Example: <code>268</code></li>
+</ul>
+<h3 id="shr-shared-memory-used">SHR (Shared memory used)</h3>
+<ul>
+<li><strong>Unit</strong>: KiB (Kilobytes)</li>
+<li>Example: <code>268</code></li>
+</ul>
+<h3 id="s-process-status">S (Process status)</h3>
+<ul>
+<li><strong>Unit</strong>: None (A letter indicating the process&#39;s current status)</li>
+<li>Example: <code>R</code> (Running)</li>
+</ul>
+<h3 id="cpu">%CPU</h3>
+<ul>
+<li><strong>Unit</strong>: Percentage (%)</li>
+<li>Example: <code>96.4</code></li>
+</ul>
+<h3 id="mem">%MEM</h3>
+<ul>
+<li><strong>Unit</strong>: Percentage (%) of total system memory</li>
+<li>Example: <code>0.0</code></li>
+</ul>
+<h3 id="time">TIME+</h3>
+<ul>
+<li><strong>Unit</strong>: Time (hh:mm:ss)</li>
+<li>Example: <code>4:22.05</code> (Total accumulated CPU time used by the process)</li>
+</ul>
+<h3 id="command">COMMAND</h3>
+<ul>
+<li><strong>Unit</strong>: None (The name of the process or command being executed)</li>
+<li>Example: <code>stress</code></li>
+</ul>
+<h1 id="vmstat">vmstat</h1>
+<p>Use <code>vmstat x</code> to repeat on every x second</p>
+<pre><code class="language-bash">upgautam@amd:~$ vmstat
+procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st gu
+65  0      0 98106304   9432 8689448    0    0    40   200 4789    3  6  0 93  0  0  0
+</code></pre>
+<h2 id="1-procs-processes">1. <strong>Procs (Processes)</strong></h2>
+<ul>
+<li><p><strong>r (running processes)</strong>: <code>65</code><br>The number of processes that are currently running or ready to run. These processes are waiting for CPU time.</p>
+</li>
+<li><p><strong>b (blocked processes)</strong>: <code>0</code><br>The number of processes waiting for I/O resources, such as waiting for data from disk or network.</p>
+</li>
+</ul>
+<h2 id="2-memory">2. <strong>Memory</strong></h2>
+<ul>
+<li><p><strong>swpd (swapped memory)</strong>: <code>0</code><br>No memory is being swapped out to the swap device, which means the system has enough physical memory to handle the processes and is not under memory pressure.</p>
+</li>
+<li><p><strong>free (free memory)</strong>: <code>98106304</code><br>The amount of free memory in kilobytes. In this case, there are 98,106,304 KB of free memory, indicating ample available memory for the system.</p>
+</li>
+<li><p><strong>buff (buffer memory)</strong>: <code>9432</code><br>The amount of memory used for buffers in kilobytes. Buffers are used to store data that is frequently accessed or written to.</p>
+</li>
+<li><p><strong>cache (cached memory)</strong>: <code>8689448</code><br>The amount of memory used for the page cache, which stores data read from disk for faster access.</p>
+</li>
+</ul>
+<h2 id="3-swap">3. <strong>Swap</strong></h2>
+<ul>
+<li><p><strong>si (swap in)</strong>: <code>0</code><br>No data is being moved from swap space to physical memory. The value <code>0</code> indicates that the system is not using swap to manage memory.</p>
+</li>
+<li><p><strong>so (swap out)</strong>: <code>0</code><br>No data is being moved from physical memory to swap space. This value also indicates the absence of memory pressure.</p>
+</li>
+</ul>
+<h2 id="4-io-inputoutput">4. <strong>I/O (Input/Output)</strong></h2>
+<ul>
+<li><p><strong>bi (blocks in)</strong>: <code>40</code><br>The number of blocks read from the disk per second. In this case, 40 blocks are being read.</p>
+</li>
+<li><p><strong>bo (blocks out)</strong>: <code>200</code><br>The number of blocks written to the disk per second. The system is writing at a rate of 200 blocks per second.</p>
+</li>
+</ul>
+<h2 id="5-system">5. <strong>System</strong></h2>
+<ul>
+<li><p><strong>in (interrupts)</strong>: <code>4789</code><br>The number of interrupts per second, including clock interrupts and hardware interrupts. The system is receiving 4789 interrupts per second.</p>
+</li>
+<li><p><strong>cs (context switches)</strong>: <code>3</code><br>The number of context switches per second. Context switches happen when the CPU switches between processes. A low value indicates minimal switching, meaning the system is not overloaded.</p>
+</li>
+</ul>
+<h2 id="6-cpu">6. <strong>CPU</strong></h2>
+<ul>
+<li><p><strong>us (user CPU time)</strong>: <code>6</code><br>The percentage of CPU time spent on user processes (non-kernel code). In this case, 6% of CPU time is used for user processes.</p>
+</li>
+<li><p><strong>sy (system CPU time)</strong>: <code>0</code><br>The percentage of CPU time spent on system processes (kernel code). A value of <code>0</code> indicates very little CPU time is spent in kernel mode.</p>
+</li>
+<li><p><strong>id (idle CPU time)</strong>: <code>93</code><br>The percentage of CPU time the system is idle, meaning no processes are using the CPU. In this case, the CPU is idle 93% of the time.</p>
+</li>
+<li><p><strong>wa (waiting for I/O)</strong>: <code>0</code><br>The percentage of CPU time the system spends waiting for I/O operations to complete. A value of <code>0</code> means the CPU is not blocked by I/O.</p>
+</li>
+<li><p><strong>st (stolen time)</strong>: <code>0</code><br>The percentage of CPU time &quot;stolen&quot; from the virtual machine by the hypervisor in a virtualized environment. A value of <code>0</code> indicates no &quot;stolen&quot; time.</p>
+</li>
+<li><p><strong>gu (guest CPU time)</strong>: <code>0</code><br>The amount of CPU time used by virtual machines running on the system. A value of <code>0</code> suggests there are no guest virtual machines running.</p>
+</li>
+</ul>
+<h2 id="summary">Summary:</h2>
+<ul>
+<li><strong>High CPU Idle Time</strong>: 93% of the CPU time is spent idle, meaning the system is not under heavy load.</li>
+<li><strong>No Swap Activity</strong>: The swap usage is <code>0</code>, indicating there is no memory pressure.</li>
+<li><strong>Minimal Context Switching</strong>: With just 3 context switches per second, the system is stable and not overburdened with task switching.</li>
+<li><strong>Moderate Disk I/O</strong>: The system is performing some disk I/O, with a higher write rate (200 blocks out) compared to reads (40 blocks in).</li>
+</ul>
+<h1 id="iostat">iostat</h1>
+<pre><code class="language-bash">upgautam@amd:~$ iostat
+Linux 6.8.0-51-generic (amd) 	01/06/2025 	_x86_64_	(32 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           7.67    0.00    0.24    0.01    0.00   92.07
+
+Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s    kB_read    kB_wrtn    kB_dscd
+loop0             0.00         0.01         0.00         0.00       1118          0          0
+loop1             0.00         0.00         0.00         0.00         17          0          0
+loop10            0.00         0.00         0.00         0.00         13          0          0
+loop11            0.00         0.07         0.00         0.00      11585          0          0
+loop12            0.00         0.00         0.00         0.00         14          0          0
+loop13            0.00         0.00         0.00         0.00         28          0          0
+loop14            0.00         0.02         0.00         0.00       2855          0          0
+loop15            0.00         0.00         0.00         0.00         13          0          0
+loop16            0.00         0.00         0.00         0.00         12          0          0
+loop17            0.01         0.52         0.00         0.00      89389          0          0
+loop18            0.00         0.00         0.00         0.00         11          0          0
+loop19            0.00         0.01         0.00         0.00       1754          0          0
+loop2             0.00         0.01         0.00         0.00       1082          0          0
+loop20            0.02         0.23         0.00         0.00      40315          0          0
+loop21            0.03         0.07         0.00         0.00      11679          0          0
+loop22            0.00         0.00         0.00         0.00         44          0          0
+loop23            0.00         0.00         0.00         0.00         17          0          0
+loop24            0.16         2.44         0.00         0.00     419534          0          0
+loop25            0.00         0.00         0.00         0.00         24          0          0
+loop26            0.00         0.00         0.00         0.00         11          0          0
+loop27            0.00         0.00         0.00         0.00         12          0          0
+loop28            0.00         0.00         0.00         0.00         42          0          0
+loop29            0.00         0.01         0.00         0.00       1402          0          0
+loop3             0.01         0.77         0.00         0.00     133089          0          0
+loop30            0.00         0.00         0.00         0.00         11          0          0
+loop31            0.00         0.00         0.00         0.00        285          0          0
+loop32            0.00         0.00         0.00         0.00         11          0          0
+loop33            0.00         0.00         0.00         0.00         13          0          0
+loop34            0.00         0.00         0.00         0.00         12          0          0
+loop35            0.00         0.00         0.00         0.00         66          0          0
+loop36            0.00         0.00         0.00         0.00         10          0          0
+loop4             0.00         0.01         0.00         0.00       1075          0          0
+loop5             0.00         0.01         0.00         0.00       1115          0          0
+loop6             0.00         0.00         0.00         0.00        316          0          0
+loop7             0.00         0.00         0.00         0.00        348          0          0
+loop8             0.00         0.00         0.00         0.00         29          0          0
+loop9             0.00         0.00         0.00         0.00         28          0          0
+nvme0n1           4.33        25.90       151.37      5697.50    4461902   26079100  981632712
+nvme1n1           0.00         0.02         0.00         0.00       3592          0          0
+sda               0.00         0.04         0.00         0.00       7456          0          0
+</code></pre>
+<h1 id="netstat">netstat</h1>
+<p><strong>Note</strong>: Use modern alternative ss instead of netstat</p>
+<p>Below command shows all ESTABLISHED active connections</p>
+<pre><code class="language-bash">upgautam@amd:~$ netstat -an | grep ESTABLISHED
+tcp        0      0 192.168.0.60:39598      34.107.243.93:443       ESTABLISHED
+tcp        0      0 192.168.0.60:56170      192.0.84.247:443        ESTABLISHED
+tcp        0      0 192.168.0.62:51492      192.168.0.10:139        ESTABLISHED
+tcp        0      0 192.168.0.60:35976      162.159.61.4:443        ESTABLISHED
+tcp6       0      0 2603:6081:6d01:b7:44208 2606:4700:4400::681:443 ESTABLISHED
+tcp6       0      0 2603:6081:6d01:b7:33916 2603:1036:303:6::2:443  ESTABLISHED
+tcp6       0      0 2603:6081:6d01:b7:60294 2600:1f18:24e6:b901:443 ESTABLISHED
+tcp6       0      0 2603:6081:6d01:b7:44198 2606:4700:4400::681:443 ESTABLISHED
+udp        0      0 192.168.0.62:68         192.168.0.1:67          ESTABLISHED
+udp        0      0 192.168.0.60:68         192.168.0.1:67          ESTABLISHED
+</code></pre>
+<p>All ESTABLISHED connections on port 443</p>
+<pre><code class="language-bash">upgautam@amd:~$ netstat -an | grep &#39;:443&#39; | grep ESTABLISHED
+tcp        0      0 192.168.0.60:39598      34.107.243.93:443       ESTABLISHED
+tcp        0      0 192.168.0.60:56170      192.0.84.247:443        ESTABLISHED
+tcp        0      0 192.168.0.60:35976      162.159.61.4:443        ESTABLISHED
+tcp6       0      0 2603:6081:6d01:b7:40170 2606:4700:4400::681:443 ESTABLISHED
+tcp6       0      0 2603:6081:6d01:b7:33916 2603:1036:303:6::2:443  ESTABLISHED
+tcp6       0      0 2603:6081:6d01:b7:41184 2606:4700:4400::681:443 ESTABLISHED
+</code></pre>
+<p>grep -c will count the connections. This is like a load to particular server. </p>
+<pre><code class="language-bash">upgautam@amd:~$ netstat -an | grep -c &#39;:443&#39;
+10
+</code></pre>
+<h1 id="sar">sar</h1>
+<p>This is similar to iostat or vmstat but it additonally provides hitorical data (i.e., report)</p>
+<p>Below command to report on every second for three times. </p>
+<pre><code class="language-bash">upgautam@amd:~$ sar -u 1 3
+Linux 6.8.0-51-generic (amd) 	01/06/2025 	_x86_64_	(32 CPU)
+
+10:53:03 AM     CPU     %user     %nice   %system   %iowait    %steal     %idle
+10:53:04 AM     all      0.28      0.00      0.16      0.13      0.00     99.44
+10:53:05 AM     all      0.16      0.00      0.13      0.00      0.00     99.72
+10:53:06 AM     all      0.16      0.00      0.16      0.00      0.00     99.69
+Average:        all      0.20      0.00      0.15      0.04      0.00     99.61
+</code></pre>
+<p>To display from already captured file, </p>
+<pre><code class="language-bash">upgautam@amd:~$ sar -u -s 14:00:00 -e 14:30:00 -f /var/log/sysstat/sa03
+Linux 6.8.0-51-generic (amd) 	01/03/2025 	_x86_64_	(32 CPU)
+
+02:00:03 PM     CPU     %user     %nice   %system   %iowait    %steal     %idle
+02:10:03 PM     all      0.00      0.00      0.01      0.00      0.00     99.99
+02:20:03 PM     all      0.00      0.00      0.01      0.00      0.00     99.99
+Average:        all      0.00      0.00      0.01      0.00      0.00     99.99
+</code></pre>
+<h2 id="breakdown-of-the-command">Breakdown of the Command:</h2>
+<ul>
+<li><p><strong>sar</strong>: The <code>sar</code> command stands for &quot;System Activity Report&quot; and is used to collect, report, and save system activity information, including CPU usage, memory usage, I/O activity, etc. It provides historical system activity data that can be analyzed later.</p>
+</li>
+<li><p><strong>-u</strong>: This option tells <code>sar</code> to display CPU utilization statistics. Specifically, it shows metrics like CPU usage in terms of user time, system time, idle time, etc.</p>
+</li>
+<li><p><strong>-s 14:00:00</strong>: This specifies the start time for the data you want to display. In this case, it&#39;s from <code>14:00:00</code> (2:00 PM).</p>
+</li>
+<li><p><strong>-e 14:30:00</strong>: This specifies the end time for the data you want to display. Here, it&#39;s set to <code>14:30:00</code> (2:30 PM).</p>
+</li>
+<li><p><strong>-f /var/log/sysstat/sa03</strong>: This option tells <code>sar</code> to read the system activity data from a specific file. In this case, the data is read from the file <code>/var/log/sysstat/sa03</code>. These files are created by the <code>sysstat</code> service and store daily system performance data, with <code>sa03</code> representing the system activity data for the 3rd day of the mqonth.</p>
+</li>
+</ul>
+<p>The sar report can be used to correlate specific events (e.g. check cpu utilization every day in certail time). </p>
+<h1 id="more-performance-tools">More performance tools</h1>
+<p>General system: Use <code>glances</code> instead of <code>top</code>, <code>htop</code> or <code>atop</code>. </p>
+<h2 id="cpu-1">CPU</h2>
+<p>Use <code>mpstat</code> to show real-time just for a session (no reporting, no historical data). </p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo mpstat -P ALL
+Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
+
+10:58:28 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+10:58:28 AM  all    0.56    0.00    0.42    3.03    0.00    0.00    0.00    0.00    0.00   95.99
+10:58:28 AM    0    1.70    0.00    1.25    6.51    0.00    0.05    0.00    0.00    0.00   90.48
+10:58:28 AM    1    0.23    0.00    0.14    1.73    0.00    0.02    0.00    0.00    0.00   97.87
+10:58:28 AM    2    0.30    0.00    0.19    1.29    0.00    0.00    0.00    0.00    0.00   98.22
+10:58:28 AM    3    0.10    0.00    0.07    0.31    0.00    0.00    0.00    0.00    0.00   99.52
+10:58:28 AM    4    2.04    0.00    1.93    9.88    0.00    0.00    0.00    0.00    0.00   86.14
+10:58:28 AM    5    0.28    0.00    0.18    1.07    0.00    0.00    0.00    0.00    0.00   98.47
+10:58:28 AM    6    0.27    0.00    0.65    0.79    0.00    0.00    0.00    0.00    0.00   98.29
+10:58:28 AM    7    0.42    0.00    0.33    1.39    0.00    0.01    0.00    0.00    0.00   97.85
+10:58:28 AM    8    0.33    0.00    0.18    1.82    0.00    0.00    0.00    0.00    0.00   97.67
+10:58:28 AM    9    0.17    0.00    0.10    0.56    0.00    0.00    0.00    0.00    0.00   99.17
+10:58:28 AM   10    0.53    0.00    0.27    5.44    0.00    0.00    0.00    0.00    0.00   93.75
+10:58:28 AM   11    0.14    0.00    0.08    0.43    0.00    0.00    0.00    0.00    0.00   99.35
+10:58:28 AM   12    0.09    0.00    0.07    0.27    0.00    0.00    0.00    0.00    0.00   99.57
+10:58:28 AM   13    0.67    0.00    0.34    6.88    0.00    0.00    0.00    0.00    0.00   92.11
+10:58:28 AM   14    1.18    0.00    0.60   13.18    0.00    0.00    0.00    0.00    0.00   85.04
+10:58:28 AM   15    3.49    0.01    2.59   24.33    0.00    0.00    0.00    0.00    0.00   69.58
+10:58:28 AM   16    1.21    0.00    1.02    3.63    0.00    0.00    0.00    0.00    0.00   94.14
+10:58:28 AM   17    0.18    0.00    0.13    0.24    0.00    0.00    0.00    0.00    0.00   99.45
+10:58:28 AM   18    0.14    0.00    0.10    0.13    0.00    0.00    0.00    0.00    0.00   99.64
+10:58:28 AM   19    0.07    0.00    0.06    0.03    0.00    0.00    0.00    0.00    0.00   99.84
+10:58:28 AM   20    0.92    0.00    0.89    2.59    0.00    0.00    0.00    0.00    0.00   95.60
+10:58:28 AM   21    0.10    0.00    0.07    0.22    0.00    0.00    0.00    0.00    0.00   99.61
+10:58:28 AM   22    0.10    0.00    0.07    0.15    0.00    0.00    0.00    0.00    0.00   99.67
+10:58:28 AM   23    0.14    0.00    0.09    0.22    0.00    0.00    0.00    0.00    0.00   99.55
+10:58:28 AM   24    0.56    0.00    0.33    6.70    0.00    0.00    0.00    0.00    0.00   92.42
+10:58:28 AM   25    0.23    0.00    0.14    0.84    0.00    0.00    0.00    0.00    0.00   98.78
+10:58:28 AM   26    0.21    0.00    0.13    0.60    0.00    0.00    0.00    0.00    0.00   99.06
+10:58:28 AM   27    0.10    0.00    0.07    0.11    0.00    0.00    0.00    0.00    0.00   99.72
+10:58:28 AM   28    0.07    0.00    0.06    0.14    0.00    0.00    0.00    0.00    0.00   99.73
+10:58:28 AM   29    0.14    0.00    0.09    0.45    0.00    0.00    0.00    0.00    0.00   99.32
+10:58:28 AM   30    0.26    0.00    0.15    1.43    0.00    0.00    0.00    0.00    0.00   98.16
+10:58:28 AM   31    1.42    0.00    1.23    3.66    0.00    0.00    0.00    0.00    0.00   93.68
+</code></pre>
+<p>I can achieve same and more data in different poin of times using <code>sar</code></p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo sar -P ALL 1 5
+Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
+
+11:01:33 AM     CPU     %user     %nice   %system   %iowait    %steal     %idle
+11:01:34 AM     all      1.86      0.00      1.35      0.25      0.00     96.54
+11:01:34 AM       0      2.00      0.00      2.00      0.00      0.00     96.00
+11:01:34 AM       1      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM       2      0.00      0.00      1.00      0.00      0.00     99.00
+11:01:34 AM       3      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM       4     10.00      0.00      2.00      0.00      0.00     88.00
+11:01:34 AM       5      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM       6      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM       7      1.01      0.00      0.00      0.00      0.00     98.99
+11:01:34 AM       8      2.04      0.00      2.04      0.00      0.00     95.92
+11:01:34 AM       9      1.00      0.00      2.00      0.00      0.00     97.00
+11:01:34 AM      10      4.12      0.00      3.09      0.00      0.00     92.78
+11:01:34 AM      11      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      12      0.00      0.00      1.00      0.00      0.00     99.00
+11:01:34 AM      13      3.00      0.00      2.00      0.00      0.00     95.00
+11:01:34 AM      14      4.08      0.00      6.12      0.00      0.00     89.80
+11:01:34 AM      15      8.16      0.00      8.16      0.00      0.00     83.67
+11:01:34 AM      16      1.00      0.00      0.00      0.00      0.00     99.00
+11:01:34 AM      17      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      18      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      19      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      20      2.00      0.00      1.00      0.00      0.00     97.00
+11:01:34 AM      21      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      22      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      23      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      24      5.05      0.00      1.01      0.00      0.00     93.94
+11:01:34 AM      25      1.00      0.00      1.00      0.00      0.00     98.00
+11:01:34 AM      26      1.01      0.00      0.00      0.00      0.00     98.99
+11:01:34 AM      27      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      28      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:34 AM      29      1.02      0.00      2.04      0.00      0.00     96.94
+11:01:34 AM      30      7.14      0.00      3.06      8.16      0.00     81.63
+11:01:34 AM      31      6.12      0.00      6.12      0.00      0.00     87.76
+
+11:01:34 AM     CPU     %user     %nice   %system   %iowait    %steal     %idle
+11:01:35 AM     all      2.32      0.00      1.35      0.31      0.00     96.02
+11:01:35 AM       0      8.25      0.00      1.03      0.00      0.00     90.72
+11:01:35 AM       1      2.00      0.00      0.00      0.00      0.00     98.00
+11:01:35 AM       2      2.00      0.00      1.00      0.00      0.00     97.00
+11:01:35 AM       3      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM       4      8.91      0.00      0.99      0.00      0.00     90.10
+11:01:35 AM       5      1.00      0.00      0.00      0.00      0.00     99.00
+11:01:35 AM       6      1.00      0.00      1.00      0.00      0.00     98.00
+11:01:35 AM       7      1.98      0.00      0.99      0.00      0.00     97.03
+11:01:35 AM       8      2.97      0.00      1.98      0.00      0.00     95.05
+11:01:35 AM       9      1.02      0.00      0.00      0.00      0.00     98.98
+11:01:35 AM      10      4.00      0.00      2.00      0.00      0.00     94.00
+11:01:35 AM      11      1.01      0.00      0.00      0.00      0.00     98.99
+11:01:35 AM      12      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM      13      2.02      0.00      1.01      1.01      0.00     95.96
+11:01:35 AM      14      5.15      0.00      3.09      0.00      0.00     91.75
+11:01:35 AM      15     14.29      0.00     12.24      9.18      0.00     64.29
+11:01:35 AM      16      1.00      0.00      0.00      0.00      0.00     99.00
+11:01:35 AM      17      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM      18      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM      19      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM      20      0.99      0.00      0.99      0.00      0.00     98.02
+11:01:35 AM      21      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM      22      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM      23      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM      24      5.94      0.00      4.95      0.00      0.00     89.11
+11:01:35 AM      25      0.00      0.00      0.00      0.00      0.00    100.00
+11:01:35 AM      26      2.00      0.00      2.00      0.00      0.00     96.00
+11:01:35 AM      27      0.00      0.00      0.99      0.00      0.00     99.01
+11:01:35 AM      28      1.00      0.00      0.00      0.00      0.00     99.00
+11:01:35 AM      29      1.00      0.00      2.00      0.00      0.00     97.00
+11:01:35 AM      30      3.06      0.00      2.04      0.00      0.00     94.90
+11:01:35 AM      31      4.08      0.00      5.10      0.00      0.00     90.82
+</code></pre>
+<p>instead of -P ALL use -d for for IO wait and device activity, -r for memory,  -n DEV (or -n TCP, UDP) for network, -q for load average, -B for swap memory,  and several other. As you can see <code>sar</code> is much more powerful than mpstat. </p>
+<pre><code class="language-bash"># network error statistics
+upgautam@amd:~/Desktop$ sudo sar -n EDEV 1 1
+Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
+
+11:05:51 AM     IFACE   rxerr/s   txerr/s    coll/s  rxdrop/s  txdrop/s  txcarr/s  rxfram/s  rxfifo/s  txfifo/s
+11:05:52 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:05:52 AM   enp14s0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:05:52 AM enp15s0f0np0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:05:52 AM enp15s0f1np1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:05:52 AM   wlp13s0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:05:52 AM    virbr0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+
+upgautam@amd:~/Desktop$ sudo sar -n DEV 1 1
+Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
+
+11:24:59 AM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+11:25:00 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:25:00 AM   enp14s0      1.00      0.00      0.21      0.00      0.00      0.00      0.00      0.00
+11:25:00 AM enp15s0f0np0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:25:00 AM enp15s0f1np1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:25:00 AM   wlp13s0      1.00      0.00      0.21      0.00      0.00      0.00      0.00      0.00
+11:25:00 AM    virbr0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+11:25:00 AM   cvd-ebr      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+</code></pre>
+<p>Swap memroy,</p>
+<pre><code class="language-bash"># swap memory
+upgautam@amd:~/Desktop$ sudo sar -B 1 1
+Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
+
+11:21:59 AM  pgpgin/s pgpgout/s   fault/s  majflt/s  pgfree/s pgscank/s pgscand/s pgsteal/s    %vmeff
+11:22:00 AM      0.00     80.00   6772.00      0.00   4836.00      0.00      0.00      0.00      0.00
+Average:         0.00     80.00   6772.00      0.00   4836.00      0.00      0.00      0.00      0.00
+</code></pre>
+<p>Load average,</p>
+<pre><code class="language-bash"># load average
+upgautam@amd:~/Desktop$ sudo sar -q 1 1
+Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
+
+11:23:52 AM   runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15   blocked
+11:23:53 AM         0      1748      0.21      0.23      0.71         0
+Average:            0      1748      0.21      0.23      0.71         0
+</code></pre>
+<p>TCP, UPD statistics,</p>
+<pre><code class="language-bash"># tcp,udp
+Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
+
+11:24:31 AM  active/s passive/s    iseg/s    oseg/s
+11:24:32 AM      0.00      0.00      0.00      0.00
+
+11:24:31 AM    idgm/s    odgm/s  noport/s idgmerr/s
+11:24:32 AM      0.00      0.00      0.00      0.00
+
+Average:     active/s passive/s    iseg/s    oseg/s
+Average:         0.00      0.00      0.00      0.00
+
+Average:       idgm/s    odgm/s  noport/s idgmerr/s
+Average:         0.00      0.00      0.00      0.00
+</code></pre>
+<p>Memory related,</p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo sar -r 1 2
+Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
+
+11:25:54 AM kbmemfree   kbavail kbmemused  %memused kbbuffers  kbcached  kbcommit   %commit  kbactive   kbinact   kbdirty
+11:25:55 AM  12096124 120977676   8043672      6.11   2729192  99150312  16762700      7.33  10142156  98143196      1504
+11:25:56 AM  12098148 120979700   8041648      6.11   2729192  99150312  16762704      7.33  10142256  98143196      1504
+Average:     12097136 120978688   8042660      6.11   2729192  99150312  16762702      7.33  10142206  98143196      1504
+
+or use free for simple output
+</code></pre>
+<p>About 12 GB free, 120 GB available, and 8 GB used. Available = free + reclaimable cache/buffer + some other tracked by system
+Free = completely unused RAM</p>
+<p>** Note**: Use lscpu to get detailed CPU information. </p>
+<h3 id="turbostat">turbostat</h3>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo turbostat
+turbostat version 2023.11.07 - Len Brown &lt;lenb@kernel.org&gt;
+Kernel command line: BOOT_IMAGE=/boot/vmlinuz-6.8.0-51-generic root=UUID=b16a83dc-3b3d-4d1a-8bb3-7b1facd0d8fe ro quiet splash amd_iommu=on iommu=pt vt.handoff=7
+CPUID(0): AuthenticAMD 0x10 CPUID levels
+CPUID(1): family:model:stepping 0x19:61:2 (25:97:2) microcode 0x0
+CPUID(0x80000000): max_extended_levels: 0x80000028
+CPUID(1): SSE3 MONITOR - - - TSC MSR - HT -
+CPUID(6): APERF, No-TURBO, No-DTS, No-PTM, No-HWP, No-HWPnotify, No-HWPwindow, No-HWPepp, No-HWPpkg, No-EPB
+CPUID(7): No-SGX No-Hybrid
+cpu0: cpufreq driver: amd-pstate-epp
+cpu0: cpufreq governor: performance
+/dev/cpu_dma_latency: 2000000000 usec (default)
+current_driver: acpi_idle
+current_governor: menu
+current_governor_ro: menu
+cpu0: POLL: CPUIDLE CORE POLL IDLE
+cpu0: C1: ACPI FFH MWAIT 0x0
+cpu0: C2: ACPI IOPORT 0x414
+cpu0: C3: ACPI IOPORT 0x415
+RAPL: 234 sec. Joule Counter Range, at 280 Watts
+cpu0: MSR_RAPL_PWR_UNIT: 0x000a1000 (1.000000 Watts, 0.000015 Joules, 0.000977 sec.)
+Core	CPU	Avg_MHz	Busy%	Bzy_MHz	TSC_MHz	IPC	IRQ	POLL	C1	C2	C3	POLL%	C1%	C2%	C3%	CorWatt	PkgWatt
+-	-	62	1.12	5475	4489	1.02	28309	116	1755	3643	18456	0.00	0.33	0.64	97.90	5.3053.92
+0	0	275	4.97	5527	4491	0.86	4695	11	29	140	1719	0.01	0.05	1.21	93.95	0.6853.95
+0	16	6	0.11	5468	4491	0.17	250	41	10	24	162	0.01	0.00	0.07	99.69
+1	1	28	0.50	5544	4491	0.97	282	0	1	9	234	0.00	0.00	0.12	99.41	0.09
+1	17	2	0.03	5495	4491	0.27	56	0	2	19	33	0.00	0.00	0.25	99.73
+2	2	67	1.21	5575	4491	1.14	220	0	0	10	127	0.00	0.00	0.08	98.72	0.15
+2	18	1	0.02	5455	4491	0.29	30	0	0	2	26	0.00	0.00	0.00	99.97
+3	3	4	0.08	5468	4491	0.23	206	8	75	0	117	0.00	0.15	0.00	99.79	0.05
+3	19	1	0.01	5485	4491	0.24	17	0	0	4	11	0.00	0.00	0.02	99.97
+4	4	179	3.21	5571	4491	1.17	1011	9	30	82	666	0.01	0.10	0.51	96.23	0.78
+4	20	66	1.21	5489	4491	0.33	2444	9	24	913	1448	0.01	0.14	5.59	93.20
+5	5	5	0.09	5491	4491	0.51	65	0	1	12	47	0.00	0.00	0.04	99.88	0.06
+5	21	13	0.23	5415	4491	0.52	268	0	2	37	184	0.00	0.00	0.21	99.58
+6	6	6	0.11	5478	4491	0.47	109	0	3	27	64	0.00	0.01	0.15	99.74	0.06
+6	22	12	0.22	5500	4491	0.42	169	0	1	7	153	0.00	0.00	0.10	99.69
+7	7	40	0.74	5480	4491	1.65	384	1	28	18	260	0.00	0.01	0.15	99.13	0.12
+7	23	0	0.01	5442	4491	0.24	19	0	1	2	14	0.00	0.00	0.01	99.98
+8	8	45	0.83	5463	4491	0.71	730	0	3	63	604	0.00	0.00	0.76	98.47	0.23
+8	24	59	1.08	5478	4491	0.93	933	3	133	70	698	0.00	0.83	0.70	97.44
+9	9	4	0.07	5449	4491	0.75	40	0	0	2	30	0.00	0.00	0.02	99.91	0.18
+9	25	57	1.03	5472	4491	0.53	1815	3	119	519	1162	0.00	0.59	2.20	96.29
+10	10	80	1.47	5466	4491	0.95	895	1	96	54	678	0.00	0.47	0.64	97.47	0.43
+10	26	67	1.23	5478	4491	0.42	2319	4	199	646	1453	0.00	1.87	1.30	95.76
+11	11	15	0.28	5478	4491	0.40	437	0	0	17	401	0.00	0.00	0.13	99.63	0.09
+11	27	37	0.68	5481	4491	0.47	1055	0	54	167	813	0.00	0.30	0.69	98.41
+12	12	0	0.01	5453	4491	0.33	14	0	0	3	9	0.00	0.00	0.02	99.98	0.13
+12	28	23	0.42	5479	4491	0.49	737	0	43	27	648	0.00	0.25	0.15	99.22
+13	13	96	1.75	5471	4491	0.87	1809	4	248	113	1436	0.00	1.42	0.87	96.06	0.55
+13	29	31	0.57	5465	4491	0.59	1148	2	19	139	971	0.00	0.06	0.86	98.57
+14	14	120	2.20	5447	4491	1.05	1239	2	216	83	897	0.00	1.74	0.90	95.23	0.41
+14	30	38	0.69	5466	4491	0.81	921	5	17	46	790	0.00	0.15	0.47	98.73
+15	15	555	10.24	5424	4491	1.47	2454	8	69	274	1379	0.00	0.44	1.83	87.60	1.30
+15	31	37	0.68	5458	4491	0.61	1538	5	332	114	1222	0.00	1.90	0.50	97.00
+</code></pre>
+<p>I wrote separate post for perf already in my website. </p>
+<h3 id="to-show-memory-usage-by-process">to show memory usage by process</h3>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo smem
+  PID User     Command                         Swap      USS      PSS      RSS
+ 1680 root     /usr/sbin/atopacctd                0      136      144     1484
+ 2640 root     /bin/sh /snap/cups/1067/scr        0       60      155     1044
+ 3891 root     fusermount3 -o rw,nosuid,no        0      152      166     2164
+ 2260 root     /bin/sh /snap/cups/1067/scr        0       64      193     1756
+88893 root     sleep 3600                         0      140      218     1924
+ 2261 root     /bin/sh /snap/cups/1067/scr        0      128      223     1744
+49523 upgautam sh -c /usr/bin/pager               0      232      241     1924
+59215 upgautam /usr/lib/speech-dispatcher-        0      220      243     2800
+ 3121 root     /usr/bin/netserver                 0      272      277     1168
+ 1634 root     /usr/sbin/cron -f -P               0      300      319     3064
+ 2462 root     /usr/sbin/dnsmasq --conf-fi        0       88      360     1296
+ 1669 avahi    avahi-daemon: chroot helper        0      140      380     1596
+89204 root     /usr/lib/linux-tools/6.8.0-        0      372      384     2364
+ 2577 rtkit    /usr/libexec/rtkit-daemon          0      356      388     3684
+ 2461 libvirt-dnsmasq /usr/sbin/dnsmasq --conf-fi        0      132      477     2340
+47050 root     dbus-launch --autolaunch 8f        0      456      487     2596
+ 4158 upgautam /usr/libexec/gnome-session-        0      476      519     5924
+47051 root     /usr/bin/dbus-daemon --sysl        0      464      536     2752
+ 3115 kernoops /usr/sbin/kerneloops               0      484      550     2412
+ 3097 kernoops /usr/sbin/kerneloops --test        0      492      558     2496
+ 2209 nvidia-persistenced /usr/bin/nvidia-persistence        0      580      590     2248
+49524 upgautam /usr/bin/pager                     0      548      603     2860
+ 3949 upgautam /usr/libexec/gdm-x-session         0      576      627     6608
+ 3418 nobody   dnsmasq --port=0 --strict-o        0      532      649     2284
+ 3881 upgautam /usr/libexec/xdg-permission        0      608      651     6436
+ 3217 nobody   dnsmasq --port=0 --strict-o        0      536      655     2292
+ 1586 _rpc     /sbin/rpcbind -f -w                0      584      656     4212
+ 4340 upgautam /usr/libexec/gsd-screensave        0      624      674     6648
+ 4317 upgautam /usr/libexec/gsd-a11y-setti        0      648      706     7012
+90180 root     sudo smem                          0      108      749     2744
+46915 root     sudo perf report                   0      112      751     2844
+54374 root     sudo perf top -e cycles:P          0      112      751     2840
+89203 root     sudo turbostat                     0      120      754     2828
+77498 upgautam /usr/bin/gpg-agent --superv        0      688      773     3644
+ 1635 root     /usr/libexec/switcheroo-con        0      752      827     7196
+ 4573 upgautam /usr/libexec/gvfs-goa-volum        0      740      842     6828
+ 4157 upgautam /usr/libexec/gcr-ssh-agent         0      756      845     7268
+</code></pre>
+<h1 id="performance-tools-overview">Performance Tools Overview</h1>
+<h2 id="cpu-performance">CPU Performance</h2>
+<ul>
+<li><strong>perf</strong>: Versatile performance analysis and profiling tool.</li>
+<li><strong>mpstat</strong>: Reports CPU usage statistics.</li>
+<li><strong>sar</strong>: Collects, reports, and saves system activity information.</li>
+<li><strong>lscpu</strong>: Displays CPU architecture details.</li>
+<li><strong>turbostat</strong>: Measures CPU frequency and idle states (specific to Intel CPUs).</li>
+</ul>
+<h2 id="memory-performance">Memory Performance</h2>
+<ul>
+<li><strong>free</strong>: Displays memory usage (RAM and swap).</li>
+<li><strong>vmstat</strong>: Reports memory, I/O, and process scheduling statistics.</li>
+<li><strong>smem</strong>: Reports memory usage per process.</li>
+<li><strong>numastat</strong>: Shows NUMA (Non-Uniform Memory Access) memory allocation stats.</li>
+</ul>
+<h2 id="disk-and-filesystem-performance">Disk and Filesystem Performance</h2>
+<ul>
+<li><strong>iostat</strong>: Monitors CPU and I/O usage.</li>
+<li><strong>iotop</strong>: Interactive tool for monitoring disk I/O by processes.</li>
+<li><strong>df</strong>: Reports disk space usage.</li>
+<li><strong>du</strong>: Displays disk usage of files and directories.</li>
+<li><strong>blktrace</strong>: Tracks block I/O events at a low level.</li>
+<li><strong>fio</strong>: Benchmarking tool for testing disk I/O performance.</li>
+<li><strong>sysbench</strong>: Tests I/O and CPU performance.</li>
+<li><strong>lsblk</strong>: Lists information about block devices.</li>
+</ul>
+<h2 id="network-performance">Network Performance</h2>
+<ul>
+<li><strong>iftop</strong>: Real-time bandwidth monitoring by connection.</li>
+<li><strong>nload</strong>: Displays incoming and outgoing network traffic.</li>
+<li><strong>tcpdump</strong>: Captures and analyzes network packets.</li>
+<li><strong>nethogs</strong>: Shows per-process network bandwidth usage.</li>
+<li><strong>iperf / iperf3</strong>: Measures network throughput between two hosts.</li>
+<li><strong>ethtool</strong>: Configures and queries network interface settings.</li>
+<li><strong>bmon</strong>: Bandwidth monitor and rate estimator.</li>
+<li><strong>ss</strong>: Examines sockets (alternative to netstat).</li>
+</ul>
+<h2 id="application-and-code-profiling">Application and Code Profiling</h2>
+<ul>
+<li><strong>strace</strong>: Traces system calls and signals of a process.</li>
+<li><strong>ltrace</strong>: Traces library function calls.</li>
+<li><strong>gprof</strong>: Profiles program performance (compiled with -pg).</li>
+<li><strong>valgrind</strong>: Debugging and profiling tool (memory leaks, cache).</li>
+<li><strong>oprofile</strong>: System-wide performance monitoring.</li>
+<li><strong>systemtap</strong>: Custom kernel instrumentation.</li>
+<li><strong>eBPF tools (e.g., bcc, bpftrace)</strong>: Advanced tracing and monitoring using extended BPF.</li>
+<li><strong>perf record</strong>: Profiles application performance and call graphs.</li>
+<li><strong>time</strong>: Measures execution time of commands.</li>
+</ul>
+<h2 id="kernel-and-system-analysis">Kernel and System Analysis</h2>
+<ul>
+<li><strong>dstat</strong>: Versatile resource monitoring tool combining CPU, memory, disk, and network stats.</li>
+<li><strong>sysctl</strong>: Reads and modifies kernel parameters.</li>
+<li><strong>uptime</strong>: Shows system uptime and load averages.</li>
+<li><strong>powertop</strong>: Monitors and optimizes power usage.</li>
+<li><strong>latencytop</strong>: Identifies sources of latency.</li>
+<li><strong>kprobes / uprobes</strong>: Kernel and user-space probing tools.</li>
+<li><strong>ftrace</strong>: Kernel function tracer.</li>
+<li><strong>schedstat</strong>: Reports scheduler activity and statistics.</li>
+</ul>
+<h2 id="graphics-and-gpu-performance">Graphics and GPU Performance</h2>
+<ul>
+<li><strong>glxgears</strong>: Simple OpenGL performance benchmarking tool.</li>
+<li><strong>nvidia-smi</strong>: NVIDIA GPU monitoring and management tool.</li>
+<li><strong>intel-gpu-top</strong>: Real-time Intel GPU utilization monitoring.</li>
+<li><strong>radeontop</strong>: Real-time Radeon GPU utilization monitoring.</li>
+</ul>
+<h2 id="power-and-thermal-management">Power and Thermal Management</h2>
+<ul>
+<li><strong>powertop</strong>: Monitors and optimizes power usage.</li>
+<li><strong>cpufreq tools</strong>: Manages CPU frequency scaling.</li>
+<li><strong>turbostat</strong>: Tracks CPU power consumption and thermal stats.</li>
+<li><strong>sensors</strong>: Displays temperature and fan speed data.</li>
+</ul>
+<h2 id="virtualization-and-containers">Virtualization and Containers</h2>
+<ul>
+<li><strong>virt-top</strong>: Monitors virtual machine resource usage.</li>
+<li><strong>docker stats</strong>: Displays resource usage by Docker containers.</li>
+<li><strong>cAdvisor</strong>: Container resource monitoring.</li>
+<li><strong>qemu-system debug tools</strong>: Profiles virtualized workloads.</li>
+</ul>
+<h2 id="real-time-systems">Real-Time Systems</h2>
+<ul>
+<li><strong>cyclictest</strong>: Measures real-time kernel latency.</li>
+<li><strong>rt-app</strong>: Generates synthetic real-time workloads.</li>
+<li><strong>tuna</strong>: Optimizes scheduler and CPU affinity for real-time tasks.</li>
+</ul>
+<h2 id="comprehensive-suites">Comprehensive Suites</h2>
+<ul>
+<li><strong>sysstat</strong>: A collection of tools (sar, iostat, etc.) for system monitoring.</li>
+<li><strong>bcc-tools</strong>: BPF Compiler Collection with tools like execsnoop, opensnoop.</li>
+<li><strong>Kernbench</strong>: Kernel compilation benchmarking tool.</li>
+</ul>
+<h1 id="gprof">gprof</h1>
+<p>gprof is a type of application and code profiling tool.  Other tools include <code>strace, ltrace, valgrind, oprofile, systemtap, eBPF tools, perf record, time</code> etc.</p>
+<p>If you want to profile your own source code and want to know what functions takes more time, and where is the improvement places to fix etc.</p>
+<pre><code class="language-c">// advanced_gprof_example.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+#define N 1000  // Size of array/matrix
+
+// Function to calculate sum of an array
+void calculate_sum(int *arr, int size) {
+    long long sum = 0;
+    for (int i = 0; i &lt; size; i++) {
+        sum += arr[i];
+    }
+}
+
+// Function to perform matrix multiplication
+void matrix_multiply(int **A, int **B, int **C, int n) {
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; n; j++) {
+            C[i][j] = 0;
+            for (int k = 0; k &lt; n; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+}
+
+int main() {
+    // Dynamically allocate memory for array and matrices
+    int *arr = (int *)malloc(N * sizeof(int));
+    int **A = (int **)malloc(N * sizeof(int *));
+    int **B = (int **)malloc(N * sizeof(int *));
+    int **C = (int **)malloc(N * sizeof(int *));
+    for (int i = 0; i &lt; N; i++) {
+        A[i] = (int *)malloc(N * sizeof(int));
+        B[i] = (int *)malloc(N * sizeof(int));
+        C[i] = (int *)malloc(N * sizeof(int));
+    }
+
+    // Initialize the array and matrices with random values
+    srand(time(NULL));
+    for (int i = 0; i &lt; N; i++) {
+        arr[i] = rand() % 100;
+        for (int j = 0; j &lt; N; j++) {
+            A[i][j] = rand() % 100;
+            B[i][j] = rand() % 100;
+        }
+    }
+
+    // Start profiling for the functions
+    calculate_sum(arr, N);  // Sum calculation
+    matrix_multiply(A, B, C, N);  // Matrix multiplication
+
+    // Free dynamically allocated memory
+    free(arr);
+    for (int i = 0; i &lt; N; i++) {
+        free(A[i]);
+        free(B[i]);
+        free(C[i]);
+    }
+    free(A);
+    free(B);
+    free(C);
+
+    return 0;
+}
+</code></pre>
+<p>Compile and run</p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop/perf$ gcc -pg -o advanced_gprof_example advanced_gprof_example.c
+upgautam@amd:~/Desktop/perf$ ls
+advanced_gprof_example    allevents.txt  perf.data      perf_script_output.txt
+advanced_gprof_example.c  FlameGraph     perf.data.old  perf.svg
+upgautam@amd:~/Desktop/perf$ ./advanced_gprof_example
+upgautam@amd:~/Desktop/perf$ gprof advanced_gprof_example gmon.out &gt; profile_report.txt
+upgautam@amd:~/Desktop/perf$ ls
+advanced_gprof_example    allevents.txt  gmon.out   perf.data.old           perf.svg
+advanced_gprof_example.c  FlameGraph     perf.data  perf_script_output.txt  profile_report.txt
+
+
+
+
+upgautam@amd:~/Desktop/perf$ cat profile_report.txt
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total
+ time   seconds   seconds    calls   s/call   s/call  name
+ 99.57      2.33     2.33        1     2.33     2.33  matrix_multiply
+  0.43      2.34     0.01                             _init
+  0.00      2.34     0.00        1     0.00     0.00  calculate_sum
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+       else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+       function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+       the function in the gprof listing. If the index is
+       in parenthesis it shows where it would appear in
+       the gprof listing if it were to be printed.
+
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+
+             Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.43% of 2.34 seconds
+
+index % time    self  children    called     name
+                2.33    0.00       1/1           main [2]
+[1]     99.6    2.33    0.00       1         matrix_multiply [1]
+-----------------------------------------------
+                                                 &lt;spontaneous&gt;
+[2]     99.6    0.00    2.33                 main [2]
+                2.33    0.00       1/1           matrix_multiply [1]
+                0.00    0.00       1/1           calculate_sum [4]
+-----------------------------------------------
+                                                 &lt;spontaneous&gt;
+[3]      0.4    0.01    0.00                 _init [3]
+-----------------------------------------------
+                0.00    0.00       1/1           main [2]
+[4]      0.0    0.00    0.00       1         calculate_sum [4]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+        Index numbers are sorted numerically.
+        The index number is printed next to every function name so
+        it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total&#39; time that was spent
+        in this function and its children.  Note that due to
+        different viewpoints, functions excluded by options, etc,
+        these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+        function by its children.
+
+     called	This is the number of times the function was called.
+        If the function called itself recursively, the number
+        only includes non-recursive calls, and is followed by
+        a `+&#39; and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+        printed after it.  If the function is a member of a
+        cycle, the cycle number is printed between the
+        function&#39;s name and the index number.
+
+
+ For the function&#39;s parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+        from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+        the function&#39;s children into this parent.
+
+     called	This is the number of times this parent called the
+        function `/&#39; the total number of times the function
+        was called.  Recursive calls to the function are not
+        included in the number after the `/&#39;.
+
+     name	This is the name of the parent.  The parent&#39;s index
+        number is printed after it.  If the parent is a
+        member of a cycle, the cycle number is printed between
+        the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `&lt;spontaneous&gt;&#39; is printed in the `name&#39; field, and all the other
+ fields are blank.
+
+ For the function&#39;s children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+        from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+        child&#39;s children to the function.
+
+     called	This is the number of times the function called
+        this child `/&#39; the total number of times the child
+        was called.  Recursive calls by the child are not
+        listed in the number after the `/&#39;.
+
+     name	This is the name of the child.  The child&#39;s index
+        number is printed after it.  If the child is a
+        member of a cycle, the cycle number is printed
+        between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+&#39; recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Copyright (C) 2012-2024 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+
+Index by function name
+
+   [3] _init                   [4] calculate_sum           [1] matrix_multiply
+</code></pre>
