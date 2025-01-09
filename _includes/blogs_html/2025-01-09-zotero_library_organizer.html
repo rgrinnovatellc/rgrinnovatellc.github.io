@@ -1,0 +1,19 @@
+<h1 id="zotero-library-organizer">Zotero Library Organizer</h1>
+<p>download from here <code>https://www.zotero.org/download/</code> Extract it to some folder <code>/opt/zotero/</code> such that you will have <code>zotero</code> binary here: <code>/opt/zotero/Zotero_linux-x86_64</code></p>
+<p>Make a symbolic link so that you can run zotero from anywhere in terminal: <code>sudo ln -s /opt/zotero/Zotero_linux-x86_64/zotero /usr/local/bin/zotero</code></p>
+<p>Next step is to create a launcher icon that is searchable in ubuntu Launcher Dashboard. </p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ nano ~/.local/share/applications/zotero.desktop
+[Desktop Entry]
+Version=1.0
+Name=zotero
+Comment=zotero library organizer
+Icon=/home/upgautam/.local/share/icons/zotero.png
+Exec=zotero
+Icon=zotero
+Terminal=false
+Type=Application
+Categories=Education;Offline;
+</code></pre>
+<p>As you can see above, we must have zotero. png icon in <code>/home/upgautam/.local/share/icons/zotero.png.</code> If you don&#39;t have then download icon from google search.</p>
+<p>Done!</p>
+<p>Now, search zotero and then do <code>Pin to Dashboard</code>. </p>
