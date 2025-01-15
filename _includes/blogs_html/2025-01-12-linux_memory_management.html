@@ -672,29 +672,29 @@ Node 0, zone   Device
 <p>In above <code>zoneinfo</code> output, you can see I have 5 zones. </p>
 <h2 id="virtual-memory">Virtual Memory</h2>
 <p>CPU Chip: CPU ----- MMU (MMU is a hardware)
-Virtual (or Logical) address: Larger than physical memory RAM (this is the memory abstraction) --- we have pages here
-Physical Memory: RAM (we have page frames here)</p>
+    Virtual (or Logical) address: Larger than physical memory RAM (this is the memory abstraction) --- we have pages here
+    Physical Memory: RAM (we have page frames here)</p>
 <p>Logical or Virtual memory doesn&#39;t reside anywhere, it is just a label or tagging. Physical memory is actual RAM.
-If process allocates more logical memory then there happens internal (logical) memory fragmentation. </p>
+    If process allocates more logical memory then there happens internal (logical) memory fragmentation. </p>
 <p>In 64-bit systems, we can have 2^64 addressable units. This much big virtual memory we can have, althogh we have limited RAM installed. In earlier 32-bit system, we could achieve max. 64 GB of logical addressable units through Physical Address Extension (PAE). </p>
 <h2 id="paging-vs-segmentation">Paging vs. Segmentation</h2>
 <h3 id="paging">Paging</h3>
 <ol>
-<li>Fixed-size blocks: In paging, the memory is divided into fixed-size blocks called pages (for logical memory) and frames (for physical memory).</li>
-<li>No external fragmentation: Since the pages are of fixed size, paging eliminates external fragmentation, although internal fragmentation can still occur (if a page isn’t fully utilized).</li>
-<li>Efficient memory allocation: It helps in allocating memory in a more flexible manner, as pages can be placed anywhere in the physical memory.</li>
-<li>Translation of addresses: The operating system uses a page table to map logical pages to physical frames. The page table keeps track of where each page is located in physical memory.</li>
-<li>Fixed size: The page size is typically fixed, so all pages are of the same size.</li>
-<li>Easy swapping: Paging makes it easier to swap out pages to and from disk to manage memory more efficiently.</li>
+    <li>Fixed-size blocks: In paging, the memory is divided into fixed-size blocks called pages (for logical memory) and frames (for physical memory).</li>
+    <li>No external fragmentation: Since the pages are of fixed size, paging eliminates external fragmentation, although internal fragmentation can still occur (if a page isn’t fully utilized).</li>
+    <li>Efficient memory allocation: It helps in allocating memory in a more flexible manner, as pages can be placed anywhere in the physical memory.</li>
+    <li>Translation of addresses: The operating system uses a page table to map logical pages to physical frames. The page table keeps track of where each page is located in physical memory.</li>
+    <li>Fixed size: The page size is typically fixed, so all pages are of the same size.</li>
+    <li>Easy swapping: Paging makes it easier to swap out pages to and from disk to manage memory more efficiently.</li>
 </ol>
 <h3 id="segmentation">Segmentation</h3>
 <ol>
-<li>Variable-size blocks: In segmentation, memory is divided into segments of different sizes based on the logical division of a program (e.g., code, data, stack).
- External fragmentation: Segmentation can lead to external fragmentation, as segments can vary in size, and it may be hard to find a large enough contiguous block of memory.</li>
-<li>Logical division: Each segment has a specific meaning and is associated with a logical division of the program, which can make it easier to manage program components (e.g., separate the stack, heap, and code).</li>
-<li>Segment table: A segment table is used to map the logical segments to physical memory addresses.</li>
-<li>Variable size: Segments are of variable sizes, and the size of each segment depends on the needs of the program.</li>
-<li>Difficult swapping: Because segments can vary in size, swapping them in and out of memory can be more complicated than with paging.</li>
+    <li>Variable-size blocks: In segmentation, memory is divided into segments of different sizes based on the logical division of a program (e.g., code, data, stack).
+        External fragmentation: Segmentation can lead to external fragmentation, as segments can vary in size, and it may be hard to find a large enough contiguous block of memory.</li>
+    <li>Logical division: Each segment has a specific meaning and is associated with a logical division of the program, which can make it easier to manage program components (e.g., separate the stack, heap, and code).</li>
+    <li>Segment table: A segment table is used to map the logical segments to physical memory addresses.</li>
+    <li>Variable size: Segments are of variable sizes, and the size of each segment depends on the needs of the program.</li>
+    <li>Difficult swapping: Because segments can vary in size, swapping them in and out of memory can be more complicated than with paging.</li>
 </ol>
 <h2 id="paging-1">Paging</h2>
 <p>Paging is basically the movement of pages in and out of the main memory and storage. It allows partially loaded &amp; programs larger than memory to execute. Unlike Swapping which moves entire program in and out, Paging only moves pages, which are relatively small (e.g., 4KB). Processes that are swapped out are still known by the kernel as metadata is still resident in kernel memory. Kernel prioritizes swapping is based on various factors like thread priority, wait time, size of process. The longer it has been waiting and the smaller it is, the higher in the queue it will be. Modern Linux does not perform traditional swapping at all, it uses paging operation on a swap device or file instead. Some UNIX systems still perform actual swapping. In Linux, Kernel uses various caches to optimize performance.</p>
@@ -713,10 +713,10 @@ If process allocates more logical memory then there happens internal (logical) m
 <h2 id="virtual-memory-1">Virtual memory</h2>
 <p>The UNIX virtual memory has 4 states for a page:</p>
 <ol>
-<li>Unallocated</li>
-<li>Allocated, unmapped (Unpopulated and not yet faulted)</li>
-<li>Allocated, mapped to main memory</li>
-<li>Allocated, mapped to swap device</li>
+    <li>Unallocated</li>
+    <li>Allocated, unmapped (Unpopulated and not yet faulted)</li>
+    <li>Allocated, mapped to main memory</li>
+    <li>Allocated, mapped to swap device</li>
 </ol>
 <h3 id="overcommit">Overcommit</h3>
 <p>Overcommit allows more memory to be allocated than physically available. (more that the main memory + swap). It is dependent on on-demand paging and on applications not using more than a minority of allocated memory. It allows for malloc () requests to succeed instead of failing as system will rarely decline requests for virtual memory. Consequences of overcommit depend on tumbles and how kernel manages memory pressure — most frequently you’ll see OOM Killed (Out of memory killer).</p>
@@ -728,28 +728,28 @@ If process allocates more logical memory then there happens internal (logical) m
 <p>It is dynamic and current cache size can be checked in /proc/meminfo. Page cache is used to increase directly and file I/O and virtual memory pages and file system pages are stored in it. Dirty file system pages are flushed by flusher threads (flush), per device processes.</p>
 <p>It happens after:</p>
 <ol>
-<li>An interval (default 30s)</li>
-<li>Sync(), fsync(), msync() system calls</li>
-<li>Too many dirty pages (dirty_ratio)</li>
-<li>No available page cache pages</li>
+    <li>An interval (default 30s)</li>
+    <li>Sync(), fsync(), msync() system calls</li>
+    <li>Too many dirty pages (dirty_ratio)</li>
+    <li>No available page cache pages</li>
 </ol>
 <p>If there is a system memory deficient, kswapd will look for dirty pages to be written to disk. All I/O goes through the page cache unless explicitly set not to do so — Direct I/O. This can result in all writes being blocked if the page cache has completely filled. When all writes are blocked, operating system have a tendency to stop.</p>
 <h2 id="dropping-cache">Dropping Cache</h2>
 <p>It is possible to drop the page, dentry (directory entry cache), and inode caches in Linux, either to forcefully free up memory, or to test file system performance prior to anything being cached.</p>
 <p>To drop the page cache, use “Echo 1 &gt; /proc/sys/vm/drop_caches”
-To drop dentry and inode caches use “Echo 2 /proc/sys/vm/drop_caches”
-To drop both use: “Echo 3 &gt; / proc/sys/vm/drop_caches”</p>
+    To drop dentry and inode caches use “Echo 2 /proc/sys/vm/drop_caches”
+    To drop both use: “Echo 3 &gt; / proc/sys/vm/drop_caches”</p>
 <h2 id="oom-killer-in-linux">OOM Killer in Linux</h2>
 <p>Linux uses various memory management techniques, such as paging, cache shrinking, and cache removal, to handle memory usage. However, there are times when these methods are insufficient, and that’s when the OOM Killer comes into action.</p>
 <p>The OOM Killer will terminate processes to free up memory and ensure the system stays operational. It also terminates processes that share the same memory structure (mm_struct) as the chosen process.</p>
 <p>You can make certain processes less likely to be killed by modifying the oom_adj value at /proc/<pid>/oom_adj. Setting this value to -1000 will protect the process, while setting it to +1000 makes it a prime candidate for termination. The OOM score, located at /proc/<pid>/oom_score, determines which process gets killed. The OOM score reflects how much memory a process is actually using, with a fully utilized memory (100%) resulting in a score of 1000.</p>
 <p>For root-owned processes, the OOM score is slightly reduced by 30 points, which makes them less likely to be targeted by the OOM Killer.</p>
 <p>The issue is triggered primarily for low-order allocations, such as 2³ or smaller.
-In Linux, memory allocation is done in powers of 2. For example:</p>
+    In Linux, memory allocation is done in powers of 2. For example:</p>
 <ol>
-<li>A 1st-order allocation (2¹) would request 2 pages.</li>
-<li>A 2nd-order allocation (2²) would request 4 pages.</li>
-<li>A 3rd-order allocation (2³) would request 8 pages, and so on.</li>
+    <li>A 1st-order allocation (2¹) would request 2 pages.</li>
+    <li>A 2nd-order allocation (2²) would request 4 pages.</li>
+    <li>A 3rd-order allocation (2³) would request 8 pages, and so on.</li>
 </ol>
 <p>Memory pages are allocated in powers of 2, meaning a 3rd-order allocation will involve 2³ (8) pages, with the total size depending on the page size.</p>
 <p>** What causes this? **</p>
@@ -759,9 +759,9 @@ In Linux, memory allocation is done in powers of 2. For example:</p>
 <p>In most situations, the system is indeed running out of memory, so tracking process memory usage to identify the culprit is crucial.</p>
 <p>The issue can also be triggered by specific memory allocation requirements, such as:</p>
 <ol>
-<li>A specific memory zone</li>
-<li>A particular GFP flag</li>
-<li>A particular allocation order</li>
+    <li>A specific memory zone</li>
+    <li>A particular GFP flag</li>
+    <li>A particular allocation order</li>
 </ol>
 <h3 id="segmentation-fault-segfault">Segmentation Fault (segfault)</h3>
 <p>Segfaults are access violations. Hardware with memory protection will notify the OS that a memory access violation has occurred. This might be caused by trying to read a part of memory that the application is not allowed to access, or trying to use a section of memory in a way that is not allowed, such as trying to write to read-only memory.</p>
@@ -795,3 +795,188 @@ In Linux, memory allocation is done in powers of 2. For example:</p>
 <p>When in doubt, it is safer to side with more RAM and swap — repairs failing due to a lack of memory can be damaging to the data you are trying to save.</p>
 <h2 id="memory-management-in-modern-linux-systems-and-android-differs-in-several-key-aspects">Memory management in modern Linux systems and Android differs in several key aspects:</h2>
 <p>Memory Zones: Linux uses specific memory zones (DMA, DMA32, NORMAL, MOVABLE) for different purposes, while Android&#39;s zoning is tailored for mobile devices. Low Memory Killer: Android employs a Low Memory Killer (LMK) to aggressively terminate background processes when memory is low, which is not present in standard Linux systems.  Kernel Same-page Merging (KSM): Android makes extensive use of KSM to reduce memory footprint, especially for duplicate app data. This feature is less commonly used in desktop Linux. Zram: Android heavily relies on zram for compressed swap space in RAM, which is less common in traditional Linux systems. Memory Allocation: Android uses a custom memory allocator (jemalloc) optimized for mobile devices, while Linux typically uses glibc&#39;s malloc. OOM Handling: Android&#39;s Out-of-Memory (OOM) handling is more aggressive, prioritizing foreground apps and system processes over background tasks. Memory Tracking: Android includes additional memory tracking tools like meminfo and procrank, which are specific to its ecosystem. </p>
+<h2 id="pressure-stall-information-psi">Pressure Stall Information (PSI)</h2>
+<p>Contended CPU, memory, or I/O resources lead to latency spikes, throughput losses, and potential OOM kills. Without precise metrics, users must either under-utilize resources to avoid risk or overcommit, facing frequent disruptions.</p>
+<p>The PSI identifies and quantifies disruptions caused by resource shortages, measuring their impact on workloads and systems. Accurate data on productivity losses helps users optimize workload sizing or hardware provisioning. By aggregating real-time information, systems can be dynamically managed through load shedding, job migration, or pausing low-priority tasks. This enables efficient hardware use without compromising workload stability or risking OOM kills.</p>
+<h3 id="cpu">CPU</h3>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/cpu
+some avg10=0.00 avg60=0.00 avg300=0.00 total=150844896
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+upgautam@amd:~$ sudo cat /proc/pressure/io
+some avg10=0.00 avg60=0.01 avg300=0.00 total=129022505
+full avg10=0.00 avg60=0.01 avg300=0.00 total=126547588
+upgautam@amd:~$ sudo cat /proc/pressure/memory
+some avg10=0.00 avg60=0.00 avg300=0.00 total=12
+full avg10=0.00 avg60=0.00 avg300=0.00 total=12
+</code></pre>
+<p><strong>CPU Pressure</strong>: The pressure values in /proc/pressure/cpu reflect how much time the CPU has been under stress due to a combination of factors, including how much it’s used by active processes and how much it’s having to wait or contend with other resource demands (like memory or I/O). </p>
+<p>These values are percentage of time spent. The max. go upto 100. </p>
+<p><strong>some</strong>: Represents the percentage of time the CPU has been under some pressure — that is, the CPU was waiting for other resources (such as I/O or memory) or was being scheduled to handle multiple tasks but not fully saturated.</p>
+<p><strong>full</strong>: Represents the percentage of time the CPU was under full pressure — meaning it was 100% utilized, and no more tasks could be scheduled for that CPU at that moment.</p>
+<p>avg10, avg60, avg300: These are average pressure values over different time windows:</p>
+<ol>
+    <li>avg10: The average CPU pressure over the last 10 seconds.</li>
+    <li>avg60: The average CPU pressure over the last 60 seconds.</li>
+    <li>avg300: The average CPU pressure over the last 300 seconds (5 minutes).</li>
+</ol>
+<p><strong>total</strong>: This is the total number of CPU pressure events that have occurred since the system was booted. These are cumulative counts of how often the CPU has experienced pressure at each level.</p>
+<p>Running stress-ng,
+    I confirm from <code>top</code> command, I see my CPU is used 99.9%. </p>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/cpu
+some avg10=0.67 avg60=0.80 avg300=0.70 total=47501908
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+</code></pre>
+<p>Linux is efficient in distributing CPU tasks. Even though stress-ng is using a lot of CPU, it’s a single process. The scheduler is capable of handling this efficiently by distributing tasks across available CPU cores. Hence, the CPU is not &quot;waiting&quot; for resources in the same way it would if there were a mix of processes with different types of resource demands (e.g., CPU, I/O, memory). The value increased only when I used multiple processes.</p>
+<p>If you open multiple chrome tabs and some other applications, including <code>upgautam@amd:~$  sudo stress-ng --cpu 32 --verbose</code> then </p>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/cpu
+some avg10=7.78 avg60=2.18 avg300=0.64 total=4712040
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+</code></pre>
+<h3 id="memory">Memory</h3>
+<p>I must stress out to my memory to limit. I do have very fast 128 GB RAM. To stress out, my fast 128GB of RAM, I used <code>sudo stress-ng --vm 4 --vm-bytes 62G --timeout 60s --vm-method all</code> and then checked PSI for memory, </p>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/memory
+some avg10=2.19 avg60=0.77 avg300=0.19 total=755622
+full avg10=1.57 avg60=0.58 avg300=0.14 total=603300
+</code></pre>
+<p>Pressure on the RAM is the one that makes user-interaction bad. </p>
+<h3 id="io">io</h3>
+<pre><code class="language-bash">upgautam@amd:~$ sudo stress-ng --io 32 --timeout 60s
+(or you can use iomix as `sudo stress-ng --iomix 1024`)
+
+upgautam@amd:~$ sudo cat /proc/pressure/io
+some avg10=74.87 avg60=38.62 avg300=10.40 total=36519348
+full avg10=73.75 avg60=38.16 avg300=10.28 total=35167137
+</code></pre>
+<h2 id="monitoring-for-pressure-thresholds">Monitoring for pressure thresholds</h2>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/memory
+some avg10=2.19 avg60=0.77 avg300=0.19 total=755622
+full avg10=1.57 avg60=0.58 avg300=0.14 total=603300
+</code></pre>
+<p>And we can write a user-space program to monitor memory pressure as, </p>
+<pre><code class="language-c">#include &lt;errno.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;poll.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+
+/*
+ * Monitor memory partial stall with 1s tracking window size
+ * and 150ms threshold.
+ */
+int main() {
+      // 150000 ms cumulative delays of total time 1000000
+      // it means for every 100 ms, if cumulative delays cross 15ms, we trigger
+      // trigger format: &lt;type&gt; &lt;cumulative_stall_threshold&gt; &lt;tracking_window&gt;
+      // These values are provided by kernel through sampling.
+      const char trig[] = &quot;some 150000 1000000&quot;;
+      struct pollfd fds;
+      int n;
+
+      fds.fd = open(&quot;/proc/pressure/memory&quot;, O_RDWR | O_NONBLOCK);
+      if (fds.fd &lt; 0) {
+              printf(&quot;/proc/pressure/memory open error: %s\n&quot;,
+                      strerror(errno));
+              return 1;
+      }
+      fds.events = POLLPRI;
+
+      if (write(fds.fd, trig, strlen(trig) + 1) &lt; 0) {
+              printf(&quot;/proc/pressure/memory write error: %s\n&quot;,
+                      strerror(errno));
+              return 1;
+      }
+
+      printf(&quot;waiting for events...\n&quot;);
+      while (1) {
+              n = poll(&amp;fds, 1, -1);
+              if (n &lt; 0) {
+                      printf(&quot;poll error: %s\n&quot;, strerror(errno));
+                      return 1;
+              }
+              if (fds.revents &amp; POLLERR) {
+                      printf(&quot;got POLLERR, event source is gone\n&quot;);
+                      return 0;
+              }
+              if (fds.revents &amp; POLLPRI) {
+                      printf(&quot;event triggered!\n&quot;);
+              } else {
+                      printf(&quot;unknown event received: 0x%x\n&quot;, fds.revents);
+                      return 1;
+              }
+      }
+
+      return 0;
+}
+</code></pre>
+<p>or, we can use Cgroup2 interface, </p>
+<p>In a system with a CONFIG_CGROUPS=y kernel and the cgroup2 filesystem mounted, pressure stall information is also tracked for tasks grouped into cgroups. Each subdirectory in the cgroupfs mountpoint contains cpu.pressure, memory.pressure, and io.pressure files; the format is the same as the /proc/pressure/ files.</p>
+<p>Enable this in kernel config <code>CONFIG_CGROUPS=y</code></p>
+<pre><code class="language-c">#include &lt;errno.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;poll.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    // Path to the memory pressure file in the cgroup
+    const char *cgroup_memory_pressure_path = &quot;/sys/fs/cgroup/my_cgroup/memory.pressure&quot;;
+
+    // Trigger string: monitor &quot;some&quot; memory pressure, 150ms threshold in a 1s window
+    const char trigger[] = &quot;some 150000 1000000&quot;;
+
+    struct pollfd fds;
+    int n;
+
+    // Open the memory pressure file for the specific cgroup
+    fds.fd = open(cgroup_memory_pressure_path, O_RDWR | O_NONBLOCK);
+    if (fds.fd &lt; 0) {
+        printf(&quot;Error opening %s: %s\n&quot;, cgroup_memory_pressure_path, strerror(errno));
+        return 1;
+    }
+    fds.events = POLLPRI;
+
+    // Write the trigger to set up monitoring
+    if (write(fds.fd, trigger, strlen(trigger) + 1) &lt; 0) {
+        printf(&quot;Error writing trigger to %s: %s\n&quot;, cgroup_memory_pressure_path, strerror(errno));
+        close(fds.fd);
+        return 1;
+    }
+
+    printf(&quot;Monitoring memory pressure for cgroup at %s...\n&quot;, cgroup_memory_pressure_path);
+
+    // Poll for events
+    while (1) {
+        n = poll(&amp;fds, 1, -1); // Wait indefinitely for an event
+        if (n &lt; 0) {
+            printf(&quot;Poll error: %s\n&quot;, strerror(errno));
+            close(fds.fd);
+            return 1;
+        }
+
+        // Check for events
+        if (fds.revents &amp; POLLERR) {
+            printf(&quot;POLLERR: Event source is gone\n&quot;);
+            break;
+        } else if (fds.revents &amp; POLLPRI) {
+            printf(&quot;Memory pressure event triggered!\n&quot;);
+        } else {
+            printf(&quot;Unknown event: 0x%x\n&quot;, fds.revents);
+            break;
+        }
+    }
+
+    close(fds.fd);
+    return 0;
+}
+</code></pre>
+<p><strong>Steps to do:</strong></p>
+<ol>
+    <li>Set up cgroup: <code>sudo mount -t cgroup2 none /sys/fs/cgroup</code></li>
+    <li><code>sudo mkdir /sys/fs/cgroup/my_cgroup</code></li>
+    <li>Move process into cgroup: <code>echo &lt;PID&gt; | sudo tee /sys/fs/cgroup/my_cgroup/cgroup.procs</code></li>
+    <li>Compile and run above C program then also use <code>stress-ng</code> to do memory pressure. </li>
+    <li>If cumulative memory stall time exceeds the threshold (150ms within a 1s window), the program will print:
+        Memory pressure event triggered!</li>
+</ol>
