@@ -17,7 +17,6 @@
 </ol>
 <p>Upto step 5 is easy to solve. But how to handle exactly is hard question. </p>
 <p>The handling logic should be something like this. </p>
-<h1 id="userspace-controller-logic-simplified">Userspace controller logic (simplified)</h1>
 <pre><code class="language-bash">if memory_usage &gt; 85% || cpu_usage &gt; 90% || io_latency &gt; 100ms:
     - Solution 1:
         - pause to build (`pkill -STOP $(pid_of_build_process`)
