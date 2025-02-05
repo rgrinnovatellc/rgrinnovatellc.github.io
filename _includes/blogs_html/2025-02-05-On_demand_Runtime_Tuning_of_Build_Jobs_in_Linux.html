@@ -32,8 +32,19 @@ if memory_usage &gt; 85% || cpu_usage &gt; 90% || io_latency &gt; 100ms:
 
 <p>One note, we also need to disable default OOM killer that system uses, and guarantee our throttler is the only thing that is solving this low-resources issue.</p>
 <p>Second note, if doing tuning or throttling in user-space is slow incase we delegated solution to user-space, then we can do that via kernel-mdules. Or when cases such as we reach out eBPF limitation to perform certain things then we may need to use kfunc to kernel modules, where we have superpower and larger context, and then do those actions that were hard or impossible in eBPF alone. One challenge is that we need to guarantee the kernel modules won&#39;t bring new kernel bugs. </p>
+
+<h2 id="other-dynamic-system-tuning-ideas">Other dynamic system tuning ideas</h2>
+<ol>
+    <li><p>To make build process pass is that we can also track the resource utilization, and where there is bottleneck (for example, if we detect CPU bottleneck) then we can overclock the CPU on the fly. [5]</p>
+    </li>
+    <li><p>Let&#39;s say we use Mellanox Gigabit NIC that has chance of overheating. We detect this using eBPF and modify the fan speed on the fly. Other ideas can be, track those recently modified files and speed up incrementatl backups [5]</p>
+    </li>
+    <li><p>Detect what process hangs (e.g., the firefox tab which is slow and stuck your mouse) and kill the process.</p>
+    </li>
+</ol>
 <h2 id="references">References</h2>
-<p>[1] <a href="https://docs.kernel.org/accounting/psi.html">https://docs.kernel.org/accounting/psi.html</a></p>
-<p>[2] <a href="https://source.android.com/docs/core/perf/lmkd">https://source.android.com/docs/core/perf/lmkd</a></p>
-<p>[3] <a href="https://www.kernel.org/doc/gorman/html/understand/understand005.html">https://www.kernel.org/doc/gorman/html/understand/understand005.html</a></p>
-<p>[4] <a href="https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf">https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf</a></p>
+<p>[1] <a href="https://docs.kernel.org/accounting/psi.html">https://docs.kernel.org/accounting/psi.html</a>
+    [2] <a href="https://source.android.com/docs/core/perf/lmkd">https://source.android.com/docs/core/perf/lmkd</a>
+    [3] <a href="https://www.kernel.org/doc/gorman/html/understand/understand005.html">https://www.kernel.org/doc/gorman/html/understand/understand005.html</a>
+    [4] <a href="https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf">https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf</a>
+    [5]: <a href="https://dl.acm.org/doi/10.1016/j.sysarc.2024.103130">https://dl.acm.org/doi/10.1016/j.sysarc.2024.103130</a></p>
