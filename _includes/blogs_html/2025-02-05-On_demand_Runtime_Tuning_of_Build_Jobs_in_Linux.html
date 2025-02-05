@@ -33,7 +33,7 @@ if memory_usage &gt; 85% || cpu_usage &gt; 90% || io_latency &gt; 100ms:
 <p>One note, we also need to disable default OOM killer that system uses, and guarantee our throttler is the only thing that is solving this low-resources issue.</p>
 <p>Second note, if doing tuning or throttling in user-space is slow incase we delegated solution to user-space, then we can do that via kernel-mdules. Or when cases such as we reach out eBPF limitation to perform certain things then we may need to use kfunc to kernel modules, where we have superpower and larger context, and then do those actions that were hard or impossible in eBPF alone. One challenge is that we need to guarantee the kernel modules won&#39;t bring new kernel bugs. </p>
 
-<h2 id="other-dynamic-system-tuning-ideas">Other dynamic system tuning ideas</h2>
+<h2 id="other-dynamic-system-tuning-ideas">Other on-the-fly system tuning ideas</h2>
 <ol>
     <li><p>To make build process pass is that we can also track the resource utilization, and where there is bottleneck (for example, if we detect CPU bottleneck) then we can overclock the CPU on the fly. [5]</p>
     </li>
