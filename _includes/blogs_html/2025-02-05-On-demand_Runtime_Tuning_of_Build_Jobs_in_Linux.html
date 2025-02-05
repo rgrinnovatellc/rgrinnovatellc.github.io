@@ -1,5 +1,4 @@
-<h2 id="adaptive-android-system-tuning">Adaptive Android System Tuning</h2>
-<p><strong>Title</strong>: Runtime tuning Android Low Memory Killer Daemon (lmkd) using eBPF</p>
+<h2 id="adaptive-android-system-tuning">On-demand Runtime Tuning of Build Jobs in Linux/h2>
 <h2 id="problem-motivation">Problem Motivation</h2>
 <p>When building large projects like Android AOSP, system resource limitations often dictate success or failure. For instance, running a make build (i.e., <code>make -j$(nproc)</code>) command on a high-end system (e.g., 128GB RAM and a modern multi-core CPU) typically completes successfully due to ample memory and processing power. By contrast, on a system with only 16GB RAM, the build process is prone to failures caused by Linux’s OOM (Out-Of-Memory) Killer terminating processes to reclaim memory, or other bugs stem from resource contention, such as segmentation faults due to extreme memory pressure.</p>
 <p>However, the issue is rarely just about RAM. System-wide bottlenecks—such as a slow CPU struggling to compile code efficiently, or sluggish I/O (e.g., HDDs or slow SSDs) delaying read/write operations—can compound memory pressure. These limitations force processes to linger in memory longer than necessary, overloading the system and triggering instability. In such cases, even adequate RAM may not prevent failures if the CPU or storage cannot keep pace with the build’s demands.</p>
@@ -8,16 +7,18 @@
 <p>Our solution is two steps: (1) we do runtime tuning of system, such as reducing the numbe of parallel jobs (2) If the system gets saturated and no options left, then we freeze the entire process per cgroup granularity instead of getting killed, tune the system, then thaw the ongoing process.  One solution is to intercept <code>make -j$(nproc)</code> and use ninja with pool that scales dynamically. </p>
 <p>I am thinking to build an eBPF intercept (i.e., wrapper) layer that takes &quot;make -j<code>nproc</code>&quot; and based on runtime system condition, it throttles the resource use rate by the process. Can I do this so that every build will pass.  This may need to extend its functionality to kernel, if that is the case this we will use kfunc from eBPF to kernel modules, do those throttling logic inside kernel to runtime tune the system for the current job. One challenge would be we need to guarantee whatever we extend to kernel, we need to make sure that is free of bugs, and is well optimized. For FDO (Feedback directed optimization) + LTO (link time optimization) + other compiler optimizations. </p>
 <p>Let us try to come up with how exactly we use eBPF wrapper to intercept build process. </p>
-<ol>
-    <li>Create cgroup for manage CPU, memory, and IO (i.e., <code>cgcreate -g cpu,io,memory:$(throttle_build_cgroup)</code></li>
-    <li>We develop an eBPF program that observs water marks, PSI for CPU, IO, and Memory. </li>
-    <li>We attach our cgroup with this eBPF tool (i.e, `$(eBPF_tool) --cgroup $(throttle_build_cgroup)``</li>
-    <li>We run build process inside cgroup (i.e., cgexec -g cpu,io,memory :$(throttle_build_cgroup) $(our_build_job)&quot;. </li>
-    <li>Our $(eBPF_tool) has callbacks that detect memory, io, CPU pressure, alerts it and handles it directly or by delegating to other in-kernel (or user-space) handler.</li>
-</ol>
+```bash
+Create cgroup for manage CPU, memory, and IO (i.e., cgcreate -g cpu,io,memory:$(throttle_build_cgroup)
+We develop an eBPF program that observes watermarks, or PSI APIs for CPU, IO, and Memory.
+We attach our cgroup with this eBPF tool (i.e, `$(eBPF_tool) --cgroup $(throttle_build_cgroup)`
+We run build process inside cgroup (i.e., cgexec -g cpu,io,memory :$(throttle_build_cgroup) $(our_build_job)&quot;.
+Our $(eBPF_tool) has callbacks that detect memory, io, CPU pressure, alerts it and handles it directly or by delegating to other in-kernel (or user-space) handler.
+```
 <p>Upto step 5 is easy to solve. But how to handle exactly is hard question. </p>
 <p>The handling logic should be something like this. </p>
-<pre><code class="language-bash">if memory_usage &gt; 85% || cpu_usage &gt; 90% || io_latency &gt; 100ms:
+
+```bash
+if memory_usage &gt; 85% || cpu_usage &gt; 90% || io_latency &gt; 100ms:
     - Solution 1:
         - pause to build (`pkill -STOP $(pid_of_build_process`)
         - NEW_JOBS=$(calc_new_job_count) //this is difficult, so this should be our research
@@ -27,7 +28,8 @@
             -  echo &quot;50000 100000&quot; &gt; /sys/fs/cgroup/&quot;$(throttle_build_cgroup)&quot;/cpu.max
     -  Solution 3:
         -  In case, system saturates and we are in high watermarks level, then we may freeze entire cgroup.
-</code></pre>
+```
+
 <p>One note, we also need to disable default OOM killer that system uses, and guarantee our throttler is the only thing that is solving this low-resources issue.</p>
 <p>Second note, if doing tuning or throttling in user-space is slow incase we delegated solution to user-space, then we can do that via kernel-mdules. Or when cases such as we reach out eBPF limitation to perform certain things then we may need to use kfunc to kernel modules, where we have superpower and larger context, and then do those actions that were hard or impossible in eBPF alone. One challenge is that we need to guarantee the kernel modules won&#39;t bring new kernel bugs. </p>
 <h2 id="references">References</h2>
