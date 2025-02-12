@@ -41,37 +41,6 @@
 <li><strong>Supervisor restarts the worker process correctly with a new pid, and of course with new pidfd</strong></li>
 </ol>
 <h7 id="note-holding-pidfd-dosesnt-mean-holding-pid-once-the-process-dies-the-pidfd-is-marked-as-referring-to-a-non-existent-process-invalid"><strong>Note</strong>: Holding pidfd dosesn&#39;t mean holding pid. Once the process dies, the pidfd is marked as referring to a non-existent process (invalid).  </h7>
-<h3 id="detailed-breakdown-of-pidfd-behavior">Detailed Breakdown of <code>pidfd</code> Behavior</h3>
-<table>
-<thead>
-<tr>
-<th>Event</th>
-<th>PID-Based Tracking (Buggy)</th>
-<th><code>pidfd</code>-Based Tracking (Correct)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Worker starts</strong></td>
-<td>Supervisor tracks PID <code>1234</code>.</td>
-<td>Supervisor gets <code>pidfd = 5</code>.</td>
-</tr>
-<tr>
-<td><strong>Worker dies</strong></td>
-<td>Kernel frees PID <code>1234</code>.</td>
-<td><code>pidfd = 5</code> is marked invalid.</td>
-</tr>
-<tr>
-<td><strong>New process spawns with PID <code>1234</code></strong></td>
-<td>Supervisor mistakenly thinks worker is still running.</td>
-<td>Supervisor correctly detects worker death using <code>pidfd</code>.</td>
-</tr>
-<tr>
-<td><strong>Supervisor check</strong></td>
-<td>Sees PID <code>1234</code> exists → No restart.</td>
-<td>Sees <code>pidfd = 5</code> is closed → Restarts worker.</td>
-</tr>
-</tbody></table>
-<hr>
 <h2 id="why-pidfd-is-powerful"> Why <code>pidfd</code> is Powerful</h2>
 <ul>
 <li><strong>Stable Reference:</strong> Unlike PIDs, <code>pidfd</code> <strong>cannot be reused</strong> by another process.  </li>
