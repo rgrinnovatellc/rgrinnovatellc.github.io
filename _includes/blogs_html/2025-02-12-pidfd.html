@@ -1,5 +1,5 @@
 <title>The power of pidfd</title>
-<h2 id="problem-pid-reuse-can-cause-supervisor-confusion">Problem: PID Reuse Can Cause Supervisor Confusion</h2>
+<h1 id="problem-pid-reuse-can-cause-supervisor-confusion">PID Reuse Can Cause Supervisor Confusion</h1>
 <p>In a traditional PID-based system, the supervisor <strong>tracks processes by their PID</strong>, leading to potential <strong>race conditions</strong>:</p>
 <ol>
 <li><strong>Supervisor starts a worker process</strong> (e.g., PID = <code>1234</code>).</li>
@@ -10,9 +10,9 @@
 <li><strong>Supervisor does nothing</strong> (doesn’t restart the worker) → <strong>Bug!</strong></li>
 </ol>
 <hr>
-<h2 id="solution-pidfd-ensures-stable-process-tracking">✅ Solution: <code>pidfd</code> Ensures Stable Process Tracking</h2>
+<h2 id="solution-pidfd-ensures-stable-process-tracking">Solution: <code>pidfd</code> Ensures Stable Process Tracking</h2>
 <p>With <code>pidfd</code>, the supervisor <strong>tracks the worker using a stable file descriptor</strong>, instead of relying on PIDs.</p>
-<h3 id="how-pidfd-works-to-prevent-this-bug">🔹 How <code>pidfd</code> Works to Prevent This Bug</h3>
+<h3 id="how-pidfd-works-to-prevent-this-bug">How <code>pidfd</code> Works to Prevent This Bug</h3>
 <ol>
 <li><strong>Supervisor creates a worker process</strong> (e.g., PID <code>1234</code>).</li>
 <li><strong>Supervisor opens a <code>pidfd</code> for the worker</strong> (<code>pidfd = 5</code>).<ul>
