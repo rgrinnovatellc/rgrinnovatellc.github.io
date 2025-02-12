@@ -1,5 +1,5 @@
 <title>The power of pidfd</title>
-<h1 id="🚨-problem-pid-reuse-can-cause-supervisor-confusion">🚨 Problem: PID Reuse Can Cause Supervisor Confusion</h1>
+<h2 id="🚨-problem-pid-reuse-can-cause-supervisor-confusion">🚨 Problem: PID Reuse Can Cause Supervisor Confusion<</h2>
 <p>In a traditional PID-based system, the supervisor <strong>tracks processes by their PID</strong>, leading to potential <strong>race conditions</strong>:</p>
 <ol>
 <li><strong>Supervisor starts a worker process</strong> (e.g., PID = <code>1234</code>).</li>
@@ -10,9 +10,9 @@
 <li><strong>Supervisor does nothing</strong> (doesn’t restart the worker) → <strong>Bug!</strong></li>
 </ol>
 <hr>
-<h1 id="✅-solution-pidfd-ensures-stable-process-tracking">✅ Solution: <code>pidfd</code> Ensures Stable Process Tracking</h1>
+<h2 id="✅-solution-pidfd-ensures-stable-process-tracking">✅ Solution: <code>pidfd</code> Ensures Stable Process Tracking<</h2>
 <p>With <code>pidfd</code>, the supervisor <strong>tracks the worker using a stable file descriptor</strong>, instead of relying on PIDs.</p>
-<h2 id="🔹-how-pidfd-works-to-prevent-this-bug">🔹 How <code>pidfd</code> Works to Prevent This Bug</h2>
+<h3 id="🔹-how-pidfd-works-to-prevent-this-bug">🔹 How <code>pidfd</code> Works to Prevent This Bug<</h3>
 <ol>
 <li><strong>Supervisor creates a worker process</strong> (e.g., PID <code>1234</code>).</li>
 <li><strong>Supervisor opens a <code>pidfd</code> for the worker</strong> (<code>pidfd = 5</code>).<ul>
@@ -40,8 +40,8 @@
 </li>
 <li><strong>Supervisor restarts the worker process correctly with a new pid, and of course with new pidfd</strong></li>
 </ol>
-<h2 id="note-holding-pidfd-dosesnt-mean-holding-pid-once-the-process-dies-the-pidfd-is-marked-as-referring-to-a-non-existent-process-invalid"><strong>Note</strong>: Holding pidfd dosesn&#39;t mean holding pid. Once the process dies, the pidfd is marked as referring to a non-existent process (invalid).  </h2>
-<h2 id="🔍-detailed-breakdown-of-pidfd-behavior">🔍 Detailed Breakdown of <code>pidfd</code> Behavior</h2>
+<h3 id="note-holding-pidfd-dosesnt-mean-holding-pid-once-the-process-dies-the-pidfd-is-marked-as-referring-to-a-non-existent-process-invalid"><strong>Note</strong>: Holding pidfd dosesn&#39;t mean holding pid. Once the process dies, the pidfd is marked as referring to a non-existent process (invalid).  <</h3>
+<h3 id="🔍-detailed-breakdown-of-pidfd-behavior">🔍 Detailed Breakdown of <code>pidfd</code> Behavior<</h3>
 <table>
 <thead>
 <tr>
@@ -72,12 +72,12 @@
 </tr>
 </tbody></table>
 <hr>
-<h1 id="🚀-why-pidfd-is-powerful">🚀 Why <code>pidfd</code> is Powerful</h1>
+<h2 id="🚀-why-pidfd-is-powerful">🚀 Why <code>pidfd</code> is Powerful<</h2>
 <ul>
 <li><strong>Stable Reference:</strong> Unlike PIDs, <code>pidfd</code> <strong>cannot be reused</strong> by another process.  </li>
 <li><strong>No Race Conditions:</strong> Ensures that the supervisor always <strong>knows when a worker dies</strong>.  </li>
 <li><strong>Safer Process Management:</strong> Prevents misidentifying processes due to PID reuse.</li>
 </ul>
-<h2 id="max-value-of-pid-vs-pidfd">Max. value of pid vs. pidfd</h2>
+<h3 id="max-value-of-pid-vs-pidfd">Max. value of pid vs. pidfd<</h3>
 <p>In 32-bit system, we can have /proc/sys/kernel/pid_max value 32768, but in 64-bit, it is 4194304. And we can change the value of pidfd using <code>ulimit -n</code> and <code>ulimit -Hn</code>.</p>
 <p>When a process exits, its exit code and status (e.g., whether it was killed by a signal) are stored in the kernel, and the parent process can retrieve this status only once using wait(), waitpid(), or waitid(). After a successful wait() (or its variants), the kernel cleans up the process’s status, fully reaping and removing it from the system, meaning any further calls to wait() on that PID will fail because the process no longer exists. A pidfd allows referring to a process safely and race-free, but it does not change the &quot;at-most-once&quot; rule of wait(). If another thread or process has already waited on and reaped the process, calling waitid() on pidfd will fail since the exit status is gone, though the pidfd itself remains valid but cannot retrieve the exit status again.</p>
