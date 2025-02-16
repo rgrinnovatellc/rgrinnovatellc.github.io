@@ -1,36 +1,28 @@
-# _plugins/markdown_to_html_generator.rb
+# _plugins/direct_markdown_processor.rb
 module Jekyll
-  class DirectMarkdownHtmlGenerator < Generator
+  class DirectMarkdownProcessor < Generator
     safe true
-    priority :low
+    priority :high  # Process before default content conversion
 
     def generate(site)
-      # Configure input/output paths
       input_dir = File.join(site.source, '_posts', 'direct_markdown')
       output_dir = File.join(site.source, '_includes', 'blogs_html')
-
-      # Create output directory if missing
       FileUtils.mkdir_p(output_dir)
 
-      # Process only files in _posts/direct_markdown
-      Dir.glob(File.join(input_dir, '*.md')).each do |md_path|
-        # Read Markdown content
-        content = File.read(md_path)
+      # Process only direct_markdown posts
+      site.posts.docs.each do |post|
+        next unless post.path.include?('_posts/direct_markdown/')
 
-        # Extract content WITHOUT front matter
-        markdown_content = content.split(/---\s*/m).last.strip
+        # Convert Markdown content to HTML
+        converter = site.find_converter_instance(Jekyll::Converters::Markdown)
+        html_content = converter.convert(post.content)
 
-        # Convert to HTML
-        html_content = site.find_converter_instance(
-          Jekyll::Converters::Markdown
-        ).convert(markdown_content)
+        # Save HTML to includes
+        html_filename = File.basename(post.name, '.*') + '.html'
+        File.write(File.join(output_dir, html_filename), html_content)
 
-        # Generate output filename
-        filename = File.basename(md_path, '.md') + '.html'
-        output_path = File.join(output_dir, filename)
-
-        # Write HTML file
-        File.write(output_path, html_content)
+        # Replace original content with include tag
+        post.content = "{% include blogs_html/#{html_filename} %}"
       end
     end
   end
