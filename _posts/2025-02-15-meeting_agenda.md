@@ -31,6 +31,7 @@ title: "Uddhav Ph.D Research Agenda"
     right: 10px;
     display: flex;
     gap: 5px;
+    z-index: 10;
   }
 
   button {
@@ -55,15 +56,15 @@ title: "Uddhav Ph.D Research Agenda"
 
 <h2>Markdown Editor</h2>
 <div class="editor-container">
-  <div class="toggle-buttons">
-    <button id="toggleView">View</button>
-    <button id="toggleEdit" style="display: none;">Edit</button>
-  </div>
   <textarea id="markdownEditor">{% raw %}
 ## 📌 **Follow-Up**
 - Email A, B, C
 - Share Drafts A, B, C  
 {% endraw %}</textarea>
+  <div class="toggle-buttons">
+    <button id="toggleView">View</button>
+    <button id="toggleEdit" style="display: none;">Edit</button>
+  </div>
 </div>
 
 <div id="htmlView"></div>
