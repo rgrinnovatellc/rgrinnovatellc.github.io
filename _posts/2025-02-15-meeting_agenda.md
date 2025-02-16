@@ -10,6 +10,10 @@ title: "Uddhav Ph.D Research Agenda"
     font-family: Arial, sans-serif;
   }
 
+  .editor-container {
+    position: relative;
+  }
+
   textarea {
     background-color: #222;
     color: white;
@@ -17,15 +21,24 @@ title: "Uddhav Ph.D Research Agenda"
     height: 200px;
     border: 1px solid white;
     padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .toggle-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
   }
 
   button {
     background-color: #444;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 5px 10px;
     cursor: pointer;
-    margin-bottom: 10px;
+    font-size: 12px;
   }
 
   button:hover {
@@ -38,15 +51,20 @@ title: "Uddhav Ph.D Research Agenda"
   }
 </style>
 
-<button id="toggleView">View</button>
-<button id="toggleEdit" style="display: none;">Edit</button>
-
-<div id="htmlView"></div>
-<textarea id="markdownEditor" style="display: none;">{% raw %}
+<h2>Markdown Editor</h2>
+<div class="editor-container">
+  <div class="toggle-buttons">
+    <button id="toggleView">View</button>
+    <button id="toggleEdit" style="display: none;">Edit</button>
+  </div>
+  <textarea id="markdownEditor" style="display: none;">{% raw %}
 ## 📌 **Follow-Up**
 - Email A, B, C
 - Share Drafts A, B, C  
 {% endraw %}</textarea>
+</div>
+
+<div id="htmlView"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.0.0/showdown.min.js"></script>
 <script>
