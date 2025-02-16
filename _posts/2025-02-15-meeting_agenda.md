@@ -49,23 +49,24 @@ title: "Uddhav Ph.D Research Agenda"
   #htmlView {
     border: 1px solid white;
     padding: 10px;
+    display: none;
   }
 </style>
 
 <h2>Markdown Editor</h2>
 <div class="editor-container">
+  <div class="toggle-buttons">
+    <button id="toggleView">View</button>
+    <button id="toggleEdit" style="display: none;">Edit</button>
+  </div>
   <textarea id="markdownEditor">{% raw %}
 ## 📌 **Follow-Up**
 - Email A, B, C
 - Share Drafts A, B, C  
 {% endraw %}</textarea>
-  <div class="toggle-buttons">
-    <button id="toggleView">View</button>
-    <button id="toggleEdit" style="display: none;">Edit</button>
-  </div>
 </div>
 
-<div id="htmlView" style="display: none;"></div>
+<div id="htmlView"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.0.0/showdown.min.js"></script>
 <script>
