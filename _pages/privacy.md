@@ -1,0 +1,73 @@
+---
+title: "Privacy Policy"
+layout: page
+sitemap: true
+permalink: /privacy/
+---
+
+<style>
+code {padding: 6px 8px; font-size: 90%;}
+body {
+    text-align: justify;
+}
+.jumbotron {
+    text-align: left; 
+}
+</style>
+
+## Privacy Policy
+
+**Last updated:** {{ site.time | date: "%B %d, %Y" }}
+
+### Introduction
+
+This Privacy Policy describes how RGR Innovate LLC ("we", "our", "us") collects and uses information when you use our mobile application Earthquakes by RGR.
+
+### Information We Collect
+
+**Location Data**: When you search for locations, the app may access your device's location to provide relevant USGS earthquake data.
+
+**Address Input**: When you type addresses, this information is sent to Google Places API for address autocomplete suggestions.
+
+**Crash Reports**: Firebase Crashlytics automatically collects crash reports and basic device information to help improve app stability.
+
+### How We Use Your Information
+
+- To fetch and display USGS earthquake data based on your location or search queries
+- To provide address suggestions through Google Places API
+- To improve app stability through crash analysis
+
+### Third-Party Services
+
+**Google Places API**: Address input is processed by Google Places API for autocomplete. See [Google's Privacy Policy](https://policies.google.com/privacy).
+
+**Firebase Crashlytics**: Crash reports are processed by Firebase for debugging. See [Firebase's Privacy Policy](https://firebase.google.com/support/privacy).
+
+**USGS Data**: Your location/search queries fetch public USGS earthquake data.
+
+### Data Storage
+
+- Address input is not stored locally or on our servers
+- Location data is not stored and is only used temporarily
+- Crash reports are retained by Firebase according to their policies
+
+### Your Choices
+
+- Control location access through your device settings
+- Choose not to use address autocomplete
+- Disable crash reporting in device settings
+
+### Children's Privacy
+
+Our app is not intended for children under 13. We do not knowingly collect personal information from children under 13.
+
+### Contact Information
+
+**RGR Innovate LLC**
+- **Email:** rgrinnovatellc@gmail.com
+
+---
+
+*This Privacy Policy applies to Earthquakes by RGR mobile application.*
+
+**RGR Innovate LLC** 
