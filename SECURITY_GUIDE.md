@@ -37,7 +37,7 @@ This guide explains how to properly manage GitHub tokens and secrets to avoid se
 2. Click **"Settings"** tab
 3. Click **"Secrets and variables"** → **"Actions"**
 4. Click **"New repository secret"**
-5. **Name:** `GITHUB_TOKEN_CUSTOM`
+5. **Name:** `WEBSITE_TOKEN`
 6. **Value:** Paste your token
 7. Click **"Add secret"**
 
@@ -70,7 +70,7 @@ jobs:
     
     - name: Build site
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_CUSTOM }}
+        WEBSITE_TOKEN: ${{ secrets.WEBSITE_TOKEN }}
       run: |
         bundle exec jekyll build
 ```
@@ -81,7 +81,7 @@ jobs:
 
 ```bash
 # Set token for current session
-export GITHUB_TOKEN="your_actual_token_here"
+export WEBSITE_TOKEN="your_actual_token_here"
 
 # Start Jekyll
 bundle exec jekyll serve
@@ -93,7 +93,7 @@ Create a `.env` file (add to `.gitignore`):
 
 ```bash
 # .env (add to .gitignore!)
-GITHUB_TOKEN=your_actual_token_here
+WEBSITE_TOKEN=your_actual_token_here
 ```
 
 Load it in your shell:
@@ -107,7 +107,7 @@ bundle exec jekyll serve
 In `_config.yml`:
 ```yaml
 # Use environment variable, never hardcode!
-github_token: <%= ENV['GITHUB_TOKEN'] %>
+website_token: <%= ENV['WEBSITE_TOKEN'] %>
 ```
 
 ## 🔄 **Token Rotation**

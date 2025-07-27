@@ -44,7 +44,7 @@ Add the token to `_config.yml`:
 
 ```yaml
 # GitHub API Configuration for Live Editor
-github_token: "your_token_here"
+website_token: "your_token_here"
 github_repo: "upgautamvt/upgautamvt.github.io"
 ```
 
@@ -54,12 +54,12 @@ github_repo: "upgautamvt/upgautamvt.github.io"
 
 1. **Start Jekyll server** with the token:
    ```bash
-   GITHUB_TOKEN="your_token_here" bundle exec jekyll serve
+   WEBSITE_TOKEN="your_token_here" bundle exec jekyll serve
    ```
 
 2. **Check the console output**:
    - ✅ `GitHub API initialized with token` = Success
-   - ⚠️ `GITHUB_TOKEN not set. Live editor will use simulation mode.` = Token not configured
+- ⚠️ `WEBSITE_TOKEN not set. Live editor will use simulation mode.` = Token not configured
 
 3. **Test the live editor**:
    - Go to any page on your site
@@ -107,7 +107,7 @@ When you save changes in the live editor:
 
 ```bash
 # Set token and start server
-export GITHUB_TOKEN="ghp_your_token_here"
+export WEBSITE_TOKEN="ghp_your_token_here"
 bundle exec jekyll serve
 
 # In browser:
