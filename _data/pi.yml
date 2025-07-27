@@ -1,0 +1,86 @@
+# =============================================================================
+# PRINCIPAL INVESTIGATOR DATA
+# =============================================================================
+
+name: "Uddhav P. Gautam"
+photo: "Uddhav.jpg"
+department: "Computer Engineering"
+university: "Virginia Tech"
+email: "upgautam@vt.edu | rgrinnovatellc@gmail.com"
+
+# Professional Links
+links:
+  github: "https://github.com/uddhavgautam3"
+  scholar: "https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
+  researchgate: "https://www.researchgate.net/profile/Uddhav-Gautam-2"
+  linkedin: "https://www.linkedin.com/in/uddhavpgautam/"
+
+# CV and Documents
+documents:
+  cv: "cv/Resume_UddhavGautam.pdf"
+
+# Education History
+education:
+  - degree: "PhD in Computer Engineering"
+    institution: "Virginia Tech"
+    period: "2024-present"
+    advisors:
+      - name: "Prof. Haining Wang"
+        role: "Chair"
+        link: "https://ece.vt.edu/people/profile/wangh.html"
+      - name: "Randy Marchany"
+        role: "Co-chair"
+        link: "https://security.vt.edu/about/staff/randy-marchany/"
+    status: "In Progress"
+    
+  - degree: "M.S. Computer Science"
+    institution: "University of Arkansas at Little Rock"
+    period: "2015-2017"
+    status: "Completed"
+    
+  - degree: "BSc Computer Science"
+    institution: "Tribhuvan University"
+    period: "2009-2013"
+    location: "Nepal"
+    status: "Completed"
+    
+  - degree: "B.S. Mathematics"
+    institution: "Trichandra Campus"
+    period: "2007-2010"
+    location: "Nepal"
+    status: "Completed"
+
+# Research Interests
+research_interests:
+  - "Computer Security"
+  - "eBPF and Linux Kernel"
+  - "System Performance"
+  - "Network Security"
+
+# Current Projects
+current_projects:
+  - name: "eBPF Tracing Overhead Analysis"
+    description: "Research on eliminating eBPF tracing overhead on untraced processes"
+    status: "Active"
+    
+  - name: "Linux Memory Management"
+    description: "Advanced studies in Linux memory management and optimization"
+    status: "Active"
+
+# Professional Experience
+experience:
+  - title: "Researcher"
+    role: "Linux Kernel and eBPF Research"
+    organization: "Virginia Tech"
+    organization_url: "https://www.vt.edu/"
+    period: "2024-present"
+    description: "Researching Linux kernel components, eBPF-based tracing and profiling, kernel instrumentation for benchmarking"
+    status: "Current"
+    
+  - title: "Mobile Solutions Technical Lead & Architect"
+    role: "Technical Lead"
+    organization: "Perficient Inc"
+    organization_url: "https://www.perficient.com/"
+    period: "2020-2023"
+    description: "Contracting for TD Ameritrade (now Charles Schwab), leading mobile solutions architecture"
+    status: "Previous"

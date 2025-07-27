@@ -1,0 +1,1083 @@
+// Override Bootstrap card border variables
+:root {
+  --bs-card-border-width: 0.1px !important;
+  --bs-card-border-color: rgba(222, 226, 230, 0.3) !important;
+}
+
+[data-theme="dark"] {
+  --bs-card-border-width: 0.1px !important;
+  --bs-card-border-color: rgba(73, 80, 87, 0.3) !important;
+}
+
+// Theme Variables
+:root {
+  --bg-primary-rgb: 255, 255, 255;
+  --bg-secondary-rgb: 248, 249, 250;
+  --bg-tertiary-rgb: 241, 243, 245;
+  --text-primary-rgb: 33, 37, 41;
+  --text-secondary-rgb: 108, 117, 125;
+  --link-color-rgb: 13, 110, 253;
+  --primary-color-rgb: 13, 110, 253;
+  --border-color: rgba(222, 226, 230, 0.3);
+  
+  // Card Design System
+  --card-border-radius: 0.5rem;
+  --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --card-shadow-hover: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --card-transition: all 0.2s ease-in-out;
+  --card-margin: 0 0 1.5rem 0;
+  
+  // Typography
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-medium: 500;
+  --text-sm: 0.875rem;
+  
+  // Spacing
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  // Transitions
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.2s ease-in-out;
+  --transition-slow: 0.3s ease-in-out;
+  
+  // Shadows
+  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  
+  // Colors
+  --bg-primary: rgb(var(--bg-primary-rgb));
+  --bg-secondary: rgb(var(--bg-secondary-rgb));
+  --bg-tertiary: rgb(var(--bg-tertiary-rgb));
+  --text-primary: rgb(var(--text-primary-rgb));
+  --text-secondary: rgb(var(--text-secondary-rgb));
+  --link-color: rgb(var(--link-color-rgb));
+  --primary-color: rgb(var(--primary-color-rgb));
+  
+  // Navbar variables
+  --navbar-bg: rgba(255, 255, 255, 0.95);
+  --navbar-text: rgb(var(--text-primary-rgb));
+}
+
+[data-theme="dark"] {
+  --bg-primary-rgb: 33, 37, 41;
+  --bg-secondary-rgb: 52, 58, 64;
+  --bg-tertiary-rgb: 73, 80, 87;
+  --text-primary-rgb: 248, 249, 250;
+  --text-secondary-rgb: 173, 181, 189;
+  --link-color-rgb: 13, 202, 240;
+  --primary-color-rgb: 13, 202, 240;
+  --border-color: rgba(73, 80, 87, 0.3);
+  --font-medium: 500;
+  --text-sm: 0.875rem;
+  
+  --bg-primary: rgb(var(--bg-primary-rgb));
+  --bg-secondary: rgb(var(--bg-secondary-rgb));
+  --bg-tertiary: rgb(var(--bg-tertiary-rgb));
+  --text-primary: rgb(var(--text-primary-rgb));
+  --text-secondary: rgb(var(--text-secondary-rgb));
+  --link-color: rgb(var(--link-color-rgb));
+  --primary-color: rgb(var(--primary-color-rgb));
+  
+  // Navbar variables
+  --navbar-bg: rgba(33, 37, 41, 0.95);
+  --navbar-text: rgb(var(--text-primary-rgb));
+}
+
+// Prevent flash of unstyled content
+html.theme-loaded {
+  transition: none;
+}
+
+// Body styles
+body {
+  font-family: var(--font-family-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.2;
+}
+
+h1 { 
+  font-size: 2.5rem; 
+  margin-bottom: 1.5rem !important;
+  margin-top: 2rem !important;
+}
+h2 { 
+  font-size: 2rem; 
+  margin-bottom: 1rem !important;
+  margin-top: 1.5rem !important;
+}
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+// Ensure proper spacing between consecutive headings
+h1 + h2 {
+  margin-top: 2rem !important;
+}
+
+// Ensure all headings and their content are displayed as block elements
+h1, h2, h3, h4, h5, h6 {
+  display: block !important;
+  width: 100% !important;
+}
+
+// Ensure paragraphs and other content after headings are also block elements
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
+  display: block !important;
+  width: 100% !important;
+}
+
+// Ensure code blocks and their containers take full width
+pre, pre code, .highlight, .highlight pre {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+p {
+  margin-bottom: var(--spacing-md);
+  line-height: 1.7;
+  text-align: left !important;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  
+  &:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+}
+
+code, pre {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+}
+
+// Ensure code blocks have proper padding and no excessive left spacing
+pre {
+  padding: 1rem !important;
+  margin: 1rem 0 !important;
+  background-color: var(--bg-secondary);
+  border: 1px solid rgba(222, 226, 230, 0.3);
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  text-align: left !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+pre code {
+  padding: 0 !important;
+  background: none !important;
+  border: none !important;
+  text-align: left !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+}
+
+// Card Styles - Simple and targeted
+.card {
+  background-color: transparent;
+  border: 0.1px solid var(--border-color);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-shadow);
+  transition: var(--card-transition);
+  margin: var(--card-margin);
+  overflow: hidden;
+  
+  &:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-2px);
+  }
+}
+
+.card-header {
+  background-color: transparent;
+  border-bottom: 0.1px solid var(--border-color);
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  transition: background-color var(--transition-normal);
+  margin: 0;
+  
+  &:first-child {
+    border-radius: calc(var(--card-border-radius) - 1px) calc(var(--card-border-radius) - 1px) 0 0;
+  }
+}
+
+.card-body {
+  padding: 1rem;
+  margin: 0;
+  color: var(--text-primary);
+  background-color: transparent;
+}
+
+.card-footer {
+  background-color: transparent;
+  border-top: 0.1px solid var(--border-color);
+  padding: 1rem;
+  transition: background-color var(--transition-normal);
+  margin: 0;
+  
+  &:last-child {
+    border-radius: 0 0 calc(var(--card-border-radius) - 1px) calc(var(--card-border-radius) - 1px);
+  }
+}
+
+// Card Images
+.card-img-top {
+  border-top-left-radius: calc(var(--card-border-radius) - 1px);
+  border-top-right-radius: calc(var(--card-border-radius) - 1px);
+}
+
+.card-img-bottom {
+  border-bottom-left-radius: calc(var(--card-border-radius) - 1px);
+  border-bottom-right-radius: calc(var(--card-border-radius) - 1px);
+}
+
+// Card Grid Layouts
+.card-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.card-grid-2 {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.card-grid-3 {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+// Special Card Types
+.card-featured {
+  border-left: 0.5px solid var(--link-color);
+  background: transparent;
+  
+  .card-header {
+    background: linear-gradient(135deg, var(--link-color) 0%, #0056b3 100%);
+    color: white;
+    border-bottom: none;
+  }
+  
+  &:hover .card-header {
+    background: linear-gradient(135deg, var(--link-color) 0%, #004085 100%);
+  }
+}
+
+.card-info {
+  border-left: 0.5px solid #17a2b8;
+  
+  .card-header {
+    background-color: #17a2b8;
+    color: white;
+    border-bottom: none;
+  }
+  
+  &:hover .card-header {
+    background-color: #17a2b8;
+    color: white;
+  }
+}
+
+.card-success {
+  border-left: 0.5px solid #28a745;
+  
+  .card-header {
+    background-color: #28a745;
+    color: white;
+    border-bottom: none;
+  }
+  
+  &:hover .card-header {
+    background-color: #28a745;
+    color: white;
+  }
+}
+
+.card-warning {
+  border-left: 0.5px solid #ffc107;
+  
+  .card-header {
+    background-color: #ffc107;
+    color: #212529;
+    border-bottom: none;
+  }
+  
+  &:hover .card-header {
+    background-color: #ffc107;
+    color: #212529;
+  }
+}
+
+.card-danger {
+  border-left: 0.5px solid #dc3545;
+  
+  .card-header {
+    background-color: #dc3545;
+    color: white;
+    border-bottom: none;
+  }
+  
+  &:hover .card-header {
+    background-color: #dc3545;
+    color: white;
+  }
+}
+
+// Card with Image Overlay
+.card-img-overlay {
+  position: relative;
+  
+  .card-img-top {
+    border-radius: var(--card-border-radius);
+  }
+  
+  .card-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+// Compact Card
+.card-compact {
+  .card-header {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .card-body {
+    padding: 0.75rem;
+  }
+  
+  .card-footer {
+    padding: 0.75rem;
+  }
+}
+
+// Interactive Card
+.card-interactive {
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  &:active {
+    transform: translateY(-2px);
+  }
+}
+
+// Stats Card
+.card-stats {
+  text-align: center;
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .stats-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+  }
+  
+  .stats-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Dark theme adjustments
+[data-theme="dark"] {
+  .card {
+    border: 0.1px solid rgba(73, 80, 87, 0.3);
+  }
+  
+  .card-header {
+    border-bottom: 0.1px solid rgba(73, 80, 87, 0.3);
+  }
+  
+  .card-footer {
+    border-top: 0.1px solid rgba(73, 80, 87, 0.3);
+  }
+}
+
+// Post Meta Styles
+.post-meta {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  
+  i {
+    margin-right: 0.25rem;
+    width: 1rem;
+    text-align: center;
+  }
+  
+  .post-author {
+    margin-left: 1rem;
+  }
+}
+
+// Card Content Parsing
+.card-body {
+  // Ensure proper HTML parsing within cards
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    margin-bottom: 1rem;
+    line-height: var(--leading-relaxed);
+  }
+  
+  ul, ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+  
+  li {
+    margin-bottom: 0.25rem;
+  }
+  
+  a {
+    color: var(--link-color);
+    text-decoration: none;
+    
+    &:hover {
+      color: var(--link-hover-color);
+      text-decoration: underline;
+    }
+  }
+  
+  // Button styling within cards
+  .btn {
+    margin: 0.25rem;
+    font-weight: var(--font-medium);
+  }
+  
+  .btn-group .btn {
+    margin: 0;
+  }
+  
+  // Social links styling
+  .social-links {
+    .btn {
+      margin: 0.125rem;
+      font-size: var(--text-sm);
+    }
+  }
+  
+  // List group styling
+  .list-group-item {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    
+    &:hover {
+      background-color: var(--bg-primary);
+    }
+    
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+      
+      &:hover {
+        color: var(--link-hover-color);
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  // Alert styling within cards
+  .alert {
+    margin: 1rem 0;
+    border: 1px solid var(--border-color);
+    
+    &.alert-info {
+      background-color: rgba(23, 162, 184, 0.1);
+      color: var(--text-primary);
+    }
+  }
+  
+  // Education and software info styling
+  .education, .software-info {
+    margin-top: 1rem;
+    
+    h5 {
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+// Responsive Cards
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .card-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .card-grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .card {
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+} 
+
+// Enhanced Link Hover Effects
+a {
+  transition: color var(--transition-fast), text-decoration var(--transition-fast);
+  
+  &:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+}
+
+// Button Hover Effects
+.btn {
+  transition: all var(--transition-normal);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-info:hover,
+.btn-outline-warning:hover,
+.btn-outline-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+// List Item Hover Effects
+.list-group-item {
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  
+  &:hover {
+    background-color: var(--bg-secondary);
+    transform: translateX(4px);
+  }
+}
+
+// Table Row Hover Effects
+.table tbody tr {
+  transition: background-color var(--transition-fast);
+  
+  &:hover {
+    background-color: var(--bg-secondary);
+    transform: scale(1.01);
+  }
+}
+
+// Image Hover Effects
+img {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+// Code Block Hover Effects
+code {
+  transition: background-color var(--transition-fast);
+  
+  &:hover {
+    background-color: var(--bg-tertiary);
+  }
+}
+
+// Blockquote Hover Effects
+blockquote {
+  transition: border-left-color var(--transition-normal), background-color var(--transition-normal);
+  
+  &:hover {
+    border-left-color: var(--link-color);
+    background-color: var(--bg-secondary);
+  }
+}
+
+// Form Control Hover Effects
+.form-control {
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  
+  &:hover {
+    border-color: var(--link-color);
+  }
+  
+  &:focus {
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}
+
+// Alert Hover Effects
+.alert {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+// Badge Hover Effects
+.badge {
+  transition: transform var(--transition-fast);
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+// Progress Bar Hover Effects
+.progress {
+  transition: box-shadow var(--transition-normal);
+  
+  &:hover {
+    box-shadow: var(--shadow);
+  }
+}
+
+// Modal Hover Effects
+.modal-content {
+  transition: transform var(--transition-normal);
+  
+  &:hover {
+    transform: scale(1.01);
+  }
+}
+
+// Dropdown Hover Effects
+.dropdown-item {
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  
+  &:hover {
+    background-color: var(--bg-secondary);
+    transform: translateX(4px);
+  }
+}
+
+// Pagination Hover Effects
+.page-link {
+  transition: all var(--transition-fast);
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+}
+
+// Breadcrumb Hover Effects
+.breadcrumb-item a {
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+// Nav Tabs Hover Effects
+.nav-tabs .nav-link {
+  transition: all var(--transition-fast);
+  
+  &:hover {
+    transform: translateY(-1px);
+    border-color: var(--link-color);
+  }
+}
+
+// Nav Pills Hover Effects
+.nav-pills .nav-link {
+  transition: all var(--transition-fast);
+  
+  &:hover {
+    transform: translateY(-1px);
+    background-color: var(--bg-secondary);
+  }
+}
+
+// Card Grid Hover Effects
+.card-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+// Smooth scrolling for better UX
+html {
+  scroll-behavior: smooth;
+}
+
+// Focus styles for accessibility
+*:focus {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+// Sidebar text scaling - make right sidebar text 70% of original size
+#newsid {
+  // Scale down headings to 70% of their original size
+  h1 { font-size: 0.7em !important; }
+  h2 { font-size: 0.7em !important; }
+  h3 { font-size: 0.7em !important; }
+  h4 { font-size: 0.7em !important; }
+  h5 { font-size: 0.7em !important; }
+  h6 { font-size: 0.7em !important; }
+  
+  // Scale down card elements to 70% of original size
+  .card-header {
+    font-size: 0.7em !important;
+  }
+  
+  .card-body {
+    font-size: 0.7em !important;
+  }
+  
+  .card-footer {
+    font-size: 0.7em !important;
+  }
+  
+  // Scale down text elements to 70% of original size
+  p {
+    font-size: 0.7em !important;
+  }
+  
+  li {
+    font-size: 0.7em !important;
+  }
+  
+  a {
+    font-size: 0.7em !important;
+  }
+  
+  span {
+    font-size: 0.7em !important;
+  }
+  
+  small {
+    font-size: 0.7em !important;
+  }
+  
+  // Scale down Bootstrap components to 70% of original size
+  .alert {
+    font-size: 0.7em !important;
+  }
+  
+  .btn {
+    font-size: 0.7em !important;
+  }
+  
+  .badge {
+    font-size: 0.7em !important;
+  }
+  
+  .list-group-item {
+    font-size: 0.7em !important;
+  }
+  
+  // Scale down utility classes to 70% of original size
+  .text-muted {
+    font-size: 0.7em !important;
+  }
+  
+  .text-primary {
+    font-size: 0.7em !important;
+  }
+  
+  .text-secondary {
+    font-size: 0.7em !important;
+  }
+}
+
+// Loading animation for dynamic content
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+// Pulse animation for important elements
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+} 
+
+// Navbar styles - with higher specificity to override conflicts
+// Place these at the end to ensure they override Bootstrap
+.navbar.navbar-expand-lg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1030 !important;
+  background-color: var(--navbar-bg) !important;
+  border-bottom: 3px solid var(--border-color) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  transition: all 0.3s ease !important;
+  min-height: 70px !important; // Ensure consistent height
+  margin-bottom: 0 !important; // Override the margin-bottom from SHB_css.scss
+  
+  // Enhanced navbar on scroll
+  &.navbar-scrolled {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+    border-bottom-width: 4px !important;
+  }
+  
+  .navbar-brand {
+    font-weight: 700 !important;
+    font-size: 1.5rem !important;
+    color: var(--navbar-text) !important;
+    transition: color 0.3s ease !important;
+    
+    &:hover {
+      color: var(--link-color) !important;
+      transform: translateY(-1px) !important;
+    }
+  }
+  
+  .navbar-nav {
+    .nav-link {
+      color: var(--navbar-text) !important;
+      font-weight: 500 !important;
+      padding: 0.75rem 1rem !important;
+      margin: 0 0.25rem !important;
+      border-radius: 0.5rem !important;
+      transition: all 0.3s ease !important;
+      position: relative !important;
+      
+      &:hover {
+        color: var(--link-color) !important;
+        background-color: rgba(var(--link-color-rgb), 0.1) !important;
+        transform: translateY(-2px) !important;
+      }
+      
+      &.active {
+        color: var(--link-color) !important;
+        background-color: rgba(var(--link-color-rgb), 0.15) !important;
+        font-weight: 600 !important;
+      }
+      
+      // Underline effect on hover
+      &::after {
+        content: '' !important;
+        position: absolute !important;
+        bottom: 0.5rem !important;
+        left: 50% !important;
+        width: 0 !important;
+        height: 2px !important;
+        background-color: var(--link-color) !important;
+        transition: all 0.3s ease !important;
+        transform: translateX(-50%) !important;
+      }
+      
+      &:hover::after {
+        width: 80% !important;
+      }
+    }
+  }
+  
+
+}
+
+// Also override the general navbar class
+.navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1030 !important;
+  background-color: var(--navbar-bg) !important;
+  border-bottom: 3px solid var(--border-color) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  transition: all 0.3s ease !important;
+  min-height: 70px !important;
+  margin-bottom: 0 !important; // Override the margin-bottom from SHB_css.scss
+  
+  // Hide hamburger menu on desktop (md and larger screens)
+  .navbar-toggler,
+  .toggler {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
+// Add padding to body to account for fixed navbar
+body {
+  padding-top: 90px !important; // Increased padding to ensure content is visible
+}
+
+// Responsive adjustments - Show hamburger menu only on small screens
+@media (max-width: 767.98px) {
+  body {
+    padding-top: 80px !important; // Slightly less padding on mobile
+  }
+  
+  .navbar {
+    min-height: 60px !important; // Smaller height on mobile
+    
+    .navbar-brand {
+      font-size: 1.25rem !important;
+    }
+    
+    // Show hamburger menu only on mobile
+    .navbar-toggler,
+    .toggler {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 1031 !important;
+      border: 1px solid var(--text-primary) !important;
+      background-color: var(--bg-secondary) !important;
+      padding: 0.5rem !important;
+      border-radius: 0.25rem !important;
+      
+      .navbar-toggler-icon {
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-size: 1.25em !important;
+        width: 1.25em !important;
+        height: 1.25em !important;
+      }
+    }
+    
+    .navbar-nav {
+      .nav-link {
+        padding: 0.5rem 0.75rem !important;
+        margin: 0.25rem 0 !important;
+      }
+      
+      // Mobile menu styling
+      .navbar-collapse {
+        background-color: var(--navbar-bg) !important;
+        border-radius: 0.5rem !important;
+        margin-top: 0.5rem !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+      }
+    }
+  }
+}
+
+// Dark theme hamburger icon
+[data-theme="dark"] .navbar {
+  .navbar-toggler,
+  .toggler {
+    border-color: var(--text-primary) !important;
+    background-color: var(--bg-secondary) !important;
+    
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+  }
+} 

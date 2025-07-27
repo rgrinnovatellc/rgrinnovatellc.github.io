@@ -1,0 +1,86 @@
+{% include utils.html %}
+
+<footer class="footer mt-auto py-3">
+    <div class="container-fluid">
+        <div class="row">
+                        <!-- About Section -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5>About</h5>
+                <p class="footer-text">
+                    {{ pi_data.name }}<br>
+                    {{ academic_position }}<br>
+                    {{ academic_department }}<br>
+                    {{ academic_university }}
+                </p>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5>Contact</h5>
+                <ul class="list-unstyled footer-links contact-info">
+                    {% if contact_email %}
+                        <li><a href="mailto:{{ contact_email }}"><i class="fa fa-envelope"></i> {{ contact_email }}</a></li>
+                    {% endif %}
+                    {% if contact_phone %}
+                        <li><i class="fa fa-phone"></i> {{ contact_phone }}</li>
+                    {% endif %}
+                    {% if office_address %}
+                        <li><i class="fa fa-map-marker"></i> {{ office_address }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Location Section -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5>Location</h5>
+                <div class="location-info">
+                    <p class="footer-text">
+                        {{ site_data.location.full_address }}
+                    </p>
+                    {% if office_maps_link %}
+                        <a href="{{ office_maps_link }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fa fa-map"></i> View on Map
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Footer -->
+        <hr class="my-4">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <p class="mb-0 footer-text">
+                    {% if site_data.footer.copyright_text %}
+                        {{ site_data.footer.copyright_text | replace: "2025", current_year }}
+                    {% else %}
+                        © {{ current_year }} {{ pi_data.name }}. All rights reserved.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-md-4 text-center">
+                <ul class="list-inline mb-0">
+                    {% if site_data.navigation.footer_links.legal %}
+                        {% for link in site_data.navigation.footer_links.legal %}
+                            <li class="list-inline-item">
+                                <a href="{{ site.baseurl }}{{ link.url }}" class="footer-link">{{ link.title }}</a>
+                                {% unless forloop.last %} | {% endunless %}
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <ul class="list-inline mb-0">
+                    {% if site_data.footer.source_code_link %}
+                        <li class="list-inline-item">
+                            <a href="{{ site_data.footer.source_code_link }}" target="_blank" class="footer-link">
+                                <i class="fa fa-github"></i> Source Code
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,43 @@
+{% include utils.html %}
+
+<!-- Google Tag Manager (noscript) -->
+{% if site.analytics.google_tag_manager %}
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ site.analytics.google_tag_manager }}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+{% endif %}
+
+<nav class="navbar sticky-top navbar-expand-md">
+    <a class="navbar-brand" href="{{ site.baseurl }}/">
+     <img src="{{ site.baseurl }}/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="{{ site.title | escape }}">
+    </a>
+    
+    <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{{ site.baseurl }}/">Home</a>
+            {% if site_data.navigation.main_menu %}
+                {% for item in site_data.navigation.main_menu %}
+                    {% if item.name != "home" %}
+                        <a class="nav-item nav-link" href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
+                    {% endif %}
+                {% endfor %}
+            {% elsif site.nav_pages %}
+                {% for page in site.nav_pages %}
+                    <a class="nav-item nav-link" href="{{ site.baseurl }}/{{ page.name }}">{{ page.name | capitalize }}</a>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+            {% if site_data.config.enable_dark_mode %}
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
+            {% endif %}
+        </div>
+    </div>
+</nav>

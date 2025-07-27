@@ -1,0 +1,120 @@
+# =============================================================================
+# SITE-WIDE DATA CONFIGURATION
+# =============================================================================
+
+# Site Metadata
+metadata:
+  title: "Uddhav P. Gautam - Founder, RGR Innovate LLC - Academic Website"
+  description: "Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC, PhD Candidate in Computer Engineering at Virginia Tech"
+  keywords: "Uddhav P. Gautam, Founder, RGR Innovate LLC, Computer Engineering, Virginia Tech, eBPF, Linux Kernel, Computer Security"
+  author: "Uddhav P. Gautam - Founder, RGR Innovate LLC"
+  language: "en"
+  charset: "utf-8"
+
+# Site URLs and Repository
+urls:
+  site: "https://rgrinnovatellc.github.io"
+  baseurl: ""
+  repository: "rgrinnovatellc/rgrinnovatellc.github.io"
+  github_repo: "https://github.com/rgrinnovatellc/rgrinnovatellc.github.io"
+  github_api: "https://api.github.com/repos/rgrinnovatellc/rgrinnovatellc.github.io"
+
+# Contact Information
+contact:
+  email: "upgautam@vt.edu | rgrinnovatellc@gmail.com"
+  phone: "+1 (919) 729-4141"
+  github: "upgautamvt"
+  
+# Academic Information
+academic:
+  position: "PhD Candidate"
+  department: "Computer Engineering"
+  university: "Virginia Polytechnic Institute and State University"
+  affiliation: "Virginia Tech"
+  university_url: "https://www.vt.edu/"
+  
+# Location Information
+location:
+  city: "Blacksburg"
+  state: "Virginia"
+  zip: "24061"
+  country: "USA"
+  full_address: "Virginia Polytechnic Institute and State University, Blacksburg, Virginia 24061"
+  
+# Office Details
+office:
+  building: "IT Security Office MC 0284"
+  hall: "1300 Torgersen Hall"
+  address: "1300 Torgersen Hall, Blacksburg, Virginia 24061"
+  google_maps_link: "https://maps.google.com/?q=Virginia+Tech+Blacksburg+VA"
+  
+# Social Media Links
+social:
+  github: "https://github.com/uddhavgautam3"
+  scholar: "https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
+  researchgate: "https://www.researchgate.net/profile/Uddhav-Gautam-2"
+  linkedin: "https://www.linkedin.com/in/uddhavpgautam/"
+  
+# Site Configuration
+config:
+  posts_per_page: 10
+  events_max_display: 10
+  news_max_display: 5
+  enable_excerpts: true
+  excerpt_length: 150
+  enable_dark_mode: true
+  enable_animations: true
+  
+# Footer Configuration
+footer:
+  copyright_year: 2025
+  copyright_text: "© 2025 Uddhav P. Gautam - Founder, RGR Innovate LLC. All rights reserved."
+  source_code_link: "https://github.com/upgautamvt/upgautamvt.github.io"
+  template_credit: "Based on Academic Website Template"
+  
+# Navigation Configuration
+navigation:
+  main_menu:
+    - name: "home"
+      title: "Home"
+      url: "/"
+      icon: "fa-home"
+    - name: "publications"
+      title: "Publications"
+      url: "/publications"
+      icon: "fa-file-text"
+    - name: "software"
+      title: "Software"
+      url: "/software"
+      icon: "fa-code"
+    - name: "blogs"
+      title: "Blogs"
+      url: "/blogs"
+      icon: "fa-blog"
+    - name: "about"
+      title: "About"
+      url: "/about"
+      icon: "fa-user"
+      
+  footer_links:
+    quick_links:
+      - name: "home"
+        title: "Home"
+        url: "/"
+      - name: "about"
+        title: "About"
+        url: "/about"
+      - name: "software"
+        title: "Software"
+        url: "/software"
+      - name: "blogs"
+        title: "Blogs"
+        url: "/blogs"
+        
+    legal:
+      - name: "privacy"
+        title: "Privacy Policy"
+        url: "/privacy"
+      - name: "sitemap"
+        title: "Sitemap"
+        url: "/sitemap" 

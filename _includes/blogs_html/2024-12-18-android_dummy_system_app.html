@@ -1,0 +1,216 @@
+<h1 id="dummy-android-system-app">Dummy Android System App</h1>
+<p>I am running all the below commands from two locations: 1) from aosp root folder 2) from where the cuttlefish android emulator is installed.</p>
+<pre><code class="language-bash">upgautam@amd:/opt/aosp$ source build/envsetup.sh
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined$ HOME=$PWD ./bin/launch_cvd
+
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb devices
+List of devices attached
+0.0.0.0:6520	device
+</code></pre>
+<p>We built a dummy system app, and tried to test its superpower, such as ls /sys folder. </p>
+<pre><code class="language-xml">&lt;uses-permission android:name=&quot;android.permission.ACCESS_SUPERUSER&quot; /&gt;
+&lt;uses-permission android:name=&quot;android.permission.SYSTEM_ALERT_WINDOW&quot; /&gt;
+</code></pre>
+<p><strong>Note</strong>: Declaraing the same system permission for normal app doesn&#39;t grant the permission as permission declaration is different to permission granting.  </p>
+<p>Android system ensures if those system permission are declared and those are the system app then they are granted those permission. To test this, I modified my dummy app as follows, </p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;&gt;
+    &lt;uses-permission android:name=&quot;android.permission.ACCESS_SUPERUSER&quot; /&gt;
+    &lt;uses-permission android:name=&quot;android.permission.SYSTEM_ALERT_WINDOW&quot; /&gt;
+    &lt;application
+        android:allowBackup=&quot;true&quot;
+        android:dataExtractionRules=&quot;@xml/data_extraction_rules&quot;
+        android:fullBackupContent=&quot;@xml/backup_rules&quot;
+        android:icon=&quot;@mipmap/ic_launcher&quot;
+        android:label=&quot;@string/app_name&quot;
+        android:roundIcon=&quot;@mipmap/ic_launcher_round&quot;
+        android:supportsRtl=&quot;true&quot;
+        android:theme=&quot;@style/Theme.DummySystemApplication&quot;
+        tools:targetApi=&quot;31&quot;&gt;
+        &lt;activity
+            android:name=&quot;.MainActivity&quot;
+            android:exported=&quot;true&quot;
+            android:label=&quot;@string/app_name&quot;
+            android:theme=&quot;@style/Theme.DummySystemApplication&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;/application&gt;
+
+&lt;/manifest&gt;
+</code></pre>
+<p>And, my activtiy as, </p>
+<pre><code class="language-kotlin">package com.example.dummysystemapplication
+
+import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.dummysystemapplication.ui.theme.dummysystemapplicationTheme
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.OutputStreamWriter
+import kotlin.concurrent.thread
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        disableSELinux()
+        executeRootCommand()
+
+        setContent {
+            dummysystemapplicationTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding -&gt;
+                    Greeting(
+                        name = &quot;Uddha P. Gautam&quot;,
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
+        }
+    }
+
+    private fun disableSELinux() {
+        thread {
+            try {
+                // Start the root shell with /system/xbin/su 0
+                val command = &quot;/system/xbin/su 0&quot;
+                val process = Runtime.getRuntime().exec(command)
+
+                // Send setenforce 0 command to the root shell
+                val outputStream = process.outputStream
+                val writer = BufferedWriter(OutputStreamWriter(outputStream))
+                writer.write(&quot;setenforce 0\n&quot;)
+                writer.flush()
+
+                // Capture the output of the command
+                val output = process.inputStream.bufferedReader().use(BufferedReader::readText)
+                process.waitFor()
+
+                runOnUiThread {
+                    Toast.makeText(this, &quot;SELinux disabled:\n$output&quot;, Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(this, &quot;Error disabling SELinux&quot;, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
+    // Function to execute root commands
+    private fun executeRootCommand() {
+        thread {
+            try {
+                // Start the root shell
+                val command = &quot;/system/xbin/su 0&quot;
+                val process = Runtime.getRuntime().exec(command)
+
+                // Send the &quot;ls /sys&quot; command to the root shell
+                val outputStream = process.outputStream
+                val writer = BufferedWriter(OutputStreamWriter(outputStream))
+                writer.write(&quot;ls /sys\n&quot;)
+                writer.flush()
+
+                // Capture the output of the command
+                val output = process.inputStream.bufferedReader().use(BufferedReader::readText)
+                process.waitFor()
+
+                runOnUiThread {
+                    Toast.makeText(this, &quot;Root Command Output:\n$output&quot;, Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(this, &quot;Can&#39;t run root command&quot;, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = &quot;Hello $name!&quot;,
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    dummysystemapplicationTheme {
+        Greeting(&quot;Uddhav P. Gautam (Owner of RGR Innovate LLC)&quot;)
+    }
+}
+</code></pre>
+<p>Build the apk and push. But this time, I also installed magisk app and from there patched the boot.img, I pulled that patched boot.img to host and then stopped and started cuttlefish emulator with new patched boot.img.</p>
+<pre><code class="language-bash">upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb push ~/Desktop/DummyApp/app-debug.apk /system/priv-app/dummy_app/app-debug.apk
+adb: error: failed to copy &#39;/home/upgautam/Desktop/DummyApp/app-debug.apk&#39; to &#39;/system/priv-app/dummy_app/app-debug.apk&#39;: remote secure_mkdirs() failed: Read-only file system
+/home/upgautam/Desktop/DummyApp/app-debug.apk: 1 file pushed, 0 skipped. 674.3 MB/s (8670593 bytes in 0.012s)
+</code></pre>
+<p>To fix this read-only error, </p>
+<pre><code class="language-bash">upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb reboot
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb root
+restarting adbd as root
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb shell
+vsoc_x86_64:/ # whoami
+root
+vsoc_x86_64:/ # setenforce 0
+vsoc_x86_64:/ # disable-verity
+AVB verification is disabled, disabling verity state may have no effect
+enabling overlayfs
+Reboot the device for new settings to take effect
+vsoc_x86_64:/ # reboot
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb root
+adb: unable to connect for root: no devices/emulators found
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb root
+restarting adbd as root
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb shell
+vsoc_x86_64:/ # mount -o rw,remount /system
+vsoc_x86_64:/ # mkdir /system/priv-app/dummy_app/
+vsoc_x86_64:/ # exit
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb push ~/Desktop/DummyApp/app-debug.apk /system/priv-app/dummy_app/app-debug.apk
+/home/upgautam/Desktop/DummyApp/app-debug.apk: 1 file pushed, 0 skipped. 21.7 MB/s (8670593 bytes in 0.380s)
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb reboot
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb root
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb shell
+vsoc_x86_64:/ # am start com.example.dummysystemapplication/.MainActivity
+Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.dummysystemapplication/.MainActivity }
+</code></pre>
+<p>Still the issue exists. I can&#39;t make it work. I can&#39;t test its superpower, although it is a system app.  I tried cuttlefish emulator with original boot.img, the same issue. </p>
+<pre><code class="language-bash">upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb push ~/Desktop/DummyApp/app-debug.apk /system/priv-app/dummy_app/app-debug.apk
+/home/upgautam/Desktop/DummyApp/app-debug.apk: 1 file pushed, 0 skipped. 22.6 MB/s (8670593 bytes in 0.366s)
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb root
+adbd is already running as root
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb shell
+vsoc_x86_64:/ # chmod 644 /system/priv-app/dummy_app/app-debug.apk
+vsoc_x86_64:/ # chown root:system /system/priv-app/dummy_app/app-debug.apk
+vsoc_x86_64:/ # reboot   //when it restarts the apk will be installed as system app
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb root
+restarting adbd as root
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined/bin$ ./adb shell
+vsoc_x86_64:/ # setenforce 0
+vsoc_x86_64:/ # am start com.example.dummysystemapplication/.MainActivity
+Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.example.dummysystemapplication/.MainActivity }
+#Still I get Error.
+</code></pre>

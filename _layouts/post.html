@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
+    <div class="post-meta">
+      <i class="fa fa-calendar"></i>
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>
+      {% if page.author %} 
+        <span class="post-author">
+          <i class="fa fa-user"></i>
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span itemprop="name">{{ page.author }}</span>
+          </span>
+        </span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card-body post-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+</article>

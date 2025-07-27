@@ -1,0 +1,278 @@
+<h1 id="selinux">SELinux</h1>
+<p><strong>TODO</strong>: AppArmor, UFW, Seccomp, Namespace &amp; cgroup-based isolation, Linux capabilities, Linux perf vs. Android simpleperf</p>
+<p>By default, Ubuntu also has other security features enabled, such as:</p>
+<ol>
+<li>UFW (Uncomplicated Firewall) – A front-end for iptables to simplify firewall management.</li>
+<li>Seccomp (Secure Computing Mode) – Limits system calls that processes can make.</li>
+<li>Namespace &amp; cgroup-based isolation – Used for sandboxing and container security.</li>
+<li>Linux capabilities – Restricts privileged operations for processes.</li>
+</ol>
+<p>Only one of MAC type (i.e., either AppArmor or SELinux) can run both at the same time. SELinux is lable based, while AppArmor is file path based. Both are equally popular. They are types of Linux Security Modules (LSM), including Smack, TOMOYO, LSB Bpf etc.</p>
+<p><strong>Note</strong>: Since AppArmor is enabled in Ubuntu by default, and SELinux not, it means Ubuntu doesn&#39;t have SELinux policies. It is not recommeded to disable AppArmor and enabled SELinux in production. </p>
+
+<h2 id="audit2allow">audit2allow</h2>
+<p>eBPF to regularly modify SELINUX policies (Core 95%, device-specific 5%). But, we use only to create new needed rules. For those denials, we have audit2allow tool that automatically makes SELinux rules from those SELinux denials and then we can <strong>load</strong> to modify SELinux system. No kernel rebuild like eBPF. With allow2audit, we need to load policies but no reboot required. Fedora/Android use SELinux by default. </p>
+<p>When SELinux is enabled, it can sometimes deny certain actions or operations that are not explicitly allowed by the current SELinux policy. These denials are logged in the system&#39;s audit logs (e.g., /var/log/audit/audit.log or /var/log/messages). However, interpreting these logs and creating the appropriate SELinux policy rules to allow the denied actions can be complex and time-consuming.</p>
+<p>This is where audit2allow comes in. It simplifies the process by:</p>
+<ol>
+<li>Automating Rule Generation: It reads the denial messages from the audit logs and generates the necessary SELinux policy rules to allow the denied actions.</li>
+<li>Reducing Manual Effort: Instead of manually writing SELinux policy rules, administrators can use audit2allow to quickly generate them.</li>
+<li>Improving System Security: By creating precise allow rules, administrators can maintain a secure system without disabling SELinux entirely.</li>
+</ol>
+<h2 id="selinux-overview">SELinux Overview</h2>
+<p>SELinux is a mandatory access control (MAC) system that enforces policies at the kernel level. </p>
+<p>SELINUX restricts system access by enforcing SELINUX policies.
+Permissive mode logs all policy violation events (i.e., denials) but doesn&#39;t block them (opp. of enforcing mode)
+    Logging denials has some overhead.
+    Enforcing by restricting those denials has move overhead. It may mask or overwrite other denials. That&#39;s why just use permission mode when in development/understanding. </p>
+<p>The simplest way to put a device into permissive mode is using the kernel command line. This can be added to the device&#39;s BoardConfig.mk file: platform/device/<vendor>/<target>/BoardConfig.mk. After modifying the command line, perform make clean, then make bootimage, and flash the new boot image.</p>
+<p><code>adb shell getenforce</code></p>
+<p>Example, </p>
+<pre><code class="language-xml">avc: denied { open } for pid=1003 comm=”mediaserver” path=&quot;/dev/kgsl-3d0”
+dev=&quot;tmpfs&quot; scontext=u:r:mediaserver:s0 tcontext=u:object_r:device:s0
+tclass=chr_file permissive=1
+
+avc: denied { read write } for pid=1003 name=&quot;kgsl-3d0&quot; dev=&quot;tmpfs&quot;
+scontext=u:r:mediaserver:s0
+tcontext=u:object_r:device:s0 tclass=chr_file permissive=1
+</code></pre>
+<p>The denials you&#39;re seeing are logs from SELinux, indicating that the mediaserver process (with pid=1003) is trying to access a device file (/dev/kgsl-3d0), but SELinux has blocked or logged that action due to security policy restrictions.</p>
+<p>First denial, </p>
+<pre><code class="language-xml">avc: denied { open } for pid=1003 comm=”mediaserver” path=&quot;/dev/kgsl-3d0”
+dev=&quot;tmpfs&quot; scontext=u:r:mediaserver:s0 tcontext=u:object_r:device:s0 tclass=chr_file permissive=1
+</code></pre>
+<p>avc: denied: This is the SELinux log indicating a denial of an action.
+{ open }: The specific operation attempted was an &quot;open&quot; system call (e.g., trying to access the file /dev/kgsl-3d0).</p>
+<p>Syntax of SELINUX context: user:role:type:level</p>
+<p>These are SELinux&#39;s user and role. S0 means security level 0. It is like confidential security clearance (not secret or top-secret)</p>
+<p>scontext=u:r:mediaserver:s0: The source context of the process trying to perform the action, which in this case is the mediaserver process running under the mediaserver user role.</p>
+<p>tcontext=u:object_r:device:s0: The target context is the device file (/dev/kgsl-3d0) which is labeled as a device object in SELinux.</p>
+<p>tclass=chr_file: This shows that the target is a character device file (like /dev/kgsl-3d0).</p>
+<p>permissive=1: The system is in permissive mode, meaning it doesn&#39;t block the action but logs it.</p>
+<p>Second denial, </p>
+<pre><code class="language-xml">avc: denied { read write } for pid=1003 name=&quot;kgsl-3d0&quot; dev=&quot;tmpfs&quot;
+scontext=u:r:mediaserver:s0 tcontext=u:object_r:device:s0 tclass=chr_file permissive=1
+</code></pre>
+<p>Q) Why character device files?
+To continuously see what is updated, we can&#39;t have data stored in buffers and then flushed to device files, we need them immediately. Character device has direct access where there is no buffering. </p>
+<p>From above SELinux log, we can see what source context is trying to do what action on target context. And SELinux logs or blocks that based on its configured mode.</p>
+<p>In above, scontext is a mediaserver process, tcontext is a device. </p>
+<p>Be more granular by specifying specific file types because device context is broad. This context doesn&#39;t distinguish between different types devices in /dev/; it applies to everything, which could be too general. E.g., instead of just using /dev/ file use gpu_device. Similarly, we can specifically specify other device types such as block devices, audio devices, video devices, sensors, NFC, GPS devices, Files in /sys/ and /proc/</p>
+<p><strong>Note</strong>: Be specific with source context and target context while writing SELinux policy. </p>
+<p><strong>SELinux domain</strong>: This is as security context assigned to a process(es) that defines the permissions or rules. This is like user or group in Linux. Domain here is a label applied to processes.</p>
+<p>Categorize processes in different permissions. Basically, those categorizes are domains. </p>
+<h2 id="creating-selinux-domain">Creating SELinux domain,</h2>
+<p>For service foo, you want to run in its domain. </p>
+<pre><code class="language-xml"># init.device.rc
+# create service foo
+service foo /system/bin/foo
+    class core
+</code></pre>
+<pre><code class="language-xml"># device/manufacturer/device-name/sepolicy/foo.te
+# create domain, define executable type for service foo, and attach service with domain
+type foo_domain, domain;             # Define the new domain as foo_domain
+type foo_exec, exec_type, file_type; # Define the executable type for foo
+init_daemon_domain(foo_domain)       # Use the new foo_domain for the service
+</code></pre>
+<pre><code class="language-xml"># when the service /system/bin/foo is started, it is assigned the foo_domain through security context. The process running /system/bin/foo will be placed in the foo_domain.
+</code></pre>
+<pre><code class="language-xml"># device/manufacturer/device-name/sepolicy/file_contexts
+/system/bin/foo   u:object_r:foo_exec:s0 # Labeling executable /system/bin/foo with context.
+</code></pre>
+<p>Q) How everything above is linked? </p>
+<ol>
+<li><code>foo</code> is mapped with <code>/system/bin/foo</code></li>
+<li><code>/system/bin/foo</code> is mapped with <code>foo_exec</code> in labeling</li>
+<li>in domain, <code>foo_exec</code> has <code>foo_domain</code>.</li>
+</ol>
+<p>This from first to third transitivity maps foo with foo_domain. </p>
+<p>In Android we have the privilege to create new SELinux policy rules for any access denials, and this is achieved by audit2allow too. </p>
+<p><code>audit2allow -a -M my_custom_policy</code></p>
+<p>This will produce the new policy module my_custom_policy.pp that you can load into the system. </p>
+<p>or <code>audit2allow -i /var/log/audit/audit.log -M my_custom_policy</code></p>
+<p>now, you can load <code>semodule -i my_custom_policy.pp</code></p>
+<p>** To be more exact **</p>
+<pre><code class="language-bash">sudo apt install auditd # no need to install anything in fedora
+sudo apt install policycoreutils
+
+# SELinux is not enabled by default on Ubuntu. Ubuntu uses AppArmor. So working on Fedora 41,
+
+upgautam@localhost-live:~$ sudo sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /sys/fs/selinux
+SELinux root directory:         /etc/selinux
+Loaded policy name:             targeted
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy MLS status:              enabled
+Policy deny_unknown status:     allowed
+Memory protection checking:     actual (secure)
+Max kernel policy version:      33
+
+# or,
+upgautam@localhost-live:~$ sudo getenforce
+Enforcing (or can be permissive or disabled)
+
+# not enabled at the boot time
+upgautam@localhost-live:~$ sudo cat /proc/cmdline
+BOOT_IMAGE=(hd0,gpt2)/vmlinuz-6.11.4-301.fc41.x86_64 root=UUID=d87a89f5-89b9-499f-ba4d-25252b3b52bf ro rootflags=subvol=root rhgb quiet
+(it means SELinux is not enabled at boot but enabled at later)
+
+
+# or check if it is enabled in the kernel
+upgautam@localhost-live:~$ sudo lsmod | grep selinux
+# no output because SELinux was not loaded as a module, but rather integratede directly into the kernel
+
+# SELinux can even be enabled in docker container
+</code></pre>
+<h2 id="run-auditd">Run auditd</h2>
+<p>sudo systemctl start auditd
+sudo systemctl enable auditd
+sudo systemctl status auditd</p>
+<h4 id="sudo-ausearch--m-avc--ts-today-list-all-todays-access-vector-cache-denials">sudo ausearch -m avc -ts today //list all today&#39;s access vector cache denials</h4>
+<pre><code class="language-bash">upgautam@localhost-live:~$ sudo ausearch -m avc -ts today
+----
+time-&gt;Thu Jan 30 16:11:23 2025
+type=PROCTITLE msg=audit(1738271483.605:101): proctitle=&quot;/usr/lib/systemd/systemd-homed&quot;
+type=SYSCALL msg=audit(1738271483.605:101): arch=c000003e syscall=257 success=no exit=-13 a0=ffffff9c a1=559d35d4905e a2=90800 a3=0 items=0 ppid=1 pid=889 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm=&quot;systemd-homed&quot; exe=&quot;/usr/lib/systemd/systemd-homed&quot; subj=system_u:system_r:systemd_homed_t:s0 key=(null)
+type=AVC msg=audit(1738271483.605:101): avc:  denied  { read } for  pid=889 comm=&quot;systemd-homed&quot; name=&quot;home&quot; dev=&quot;vda3&quot; ino=197969 scontext=system_u:system_r:systemd_homed_t:s0 tcontext=system_u:object_r:var_t:s0 tclass=dir permissive=0
+----
+time-&gt;Thu Jan 30 16:11:53 2025
+type=PROCTITLE msg=audit(1738271513.552:115): proctitle=&quot;/usr/lib/systemd/systemd-homed&quot;
+type=SYSCALL msg=audit(1738271513.552:115): arch=c000003e syscall=257 success=no exit=-13 a0=ffffff9c a1=55d35618005e a2=90800 a3=0 items=0 ppid=1 pid=892 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm=&quot;systemd-homed&quot; exe=&quot;/usr/lib/systemd/systemd-homed&quot; subj=system_u:system_r:systemd_homed_t:s0 key=(null)
+type=AVC msg=audit(1738271513.552:115): avc:  denied  { read } for  pid=892 comm=&quot;systemd-homed&quot; name=&quot;home&quot; dev=&quot;vda3&quot; ino=197969 scontext=system_u:system_r:systemd_homed_t:s0 tcontext=system_u:object_r:var_t:s0 tclass=dir permissive=0
+----
+time-&gt;Thu Jan 30 16:15:50 2025
+type=PROCTITLE msg=audit(1738271750.638:98): proctitle=&quot;/usr/lib/systemd/systemd-homed&quot;
+type=SYSCALL msg=audit(1738271750.638:98): arch=c000003e syscall=257 success=no exit=-13 a0=ffffff9c a1=55f78face05e a2=90800 a3=0 items=0 ppid=1 pid=895 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm=&quot;systemd-homed&quot; exe=&quot;/usr/lib/systemd/systemd-homed&quot; subj=system_u:system_r:systemd_homed_t:s0 key=(null)
+type=AVC msg=audit(1738271750.638:98): avc:  denied  { read } for  pid=895 comm=&quot;systemd-homed&quot; name=&quot;home&quot; dev=&quot;vda3&quot; ino=197969 scontext=system_u:system_r:systemd_homed_t:s0 tcontext=system_u:object_r:var_t:s0 tclass=dir permissive=0
+</code></pre>
+<p>Generate new policy named mynewpolicy</p>
+<h4 id="ausearch--m-avc--ts-today--audit2allow--m-mynewpolicy">ausearch -m avc -ts today | audit2allow -M mynewpolicy</h4>
+<pre><code class="language-bash">upgautam@localhost-live:~$ sudo ausearch -m avc -ts today | sudo audit2allow -M mynewpolicy
+******************** IMPORTANT ***********************
+To make this policy package active, execute:
+
+semodule -i mynewpolicy.pp
+</code></pre>
+<p>Now, you can see two files generated, </p>
+<pre><code class="language-bash">upgautam@localhost-live:~$ ls
+Desktop  Documents  Downloads  Music  mynewpolicy.pp  mynewpolicy.te  Pictures  Public  Templates  Videos
+</code></pre>
+<p>Here, <code>mynewpolicy.te</code> is a type enforcement (TE) file, and <code>mynewpolicy.mod</code> is a compiled intermediate file as you can see below. </p>
+<pre><code class="language-bash">upgautam@localhost-live:~$ cat mynewpolicy.te
+
+module mynewpolicy 1.0;
+
+require {
+    type systemd_homed_t;
+    type var_t;
+    class dir read;
+}
+
+#============= systemd_homed_t ==============
+allow systemd_homed_t var_t:dir read;
+upgautam@localhost-live:~$ cat mynewpolicy.pp
+��|���|�SE Linux Module
+                      mynewpolicy1.0@dirreaobject_r@@@@@systemd_homed_t@var_t@@@@@@@@@@@@@@@@@@@@@@@@@@diobject_rsystemd_homed_tvar_tupgautam@localhost-live:~$
+</code></pre>
+<p><strong>AVC</strong>: Access Vector Cache, where SELinux stores all the denials. </p>
+<h2 id="interpreting-more-selinux-logs">Interpreting more SELinux logs</h2>
+<pre><code class="language-xml">avc: denied  { connectto } for  pid=2671 comm=&quot;ping&quot; path=&quot;/dev/socket/dnsproxyd&quot;
+scontext=u:r:shell:s0 tcontext=u:r:netd:s0 tclass=unix_stream_socket
+</code></pre>
+<p>Interpret this output like so:</p>
+<ol>
+<li>The <code>{ connectto }</code> above represents the action being taken. Together with the tclass at the end (unix_stream_socket), it tells you roughly what was being done to what. In this case, something was trying to connect to a unix stream socket.</li>
+<li>The <code>scontext (u:r:shell:s0)</code> tells you what context initiated the action. In this case this is something running as the shell.</li>
+<li>The <code>tcontext (u:r:netd:s0)</code> tells you the context of the action’s target. In this case, that’s a unix_stream_socket owned by netd.</li>
+<li>The <code>comm=&quot;ping&quot;</code> at the top gives you an additional hint about what was being run at the time the denial was generated. In this case, it’s a pretty good hint.</li>
+</ol>
+<pre><code class="language-xml">&lt;5&gt; type=1400 audit: avc:  denied  { read write } for  pid=177
+comm=&quot;rmt_storage&quot; name=&quot;mem&quot; dev=&quot;tmpfs&quot; ino=6004 scontext=u:r:rmt:s0
+tcontext=u:object_r:kmem_device:s0 tclass=chr_file
+</code></pre>
+<p>Here are the key elements from this denial:</p>
+<ol>
+<li><code>Action</code> - the attempted action is highlighted in brackets, read write or setenforce.</li>
+<li><code>Actor</code> - The scontext (source context) entry represents the actor, in this case the rmt_storage daemon.</li>
+<li><code>Object</code> - The tcontext (target context) entry represents the object being acted upon, in this case kmem.</li>
+<li><code>Result</code> - The tclass (target class) entry indicates the type of object being acted upon, in this case a chr_file (character device).</li>
+</ol>
+<p>Even with auditd logs information, it is still hard to interpret what&#39;s going on above. It is often useful to gather the call chain, including kernel and userspace, to better understand why the denial occurred. Recent kernels define a tracepoint named <code>avc:selinux_audited</code>. Use Android simpleperf to enable this tracepoint and capture the callchain.</p>
+<ol>
+<li><p>SELinux denials are logged in auditd logs (e.g., /var/log/audit/audit.log). While these logs give information on the denial (like the process, object, and denied action), they can be hard to interpret by themselves because they don’t show the call chain—the sequence of function calls that led to the denial.</p>
+</li>
+<li><p>The call chain is crucial because it helps you trace how the system arrived at the denial, including which kernel and userspace functions were involved.</p>
+<p> Record the event using simple perf: <code>adb shell -t &quot;cd /data/local/tmp &amp;&amp; su root simpleperf record -a -g -e avc:selinux_audited&quot;</code></p>
+<p> In Linux, perf is a tool, but in Android we have simpleperf. Perf is not ideal to record SELinux denails. But in android, tailored version of perf (i.e., simpleperf) is ideal. </p>
+<p> Then, the event that caused the denial should be triggered. After that, the recording should be stopped. In this example, by using <code>Ctrl-c</code>, the sample should have been captured:</p>
+<p> <code>^Csimpleperf I cmd_record.cpp:751] Samples recorded: 1. Samples lost: 0.</code></p>
+<p> Finally, simpleperf report may be used to inspect the captured stacktrace. For instance: </p>
+<pre><code class="language-bash">adb shell -t &quot;cd /data/local/tmp &amp;&amp; su root simpleperf report -g --full-callgraph&quot;
+[...]
+Children  Self     Command  Pid   Tid   Shared Object                                   Symbol
+100.00%   0.00%    dmesg    3318  3318  /apex/com.android.runtime/lib64/bionic/libc.so  __libc_init
+    |
+    -- __libc_init
+        |
+        -- main
+            toybox_main
+            toy_exec_which
+            dmesg_main
+            klogctl
+            entry_SYSCALL_64_after_hwframe
+            do_syscall_64
+            __x64_sys_syslog
+            do_syslog
+            selinux_syslog
+            slow_avc_audit
+            common_lsm_audit
+            avc_audit_post_callback
+            avc_audit_post_callback
+</code></pre>
+</li>
+</ol>
+<p>The call chain above is a unified kernel and userspace call chain. It gives you with a better view of the code flow by starting the trace from userspace all the way down to the kernel where the denial happens. </p>
+<h2 id="reflections">Reflections</h2>
+<ol>
+<li>What are precise SELinux rules for android? </li>
+<li>What are precise SELinux rules for Linux? </li>
+<li>What all or some of these rules apply to both?</li>
+</ol>
+<p>E.g., Below rules are only applied to Android Kernel (not applicable in Linux Kernel)</p>
+<pre><code class="language-bash">allow appdomain app_data_file:file { read write };
+allow system_server appdomain:binder { call transfer };
+allow mediaserver camera_device:chr_file { read write };
+allow dex2oat app_data_file:file { read write execute };
+allow system_app system_data_file:dir { search };
+allow user_app system_data_file:dir { deny };
+allow zygote appdomain:process { transition };
+allow zygote appdomain:process { transition };
+allow appdomain sensor_device:chr_file { read write };
+allow system_server secure_element_device:chr_file { read write };
+allow update_engine system_file:file { execute };
+</code></pre>
+<h2 id="bpf-lsm-cannot-fully-replace-apparmor-or-selinux-in-all-scenarios">BPF LSM Cannot Fully Replace AppArmor or SELinux in All Scenarios</h2>
+<ol>
+<li>Maturity and Ecosystem:<ol>
+<li>SELinux and AppArmor are mature, well-established security frameworks with extensive documentation, tools, and community support.</li>
+<li>BPF LSM is relatively new and may not yet have the same level of maturity or ecosystem.</li>
+</ol>
+</li>
+<li>Policy Complexity:<ol>
+<li>SELinux and AppArmor provide comprehensive frameworks for defining and enforcing security policies across the entire system.</li>
+<li>BPF LSM requires developers to write custom eBPF programs, which can be complex and time-consuming for large-scale deployments.</li>
+</ol>
+</li>
+<li>System-Wide Enforcement:<ol>
+<li>SELinux and AppArmor are designed for system-wide enforcement of security policies.</li>
+<li>BPF LSM is more suited for application-specific or targeted enforcement, making it less ideal for environments requiring strict, system-wide security.</li>
+</ol>
+</li>
+<li>Learning Curve:<ol>
+<li>Writing eBPF programs for BPF LSM requires knowledge of C, the Linux kernel, and eBPF tooling.</li>
+<li>SELinux and AppArmor have higher-level policy languages that, while complex, are more accessible for system administrators.</li>
+</ol>
+</li>
+</ol>

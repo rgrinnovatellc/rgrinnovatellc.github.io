@@ -1,0 +1,54 @@
+<h1 id="aosp--make-a-change-and-push-code-for-code-review">AOSP--Make a Change and Push Code for Code Review</h1>
+<pre><code class="language-bash">
+1. cd frameworks/native
+
+2. upgautam@amd:/opt/aosp/frameworks/native$ repo start make_a_change .
+Starting make_a_change: 100% (1/1), done in 0.102s
+upgautam@amd:/opt/aosp/frameworks/native$ repo branch
+*  make_a_change             | in frameworks/native
+
+
+3. Edit: services/surfaceflinger/SurfaceFlinger.cpp
+4. Find: void SurfaceFlinger::updateColorMatrixLocked() { .... }
+5. Add &quot;mClientColorMatrix = mat4(vec4{1.0f, 0.0f, 0.0f, 0.0f}, vec4{0.0f, -1.0f, 0.0f, 0.0f},
+                          vec4{0.0f, 0.0f, -1.0f, 0.0f}, vec4{0.0f, 1.0f, 1.0f, 1.0f});&quot; at the start of the body.
+6. Build the code: m # you can run from this directory /opt/aosp/frameworks/native/services/surfaceflinger
+</code></pre>
+<p>If cuttlefish emulator is already running then update the build on the device</p>
+<pre><code class="language-bash">adb root
+adb remount -R
+adb root
+adb sync
+adb reboot
+</code></pre>
+<p>If not, simply starting an emulator should show your updated screen of the emulator.
+Reference: <a href="https://source.android.com/docs/setup/start">https://source.android.com/docs/setup/start</a></p>
+<h2 id="push-your-code-to-google-source-this-is-being-aosp-contributor">Push your code to google source (this is being AOSP contributor)</h2>
+<pre><code class="language-bash">cd frameworks/native
+git add .
+git commit
+</code></pre>
+<p>Enter commit message
+<code>repo upload</code></p>
+<p>You will see synapsis something like this</p>
+<pre><code class="language-bash">Upload project frameworks/native/ to remote branch main:
+ branch make_a_change ( 1 commit, Sun Dec 15 09:32:33 2024 -0400):
+        ff46b36d android codelab change
+to https://android-review.googlesource.com/ (y/N)? y
+remote: Processing changes: refs: 1, new: 1, done
+remote:
+remote: SUCCESS
+remote:
+remote:   https://android-review.googlesource.com/c/platform/frameworks/native/+/1098432 android make_a_change change [NEW]
+remote:
+To https://android-review.googlesource.com/platform/frameworks/native
+* [new branch]          make_a_change -&gt; refs/for/main
+</code></pre>
+<p>Now, you can view change in
+<code>https://android-review.googlesource.com/c/platform/frameworks/native/+/1098432</code></p>
+<p>Since, we are just testing here, please revert <code>repo abandon make_a_change .</code></p>
+<p>Then just reset your working dir. </p>
+<pre><code class="language-bash">git reset HEAD frameworks/native
+git checkout .
+</code></pre>
+<p>All done!</p>

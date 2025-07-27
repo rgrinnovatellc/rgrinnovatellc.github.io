@@ -1,0 +1,134 @@
+img { 
+    border-radius:5%;
+}
+
+.jumbotron {
+    padding: 2rem; 
+    padding-bottom: 1.5rem; 
+    margin-top: 2rem; 
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.navbar {
+  margin-bottom: 20px;
+  border-bottom: 4px solid var(--secondary);
+}
+
+.btn {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.container-fluid {
+  max-width: 1200px;
+}
+
+.footer {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+// Footer text styling for consistent theme colors
+.footer-text {
+  color: var(--text-secondary) !important;
+}
+
+.footer-link {
+  color: var(--text-secondary) !important;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.footer-link:hover {
+  color: var(--link-color) !important;
+  text-decoration: none;
+}
+
+// Contact info styling for footer
+.contact-info {
+  color: var(--text-secondary);
+}
+
+.contact-info li {
+  color: var(--text-secondary);
+}
+
+.contact-info a {
+  color: var(--text-secondary) !important;
+}
+
+.contact-info a:hover {
+  color: var(--link-color) !important;
+}
+
+// Beautiful name styling
+.name-display {
+  text-align: left;
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+.name-display br {
+  display: block;
+  content: "";
+  margin: 0.2rem 0;
+}
+
+// Make the founder title smaller and less prominent
+.name-display .founder-title {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: var(--font-medium);
+  margin-top: 0.5rem;
+}
+
+.academic-info {
+  border-left: 3px solid var(--border-color);
+  padding-left: 1rem;
+  margin-top: 1.5rem;
+}
+
+.academic-info h4 {
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.academic-info p {
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.container-footer {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1200px;
+  padding-left:  20px;
+  padding-right: 20px;
+}
+
+.well-collapse {
+  padding-left:  20px;
+  padding-right: 20px;
+  padding-top:   12px;
+  padding-bottom: 4px;
+  border-radius:  7px;
+  min-height:     1px;
+  margin-top:    15px;
+  color: black;
+  background-color: var(--gray);
+  border: 2px solid var(--gray-dark);
+  blockquote {
+    border-color: var(--gray-dark);
+    border-color: rgba(0,0,0,.15);
+  }
+}
+
+.MathJax_ref {
+  fill: #00bc8c!important;
+}

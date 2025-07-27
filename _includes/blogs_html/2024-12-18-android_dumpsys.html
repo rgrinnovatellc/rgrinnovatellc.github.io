@@ -1,0 +1,16 @@
+<h1 id="dumpsys">Dumpsys</h1>
+<p><code>adb shell dumpsys [service] [options]</code></p>
+<p><code>adb shell dumpsys battery</code></p>
+<p>Synopsis would be like </p>
+<pre><code class="language-yaml">Battery Service:
+  status: 2
+  health: 2
+  present: true
+  level: 78
+  scale: 100
+  voltage: 3985
+  temperature: 290
+  technology: Li-ion
+</code></pre>
+<p>Read more: dumpsys.cpp and dumpsys.h </p>
+<p>There is no single Linux equivalent to Android&#39;s dumpsys, as dumpsys is a comprehensive tool that provides a wide range of system information. However, by combining several Linux tools such as top (resource monitoring), ps (process status), free (memory usage), vmstat (virtual memory statistics), dmesg (kernel ring buffer), lshw (hardware information), lsusb/lspci (USB/PCI devices), iostat (I/O statistics), uptime (system uptime), sysctl (system control), and netstat (network statistics), you can gather similar data and perform detailed system diagnostics on Linux.</p>

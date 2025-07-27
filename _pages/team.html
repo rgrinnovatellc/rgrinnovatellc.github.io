@@ -1,0 +1,273 @@
+---
+title: "Team"
+layout: gridlay
+sitemap: false
+permalink: /team/
+---
+
+<div class="card card-info">
+    <div class="card-header">
+        <i class="fa fa-user-md"></i> Principal Investigator
+    </div>
+    <div class="card-body">
+        {% for member in site.data.pi %}
+        <div class="card card-compact" style="margin-bottom: 1.5rem;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img src="{{ site.baseurl }}/images/{{ member.photo }}" width="100%" style="max-width:250px; border-radius: 0.5rem;"/>
+                    </div>
+                    <div class="col-sm-9 col-xs-12">
+                        <h4>{{ member.name }}</h4>
+                        <p><i>{{ member.info }}</i></p>
+                        
+                        <div class="social-links" style="margin: 0.5rem 0;">
+                            {% if member.website %}<a href="{{ member.website }}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fa fa-home"></i></a> {% endif %}
+                            {% if member.email %}<a href="mailto:{{ member.email }}" target="_blank" class="btn btn-outline-success btn-sm"><i class="fa fa-envelope"></i></a> {% endif %}
+                            {% if member.scholar %}<a href="{{ member.scholar }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="ai ai-google-scholar"></i></a> {% endif %}
+                            {% if member.cv %}<button onclick="openPDFModal('{{ site.baseurl }}/{{ member.cv }}', '{{ member.name }} - CV')" class="btn btn-outline-secondary btn-sm"><i class="ai ai-cv"></i></button> {% endif %}
+                            {% if member.github %}<a href="{{ member.github }}" target="_blank" class="btn btn-outline-dark btn-sm"><i class="fa fa-github"></i></a> {% endif %}
+                            {% if member.researchgate %}<a href="{{ member.researchgate }}" target="_blank" class="btn btn-outline-warning btn-sm"><i class="ai ai-researchgate"></i></a> {% endif %}
+                        </div>
+
+                        <ul style="overflow: hidden; margin-top: 0.5rem;">
+                            {% if member.education1 %}<li>{{ member.education1 }}</li>{% endif %}
+                            {% if member.education2 %}<li>{{ member.education2 }}</li>{% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card card-success">
+    <div class="card-header">
+        <i class="fa fa-graduation-cap"></i> Current Students and Postdocs
+    </div>
+    <div class="card-body">
+        <div class="card-grid-2">
+            {% for member in site.data.team_members %}
+            <div class="card card-compact">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <img src="{{ site.baseurl }}/images/{{ member.photo }}" width="100%" style="max-width:150px; border-radius: 0.5rem;"/>
+                        </div>
+                        <div class="col-sm-9">
+                            <h5>{{ member.name }}</h5>
+                            <p><i>{{ member.info }}</i></p>
+                            
+                            <div class="social-links" style="margin-top: 0.5rem;">
+                                {% if member.website %}<a href="{{ member.website }}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fa fa-home"></i></a> {% endif %}
+                                {% if member.email %}<a href="mailto:{{ member.email }}" target="_blank" class="btn btn-outline-success btn-sm"><i class="fa fa-envelope"></i></a> {% endif %}
+                                {% if member.scholar %}<a href="{{ member.scholar }}" target="_blank" class="btn btn-outline-info btn-sm"><i class="ai ai-google-scholar"></i></a> {% endif %}
+                                {% if member.cv %}<button onclick="openPDFModal('{{ site.baseurl }}/{{ member.cv }}', '{{ member.name }} - CV')" class="btn btn-outline-secondary btn-sm"><i class="ai ai-cv"></i></button> {% endif %}
+                                {% if member.github %}<a href="{{ member.github }}" target="_blank" class="btn btn-outline-dark btn-sm"><i class="fa fa-github"></i></a> {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="card card-warning">
+    <div class="card-header">
+        <i class="fa fa-history"></i> Alumni
+    </div>
+    <div class="card-body">
+        <div class="card-grid-2">
+            {% for member in site.data.alumni %}
+            <div class="card card-compact">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <img src="{{ site.baseurl }}/images/{{ member.photo }}" width="100%" style="max-width:150px; border-radius: 0.5rem;"/>
+                        </div>
+                        <div class="col-sm-9">
+                            <h5>{{ member.name }}</h5>
+                            <p><i>{{ member.duration }}</i></p>
+                            <p><strong>Role:</strong> {{ member.info }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="card card-info">
+    <div class="card-header">
+        <i class="fa fa-cogs"></i> Administrative Support
+    </div>
+    <div class="card-body">
+        <p><a href="mailto:exampleemail@gmail.com" class="btn btn-outline-primary"><i class="fa fa-envelope"></i> Example staff</a> is helping us (and other groups) with administration.</p>
+    </div>
+</div>
+
+<!-- PDF Viewer Modal -->
+<div id="pdfModal" class="pdf-modal">
+    <div class="pdf-modal-content">
+        <div class="pdf-modal-header">
+            <h3 class="pdf-modal-title" id="pdfModalTitle">CV</h3>
+            <button class="pdf-modal-close" onclick="closePDFModal()">&times;</button>
+        </div>
+        <div class="pdf-modal-body">
+            <iframe id="pdfIframe" class="pdf-iframe" src=""></iframe>
+        </div>
+    </div>
+</div>
+
+<style>
+/* PDF Modal Styles */
+.pdf-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.pdf-modal-content {
+    position: relative;
+    margin: 2% auto;
+    width: 90%;
+    height: 90%;
+    background-color: var(--bg-primary);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.pdf-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.pdf-modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.pdf-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.pdf-modal-close:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.pdf-modal-body {
+    height: calc(100% - 4rem);
+    padding: 0;
+    overflow: hidden;
+}
+
+.pdf-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pdf-modal-content {
+        width: 95%;
+        height: 95%;
+        margin: 1% auto;
+    }
+    
+    .pdf-modal-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .pdf-modal-title {
+        font-size: 1.1rem;
+    }
+}
+</style>
+
+<script>
+function openPDFModal(pdfUrl, title) {
+    const modal = document.getElementById('pdfModal');
+    const iframe = document.getElementById('pdfIframe');
+    const modalTitle = document.getElementById('pdfModalTitle');
+    
+    // Set the PDF URL and title
+    iframe.src = pdfUrl;
+    modalTitle.textContent = title;
+    
+    // Show the modal
+    modal.style.display = 'block';
+    
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closePDFModal() {
+    const modal = document.getElementById('pdfModal');
+    const iframe = document.getElementById('pdfIframe');
+    
+    // Hide the modal
+    modal.style.display = 'none';
+    
+    // Clear the iframe source to stop PDF loading
+    iframe.src = '';
+    
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside of it
+document.getElementById('pdfModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closePDFModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const modal = document.getElementById('pdfModal');
+        if (modal.style.display === 'block') {
+            closePDFModal();
+        }
+    }
+});
+</script> 

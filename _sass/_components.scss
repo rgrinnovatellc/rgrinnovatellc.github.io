@@ -1,0 +1,441 @@
+// =============================================================================
+// COMPONENT STYLES - Replaces inline styles
+// =============================================================================
+
+// News and Events Components
+.news-item {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.news-date {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-medium);
+}
+
+.news-headline {
+  margin-top: 0.25rem;
+}
+
+.event-item {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.event-date {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-medium);
+}
+
+.event-title {
+  margin-top: 0.25rem;
+  font-weight: var(--font-medium);
+}
+
+.event-location {
+  margin-top: 0.25rem;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+// Card Components
+.card-info {
+  margin-bottom: 2rem;
+}
+
+.card-compact {
+  margin-bottom: 1.5rem;
+}
+
+// Image Components
+.profile-image {
+  width: 100%;
+  max-width: 250px;
+  border-radius: 0.5rem;
+}
+
+.profile-image-small {
+  width: 100%;
+  max-width: 150px;
+  border-radius: 0.5rem;
+}
+
+// Social Links
+.social-links {
+  margin: 1rem 0;
+  
+  &.compact {
+    margin-top: 0.5rem;
+  }
+}
+
+// Education Components
+.education-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.education-item {
+  margin-bottom: 0.25rem;
+  padding: 0.1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.education-item:last-child {
+  border-bottom: none;
+}
+
+.degree {
+  color: var(--text-primary);
+  margin-bottom: 0.05rem;
+  line-height: 1.2;
+}
+
+.advisors {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  margin-bottom: 0;
+  line-height: 1.1;
+}
+
+.education-list .advisors a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.education-list .advisors a:hover {
+  text-decoration: underline;
+}
+
+// About Page Condensed Layout
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.about-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.about-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.about-section h3 {
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  font-weight: var(--font-bold);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.about-section p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.about-section p:last-child {
+  margin-bottom: 0;
+}
+
+.about-section strong {
+  color: var(--text-primary);
+  font-weight: var(--font-bold);
+}
+
+.about-section em {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+// Current Role Styling
+.current-role {
+  margin-top: 0.5rem;
+}
+
+.current-role h4 {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: var(--font-bold);
+  margin-bottom: 0.5rem;
+}
+
+.role-period {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: var(--font-medium);
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+
+.current-role ul {
+  margin-bottom: 0;
+  padding-left: 1.5rem;
+}
+
+.current-role li {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+// Education Summary Styling
+.education-summary {
+  margin-top: 0.5rem;
+}
+
+.education-summary .edu-item {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.education-summary .edu-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.education-summary .edu-item h4 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: var(--font-bold);
+  margin-bottom: 0.25rem;
+}
+
+.education-summary .edu-item p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+// Publication Items Styling
+.publication-item {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.publication-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.publication-item p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.publication-item strong {
+  color: var(--text-primary);
+  font-weight: var(--font-bold);
+}
+
+// LinkedIn Section Styling
+.linkedin-section {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.linkedin-section h3 {
+  border-bottom: none;
+  margin-bottom: 0.5rem;
+}
+
+.linkedin-section p {
+  margin-bottom: 0;
+}
+
+.linkedin-section a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: var(--font-medium);
+}
+
+.linkedin-section a:hover {
+  text-decoration: underline;
+}
+
+// Hero Section Styling
+.hero-section {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.hero-section h1 {
+  font-size: 1.8rem;
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.hero-section p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin: 0 0 0.75rem 0;
+}
+
+.hero-section p:last-child {
+  margin-bottom: 0;
+}
+
+.hero-section strong {
+  color: var(--text-primary);
+}
+
+// Quick Links Styling
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.quick-link-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.quick-link-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.quick-link-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--link-color);
+}
+
+.quick-link-title {
+  font-size: 1.1rem;
+  font-weight: var(--font-medium);
+  margin-bottom: 0.5rem;
+}
+
+.quick-link-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .about-content {
+    max-width: 100%;
+  }
+  
+  .about-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+  }
+  
+  .about-section h3 {
+    font-size: 1.2rem;
+  }
+  
+  .current-role h4 {
+    font-size: 1rem;
+  }
+  
+  .education-summary .edu-item {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .hero-section h1 {
+    font-size: 1.5rem;
+  }
+  
+  .hero-section p {
+    font-size: 0.95rem;
+  }
+}
+
+// Button Groups
+.btn-group-compact {
+  margin-bottom: 1rem;
+}
+
+// Spacing Utilities
+.spacing-top {
+  margin-top: 1rem;
+}
+
+.spacing-bottom {
+  margin-bottom: 1.5rem;
+}
+
+.spacing-small {
+  margin-bottom: 0.5rem;
+}
+
+// Text Utilities
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+// Layout Utilities
+.text-center {
+  text-align: center;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+// Responsive Utilities
+@media (max-width: 768px) {
+  .profile-image {
+    max-width: 200px;
+  }
+  
+  .profile-image-small {
+    max-width: 120px;
+  }
+  
+  .experience-section h4 {
+    font-size: 1.1rem;
+  }
+  
+  .experience-entry {
+    margin-bottom: 0.5rem;
+  }
+} 

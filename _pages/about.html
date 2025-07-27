@@ -1,0 +1,232 @@
+---
+title: "About"
+layout: gridlay
+sitemap: false
+permalink: /about/
+---
+
+{% include utils.html %}
+
+<style>
+code {padding: 6px 8px; font-size: 90%;}
+.jumbotron {
+    text-align: left; 
+}
+
+/* PDF Modal Styles */
+.pdf-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.pdf-modal-content {
+    position: relative;
+    margin: 2% auto;
+    width: 90%;
+    height: 90%;
+    background-color: var(--bg-primary);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.pdf-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.pdf-modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.pdf-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.pdf-modal-close:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.pdf-modal-body {
+    height: calc(100% - 4rem);
+    padding: 0;
+    overflow: hidden;
+}
+
+.pdf-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pdf-modal-content {
+        width: 95%;
+        height: 95%;
+        margin: 1% auto;
+    }
+    
+    .pdf-modal-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .pdf-modal-title {
+        font-size: 1.1rem;
+    }
+}
+
+
+</style>
+
+<div class="card card-info">
+    <div class="card-header">
+        <i class="fa fa-user-circle"></i> Profile
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-3">
+                {% if profile_photo %}
+                    <img src="{{ profile_photo }}" width="100%" style="max-width:200px; border-radius: 0.5rem;"/>
+                {% endif %}
+            </div>
+            <div class="col-sm-9 col-xs-12">
+                <h3 class="name-display">{{ pi_data.name }}</h3>
+                <p class="founder-title">Founder, RGR Innovate LLC</p>
+                <div class="academic-info" style="margin-top: 1rem;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">{{ academic_position }}</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 0.25rem;">{{ academic_department }}</p>
+                    <p style="color: var(--text-secondary); margin-bottom: 0;">{{ academic_university }}</p>
+                </div>
+                
+                <div class="social-links" style="margin: 0.75rem 0;">
+                    {% if contact_email %}
+                        <a href="mailto:{{ contact_email }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fa fa-envelope"></i> Email
+                        </a>
+                    {% endif %}
+                    
+                    {% if scholar_link %}
+                        <a href="{{ scholar_link }}" target="_blank" class="btn btn-outline-info btn-sm">
+                            <i class="ai ai-google-scholar"></i> Scholar
+                        </a>
+                    {% endif %}
+                    
+                    {% if github_link %}
+                        <a href="{{ github_link }}" target="_blank" class="btn btn-outline-dark btn-sm">
+                            <i class="fa fa-github"></i> GitHub
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <div class="profile-description" style="margin-top: 1rem;">
+                    <p>I work at the intersection of the Linux kernel, eBPF, and IoT systems. My research focuses on system performance, observability, and security—developing lightweight tracing tools, optimizing kernel instrumentation, and enabling real-time protection for Bluetooth, networking, and kernel protocols. I also develop and maintain Android apps for RGR Innovate LLC that I own.</p>
+                    <p>Refer to <a href="{{ linkedin_link }}" target="_blank">LinkedIn Profile</a> for more information about me.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- PDF Viewer Modal -->
+<div id="pdfModal" class="pdf-modal">
+    <div class="pdf-modal-content">
+        <div class="pdf-modal-header">
+            <h3 class="pdf-modal-title" id="pdfModalTitle">CV</h3>
+            <button class="pdf-modal-close" onclick="closePDFModal()">&times;</button>
+        </div>
+        <div class="pdf-modal-body">
+            <iframe id="pdfIframe" class="pdf-iframe" src=""></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+function openPDFModal(pdfUrl, title) {
+    const modal = document.getElementById('pdfModal');
+    const iframe = document.getElementById('pdfIframe');
+    const modalTitle = document.getElementById('pdfModalTitle');
+    
+    // Set the PDF URL and title
+    iframe.src = pdfUrl;
+    modalTitle.textContent = title;
+    
+    // Show the modal
+    modal.style.display = 'block';
+    
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closePDFModal() {
+    const modal = document.getElementById('pdfModal');
+    const iframe = document.getElementById('pdfIframe');
+    
+    // Hide the modal
+    modal.style.display = 'none';
+    
+    // Clear the iframe source to stop PDF loading
+    iframe.src = '';
+    
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside of it
+document.getElementById('pdfModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closePDFModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const modal = document.getElementById('pdfModal');
+        if (modal.style.display === 'block') {
+            closePDFModal();
+        }
+    }
+});
+</script> 

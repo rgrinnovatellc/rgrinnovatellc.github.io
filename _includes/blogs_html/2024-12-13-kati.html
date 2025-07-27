@@ -1,0 +1,19 @@
+<h1 id="kati">Kati</h1>
+<p>It is used to accelerate incremental build of Android AOSP.</p>
+<ul>
+<li>Clone of make but modified make</li>
+<li>null buld: where just one file changed Vs. full build: where everything changed</li>
+<li>turning complete: GNU Make or any general purpose language can compute anything that is computable.</li>
+<li>Kati wraps up Make and becomes like DSL, making it more descriptive and easier to write build rules. But Kati is slow if it just wraps and focus on that DSL thing. So, kati is optimized.</li>
+<li>Kati is used to replace all Android.mk make files and convert them to ninja files (i.e., build.ninja). Ninja is a mode for kati. </li>
+<li>Kati consists of the following components:<ul>
+<li>Parser</li>
+<li>Evaluator</li>
+<li>Dependency builder</li>
+<li>Executor</li>
+<li>Ninja generator</li>
+</ul>
+</li>
+</ul>
+<p>Ninja uses a build file typically called build.ninja. This file contains the instructions for building a project.</p>
+<p>More you can read here: <a href="https://android.googlesource.com/platform/build/kati/+/master/INTERNALS.md">https://android.googlesource.com/platform/build/kati/+/master/INTERNALS.md</a></p>

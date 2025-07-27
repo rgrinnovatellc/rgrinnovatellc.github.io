@@ -1,0 +1,133 @@
+# =============================================================================
+# SITE CONFIGURATION
+# =============================================================================
+
+# Site Identity
+title: "Uddhav P. Gautam - Founder, RGR Innovate LLC"
+description: "Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC"
+baseurl: ""
+url: "https://rgrinnovatellc.github.io"
+
+# Contact Information
+email: "upgautam@vt.edu | rgrinnovatellc@gmail.com"
+phone: "+1 (919) 729-4141"
+github_username: "upgautamvt"
+
+# Academic Information
+affiliation: "Virginia Tech"
+position: "PhD Candidate"
+department: "Computer Engineering"
+university: "Virginia Polytechnic Institute and State University"
+location: "Blacksburg, Virginia 24061"
+
+# Office Details
+office:
+  building: "IT Security Office MC 0284"
+  hall: "1300 Torgersen Hall"
+  city: "Blacksburg"
+  state: "Virginia"
+  zip: "24061"
+  google_maps_link: "https://maps.google.com/?q=Virginia+Tech+Blacksburg+VA"
+
+# Social Media & Professional Links
+social:
+  github: "https://github.com/uddhavgautam3"
+  scholar: "https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
+  researchgate: "https://www.researchgate.net/profile/Uddhav-Gautam-2"
+
+# Navigation Configuration
+nav_pages:
+  - name: "about"
+    title: "About"
+    url: "/about"
+  - name: "publications"
+    title: "Publications"
+    url: "/publications"
+  - name: "software"
+    title: "Software"
+    url: "/software"
+  - name: "blogs"
+    title: "Blogs"
+    url: "/blogs"
+
+# Content Configuration
+content:
+  posts_per_page: 10
+  events_max_display: 10
+  news_max_display: 5
+  enable_excerpts: true
+  excerpt_length: 150
+
+# GitHub API Configuration (for Live Editor)
+github:
+  token: "" # Set via environment variable WEBSITE_TOKEN
+  repo: "rgrinnovatellc/rgrinnovatellc.github.io"
+  branch: "master"
+
+# Analytics Configuration
+analytics:
+  google_analytics: "" # Set your GA ID here
+  google_analytics_4: "" # Set your GA4 ID here
+  google_tag_manager: "" # Set your GTM ID here
+
+# Jekyll Scholar Configuration
+scholar:
+  last_name: "Gautam"
+  first_name: ["Uddhav"]
+  style: "citesty"
+  locale: "en"
+  source: "/assets/"
+  bibliography: "ref.bib"
+  bibliography_template: "bibtemplate"
+  sort_by: "year, month"
+  order: "descending"
+  replace_strings: true
+  join_strings: true
+  details_dir: "bibliography"
+  details_layout: "bibtex.html"
+  details_link: "Details"
+  query: "@*"
+  bibliography_list_attributes:
+    reversed: "reversed"
+
+# Build Configuration
+markdown: "kramdown"
+highlighter: "rouge"
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
+
+# Kramdown Configuration
+kramdown:
+  input: "GFM"
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: "as_char"
+  toc_levels: "1..6"
+  smart_quotes: "lsquo,rsquo,ldquo,rdquo"
+  enable_coderay: false
+  parse_block_html: true
+
+# Plugins
+plugins:
+  - "jekyll/scholar"
+
+# Include Configuration
+include:
+  - ".htaccess"
+  - "_pages"
+
+# Exclude Configuration
+exclude:
+  - "Gemfile"
+  - "Gemfile.lock"
+  - "update_bootstrap.sh"
+  - "switch_theme.sh"
+  - "tags"
+  - "Rakefile"
+  - "node_modules"
+  - "vendor"
+  - ".bundle"
+  - ".jekyll-cache"
+  - "_site"

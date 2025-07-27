@@ -1,0 +1,53 @@
+<div class="card card-featured">
+    <div class="card-header">
+        <i class="fa fa-newspaper-o"></i> Latest News
+    </div>
+    <div class="card-body">
+        {% for article in site.data.news limit:3 %}
+        <div class="news-item" style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+            <div class="news-date" style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: var(--font-medium);">
+                {{ article.date }}
+            </div>
+            <div class="news-headline" style="margin-top: 0.25rem;">
+                {{ article.headline }}
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div style="text-align: center; margin-top: 1rem;">
+            <a href="{{ site.baseurl }}/allnews.html" class="btn btn-outline-primary btn-sm">
+                <i class="fa fa-arrow-right"></i> View All News
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card card-info">
+    <div class="card-header">
+        <i class="fa fa-calendar"></i> Upcoming Events
+    </div>
+    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+        {% assign event_count = site.data.events.size %}
+        {% if event_count > 10 %}
+            {% assign events_to_show = 10 %}
+        {% else %}
+            {% assign events_to_show = event_count %}
+        {% endif %}
+        
+        {% for article in site.data.events limit:events_to_show %}
+        <div class="event-item" style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+            <div class="event-date" style="font-size: var(--text-sm); color: var(--text-secondary); font-weight: var(--font-medium);">
+                {{ article.date }}
+            </div>
+            <div class="event-title" style="margin-top: 0.25rem; font-weight: var(--font-medium);">
+                {{ article.headline }}
+            </div>
+            <div class="event-location" style="margin-top: 0.25rem; font-size: var(--text-sm); color: var(--text-secondary);">
+                <i class="fa fa-map-marker"></i> {{ article.location }}
+            </div>
+        </div>
+        {% endfor %}
+        
+
+    </div>
+</div>

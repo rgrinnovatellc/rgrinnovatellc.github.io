@@ -1,0 +1,404 @@
+<h1 id="basic-client-server-communication-using-both-tcp-and-udp">Basic client-server communication using both TCP and UDP.</h1>
+<p>Here we provide a basic client server communication using both TPC and UDP.</p>
+<h2 id="udp">UDP</h2>
+<p>User Datagram Protocol (UDP) is a connectionless protocol unlike connection oriented protocol
+Transmission Control Protocol (TCP).</p>
+<h3 id="linux-udp-socket">Linux UDP socket</h3>
+<pre><code class="language-c">//udp_server.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;sys/socket.h&gt;
+
+#define BUFFER_SIZE 1024
+
+int main(int argc, char *argv[]) {
+    //1. process parameters
+    if (argc != 4) {
+        printf(&quot;Syntax: ./server_prog server_ip server_port message_to_send\n&quot;);
+        return -1;
+    }
+    char *ip = argv[1];
+    int port = atoi(argv[2]); //similar to Integer.parseInt(argv[2]) in Java
+    char *message = argv[3];
+
+
+    //2. create socket
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock &lt; 0) {
+        perror(&quot;Socket creation failed&quot;);
+        return -1;
+    }
+
+    //2. Create sockaddr_in
+    struct sockaddr_in server_addr;
+    memset(&amp;server_addr, 0, sizeof(server_addr)); //fill with all zeros (i.e., zeroed out)
+    //now fill with correct values
+    server_addr.sin_family = AF_INET;
+    //TCP-IP uses big-endian. Default in networking is big-endian.
+    //our x86 pc is little-endian. So, any value we receive as big-endian, must be converted to little endian
+    //Endianess comes to any multibyte data communication
+    server_addr.sin_port = htons(port); //host to network byte order (i.e., big endian)
+
+    // Convert ip address to network binary format and validate IP address
+    // return 0 means invalid IP, and -1 means error
+    if (inet_pton(AF_INET, ip, &amp;server_addr.sin_addr) &lt;= 0) {
+        perror(&quot;Invalid address&quot;);
+        close(sock);
+        return -1;
+    }
+
+    //4. bind socket
+    // we also pass length of server_addr to provide we read full lenght of socket
+    if (bind(sock, (struct sockaddr *)&amp;server_addr, sizeof(server_addr)) == -1) {
+        perror(&quot;Bind failed&quot;);
+        close(sock);
+        return -1;
+    }
+
+    printf(&quot;Server is listening on %s:%d\n&quot;, ip, port);
+
+    //5. create buffer to send/receive message
+    // any two buffer to store receive and responseds
+    char buffer[BUFFER_SIZE];
+    char response[BUFFER_SIZE];
+    struct sockaddr_in client_addr;
+    socklen_t client_addr_len = sizeof(client_addr);
+
+
+    //6. looper to receive and send
+    while (1) {
+        memset(buffer, 0, BUFFER_SIZE);
+        // in recvfrom function client_addr_len part is a pointer, pointer points to address, therefore, address of the value should be passed. Pass through by reference example
+        ssize_t received_len = recvfrom(sock, buffer, BUFFER_SIZE - 1, 0, (struct sockaddr *)&amp;client_addr, &amp;client_addr_len);
+        if (received_len &lt; 0) {
+            perror(&quot;recvfrom failed&quot;);
+            break;
+        }
+
+        buffer[received_len] = &#39;\0&#39;; //null-termination
+        printf(&quot;Received message from client: %s\n&quot;, buffer);
+
+        // Ensure no overflow during message construction
+        snprintf(response, BUFFER_SIZE, &quot;%.*s: %.*s&quot;, 512, message, 512, buffer);
+
+        ssize_t sent_len = sendto(sock, response, strlen(response), 0, (struct sockaddr *)&amp;client_addr, client_addr_len);
+        if (sent_len &lt; 0) {
+            perror(&quot;sendto failed&quot;);
+            break;
+        }
+
+        printf(&quot;Sent response to client: %s\n&quot;, response);
+    }
+
+    //7. all done, sock can be closed
+    close(sock);
+    return 0;
+}
+</code></pre>
+<p>To compile: <code>gcc -o udp_server udp_server.c</code></p>
+<p>To start server: <code>./udp_server 127.0.0.1 8080 &quot;hello&quot;</code></p>
+<p>To test: <code>echo &quot;hello server&quot; | nc -u 127.0.0.1 8080</code></p>
+<pre><code class="language-shell">!root@amd:/home/upgautam/network_programming_linux# ./udp_server 127.0.0.1 8080 &quot;hello&quot;
+Server is listening on 127.0.0.1:8080
+Received message from client: hello server
+Sent response to client: hello: hello server
+
+# send from client
+upgautam@amd:~/network_programming_linux$ echo &quot;hello server&quot; | nc -u 127.0.0.1 8080
+hello: hello server
+</code></pre>
+<p>Now, we make udp_client.c program to ping to udp_server.c</p>
+<pre><code class="language-c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;sys/socket.h&gt;
+
+#define BUFFER_SIZE 1024
+
+int main(int argc, char *argv[]) {
+    // Check for correct number of arguments
+    if (argc != 4) {
+        printf(&quot;Usage: %s &lt;server_ip&gt; &lt;server_port&gt; &lt;message&gt;\n&quot;, argv[0]);
+        return -1;
+    }
+
+    // Process command-line arguments
+    char *server_ip = argv[1];
+    int server_port = atoi(argv[2]);
+    char *message = argv[3];
+
+    // Create UDP socket
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock &lt; 0) {
+        perror(&quot;Socket creation failed&quot;);
+        return -1;
+    }
+
+    // Configure server address
+    struct sockaddr_in server_addr;
+    memset(&amp;server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(server_port);
+
+    // Convert server IP to binary format
+    if (inet_pton(AF_INET, server_ip, &amp;server_addr.sin_addr) &lt;= 0) {
+        perror(&quot;Invalid server IP address&quot;);
+        close(sock);
+        return -1;
+    }
+
+    // Send message to server
+    ssize_t sent_len = sendto(sock, message, strlen(message), 0,
+                              (struct sockaddr *)&amp;server_addr, sizeof(server_addr));
+    if (sent_len &lt; 0) {
+        perror(&quot;Failed to send message&quot;);
+        close(sock);
+        return -1;
+    }
+
+    printf(&quot;Message sent to %s:%d\n&quot;, server_ip, server_port);
+
+    // Receive server response
+    char buffer[BUFFER_SIZE];
+    memset(buffer, 0, BUFFER_SIZE);
+
+    socklen_t server_addr_len = sizeof(server_addr);
+    ssize_t received_len = recvfrom(sock, buffer, BUFFER_SIZE - 1, 0,
+                                    (struct sockaddr *)&amp;server_addr, &amp;server_addr_len);
+    if (received_len &lt; 0) {
+        perror(&quot;Failed to receive response&quot;);
+        close(sock);
+        return -1;
+    }
+
+    // Print server response
+    printf(&quot;Server response: %s\n&quot;, buffer);
+
+    // Close the socket
+    close(sock);
+
+    return 0;
+}
+</code></pre>
+<h2 id="tcp">TCP</h2>
+<p>TCP is connection oriented protocol.</p>
+<h3 id="linux-tcp-socket">Linux TCP socket</h3>
+<pre><code class="language-c">//tcp_server.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;signal.h&gt;
+
+#define BUFFER_SIZE 1024
+#define BACKLOG 10 // Number of pending connections allowed in the queue
+
+int server_sock; // Global variable to access and close the socket in signal handler
+
+// Signal handler for SIGINT (Ctrl+C)
+void handle_sigint(int sig) {
+    printf(&quot;\nCaught signal %d. Shutting down server...\n&quot;, sig);
+    close(server_sock); // Clean up resources
+    exit(0); // Exit the program
+}
+
+int main(int argc, char *argv[]) {
+    //1. process parameters
+    if (argc != 4) {
+        printf(&quot;Syntax: ./server_prog server_ip server_port message_to_send\n&quot;);
+        return -1;
+    }
+    char *ip = argv[1];
+    int port = atoi(argv[2]); // Convert port number from string to integer
+    char *message = argv[3];
+
+    // Set up signal handling for SIGINT
+    signal(SIGINT, handle_sigint);
+
+    //2. create socket
+    server_sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_sock &lt; 0) {
+        perror(&quot;Socket creation failed&quot;);
+        return -1;
+    }
+
+    //3. Create sockaddr_in
+    struct sockaddr_in server_addr;
+    memset(&amp;server_addr, 0, sizeof(server_addr)); // Zero out the structure
+
+    // Set up server address structure
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(port);
+    if (inet_pton(AF_INET, ip, &amp;server_addr.sin_addr) &lt;= 0) {
+        perror(&quot;Invalid IP address&quot;);
+        close(server_sock);
+        return -1;
+    }
+
+    //4. bind socket
+    if (bind(server_sock, (struct sockaddr *)&amp;server_addr, sizeof(server_addr)) &lt; 0) {
+        perror(&quot;Bind failed&quot;);
+        close(server_sock);
+        return -1;
+    }
+
+    //4.1. We need to listen in TCP (this we don&#39;t do in UDP)
+    // Start listening for incoming connections
+    if (listen(server_sock, BACKLOG) &lt; 0) {
+        perror(&quot;Listen failed&quot;);
+        close(server_sock);
+        return -1;
+    }
+
+    printf(&quot;Server is listening on %s:%d\n&quot;, ip, port);
+
+    //5. create buffer to send/receive message
+    struct sockaddr_in client_addr;
+    socklen_t client_addr_len = sizeof(client_addr);
+    char buffer[BUFFER_SIZE];
+    char response[BUFFER_SIZE];
+
+    //6. main looper
+    while (1) {
+        // 6.1. We also need to accept (this we don&#39;t do in UDP)
+        // Accept a new connection from a client
+        int client_sock = accept(server_sock, (struct sockaddr *)&amp;client_addr, &amp;client_addr_len);
+        if (client_sock &lt; 0) {
+            perror(&quot;Accept failed&quot;);
+            continue; // Accept failed, try the next connection
+        }
+
+        printf(&quot;Connected to client\n&quot;);
+
+        // Clear the buffer for receiving data
+        memset(buffer, 0, BUFFER_SIZE);
+
+        // Receive data from the client
+        ssize_t received_len = recv(client_sock, buffer, BUFFER_SIZE - 1, 0);
+        if (received_len &lt; 0) {
+            perror(&quot;Receive failed&quot;);
+            close(client_sock);
+            continue; // Continue with the next client
+        }
+
+        buffer[received_len] = &#39;\0&#39;; // Null-terminate the received string
+        printf(&quot;Received message from client: %s\n&quot;, buffer);
+
+        // Construct the response message
+        snprintf(response, BUFFER_SIZE, &quot;%s: %s&quot;, message, buffer);
+
+        // Send the response back to the client
+        ssize_t sent_len = send(client_sock, response, strlen(response), 0);
+        if (sent_len &lt; 0) {
+            perror(&quot;Send failed&quot;);
+        } else {
+            printf(&quot;Sent response to client: %s\n&quot;, response);
+        }
+
+        // Close the connection with the current client
+        close(client_sock);
+    }
+
+    // This will never be reached unless the loop exits, but is retained for clarity
+    close(server_sock);
+    return 0;
+}
+</code></pre>
+<p>To compile: <code>gcc -o tdp_server tdp_server.c</code>
+To start server: <code>./tdp_server 127.0.0.1 8080 &quot;hello&quot;</code>
+To test: <code>echo &quot;hello server&quot; | nc -u 127.0.0.1 8080</code></p>
+<pre><code class="language-shell">!root@amd:/home/upgautam/network_programming_linux# ./tcp_server 127.0.0.1 8080 &quot;hello&quot;
+Server is listening on 127.0.0.1:8080
+Received message from client: hello server
+Sent response to client: hello: hello server
+
+# send from client
+upgautam@amd:~/network_programming_linux$ echo &quot;hello server&quot; | nc -u 127.0.0.1 8080
+hello: hello server
+</code></pre>
+<p>Now, we make a tcp_client.c program to ping to tcp_server.c</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;sys/socket.h&gt;
+
+#define BUFFER_SIZE 1024
+
+int main(int argc, char *argv[]) {
+    if (argc != 4) {
+        printf(&quot;Syntax: ./tcp_client server_ip server_port message_to_send\n&quot;);
+        return -1;
+    }
+
+    char *ip = argv[1];
+    int port = atoi(argv[2]); // Convert port number from string to integer
+    char *message = argv[3];
+
+    // Create a TCP socket
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock &lt; 0) {
+        perror(&quot;Socket creation failed&quot;);
+        return -1;
+    }
+
+    struct sockaddr_in server_addr;
+    memset(&amp;server_addr, 0, sizeof(server_addr)); // Zero out the structure
+
+    // Set up server address structure
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(port);
+
+    // Convert IP address to binary form and validate
+    if (inet_pton(AF_INET, ip, &amp;server_addr.sin_addr) &lt;= 0) {
+        perror(&quot;Invalid IP address&quot;);
+        close(sock);
+        return -1;
+    }
+
+    // Connect to the server
+    if (connect(sock, (struct sockaddr *)&amp;server_addr, sizeof(server_addr)) &lt; 0) {
+        perror(&quot;Connection to the server failed&quot;);
+        close(sock);
+        return -1;
+    }
+
+    printf(&quot;Connected to the server at %s:%d\n&quot;, ip, port);
+
+    // Send the message to the server
+    if (send(sock, message, strlen(message), 0) &lt; 0) {
+        perror(&quot;Message sending failed&quot;);
+        close(sock);
+        return -1;
+    }
+
+    printf(&quot;Message sent: %s\n&quot;, message);
+
+    // Receive the response from the server
+    char buffer[BUFFER_SIZE];
+    memset(buffer, 0, BUFFER_SIZE);
+    ssize_t received_len = recv(sock, buffer, BUFFER_SIZE - 1, 0);
+    if (received_len &lt; 0) {
+        perror(&quot;Response receiving failed&quot;);
+    } else {
+        buffer[received_len] = &#39;\0&#39;; // Null-terminate the response
+        printf(&quot;Response from server: %s\n&quot;, buffer);
+    }
+
+    // Close the socket
+    close(sock);
+    printf(&quot;Disconnected from the server\n&quot;);
+    return 0;
+}
+</code></pre>
+<h2 id="difference-between-udp-and-tcp-server-program">Difference between UDP and TCP server program</h2>
+<p>We have listen and accept functionality in TCP that are used to create connection; that is why connection-oriented.</p>

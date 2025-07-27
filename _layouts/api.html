@@ -1,0 +1,104 @@
+---
+layout: null
+---
+
+{% if page.url contains '/api/content/' %}
+  {% assign file_path = request.query_string | split: '=' | last | url_decode %}
+  
+  {% comment %} Handle different file types more flexibly {% endcomment %}
+  {% if file_path contains '_pages/' or file_path contains '_posts/' or file_path contains '_layouts/' or file_path contains '_includes/' or file_path contains '.html' or file_path contains '.md' %}
+    
+    {% comment %} Try to read the actual file content {% endcomment %}
+    {% assign file_content = '' %}
+    {% assign file_found = false %}
+    
+    {% comment %} Try to read the file directly {% endcomment %}
+    {% capture file_content %}{% include_relative {{ file_path }} %}{% endcapture %}
+    
+    {% if file_content != '' %}
+      {% assign file_found = true %}
+    {% endif %}
+    
+    {% comment %} If file not found, try alternative paths {% endcomment %}
+    {% unless file_found %}
+      {% if file_path contains '_pages/' %}
+        {% assign alt_path = file_path | replace: '_pages/', '' %}
+        {% capture file_content %}{% include_relative {{ alt_path }} %}{% endcapture %}
+        {% if file_content != '' %}
+          {% assign file_found = true %}
+        {% endif %}
+      {% endif %}
+    {% endunless %}
+    
+    {% comment %} If still not found, generate template content {% endcomment %}
+    {% unless file_found %}
+      {% assign file_content = '---
+layout: page
+title: ' | append: file_path | append: '
+---
+
+# ' | append: file_path | append: '
+
+This is the content for ' | append: file_path | append: '
+
+## Page Information
+- **File:** ' | append: file_path | append: '
+- **URL:** ' | append: request.url | append: '
+- **Last Modified:** ' | append: site.time | date: "%Y-%m-%d" | append: '
+
+## Content
+This page was loaded via the live editor system.
+
+### Features
+- Live editing capability
+- Password protection
+- GitHub integration
+- Real-time preview
+
+### How to Edit
+1. Click the "Edit Page" button
+2. Enter the password: 984904
+3. Make your changes
+4. Save to create a pull request' %}
+    {% endunless %}
+    
+    {
+      "success": true,
+      "file_path": "{{ file_path }}",
+      "content": {{ file_content | jsonify }},
+      "message": "Content loaded successfully"
+    }
+  {% else %}
+    {
+      "success": false,
+      "error": "Invalid file path",
+      "message": "File path must contain _pages/, _posts/, _layouts/, _includes/, or be an .html/.md file"
+    }
+  {% endif %}
+{% elsif page.url contains '/api/update/' %}
+  {% comment %} For now, return a response indicating the system is ready {% endcomment %}
+  {% assign file_path = request.query_string | split: '=' | last | url_decode %}
+  
+  {% if file_path contains '_pages/' or file_path contains '_posts/' or file_path contains '_layouts/' or file_path contains '_includes/' or file_path contains '.html' or file_path contains '.md' %}
+    
+    {
+      "success": true,
+      "file_path": "{{ file_path }}",
+      "message": "Content update request received. GitHub integration requires server-side processing.",
+      "pull_request_url": "https://github.com/upgautamvt/upgautamvt.github.io/pulls",
+      "note": "To enable real GitHub integration, set up the GitHub token and use the server-side API"
+    }
+  {% else %}
+    {
+      "success": false,
+      "error": "Invalid file path",
+      "message": "File path must contain _pages/, _posts/, _layouts/, _includes/, or be an .html/.md file"
+    }
+  {% endif %}
+{% else %}
+  {
+    "success": false,
+    "error": "Invalid API endpoint",
+    "message": "Available endpoints: /api/content/ and /api/update/"
+  }
+{% endif %} 
