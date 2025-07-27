@@ -62,6 +62,11 @@
   --text-secondary: rgb(var(--text-secondary-rgb));
   --link-color: rgb(var(--link-color-rgb));
   --primary-color: rgb(var(--primary-color-rgb));
+  
+  // Navbar variables
+  --navbar-bg: rgba(255, 255, 255, 0.95);
+  --navbar-text: rgb(var(--text-primary-rgb));
+  --navbar-toggler-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(33, 37, 41, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 [data-theme="dark"] {
@@ -83,6 +88,11 @@
   --text-secondary: rgb(var(--text-secondary-rgb));
   --link-color: rgb(var(--link-color-rgb));
   --primary-color: rgb(var(--primary-color-rgb));
+  
+  // Navbar variables
+  --navbar-bg: rgba(33, 37, 41, 0.95);
+  --navbar-text: rgb(var(--text-primary-rgb));
+  --navbar-toggler-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(248, 249, 250, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 // Prevent flash of unstyled content
@@ -977,13 +987,23 @@ html {
     padding: 0.5rem !important;
     border-radius: 0.5rem !important;
     transition: all 0.3s ease !important;
+    background-color: transparent !important;
     
     &:focus {
       box-shadow: 0 0 0 0.2rem rgba(var(--link-color-rgb), 0.25) !important;
     }
     
+    &:hover {
+      background-color: rgba(var(--link-color-rgb), 0.1) !important;
+    }
+    
     .navbar-toggler-icon {
       background-image: var(--navbar-toggler-icon) !important;
+      background-size: 1.5em !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      width: 1.5em !important;
+      height: 1.5em !important;
     }
   }
 }
@@ -1028,6 +1048,14 @@ body {
         padding: 0.5rem 0.75rem !important;
         margin: 0.25rem 0 !important;
       }
-    }
+      
+             // Mobile menu styling
+       .navbar-collapse {
+         background-color: var(--navbar-bg) !important;
+         border-radius: 0.5rem !important;
+         margin-top: 0.5rem !important;
+         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+       }
+     }
   }
 } 
