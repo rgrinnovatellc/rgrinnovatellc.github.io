@@ -1,0 +1,133 @@
+---
+title: "Publications"
+layout: gridlay
+sitemap: false
+permalink: /publications/
+years: [2016, 2017, 2018, 2019, 2020, 2021]
+---
+
+<style>
+/* Fix bibliography entry margins */
+.bibliography {
+    margin: 0;
+    padding: 0;
+}
+
+.bibliography li {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.bibliography li:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.bibliography li:first-child {
+    margin-top: 0;
+}
+
+.bibliography li:last-child {
+    margin-bottom: 0;
+}
+
+/* Override global text-justify for bibliography */
+.bibliography li,
+.bibliography li *,
+.bibliography li.text-justify,
+.bibliography li .text-justify {
+    text-align: left !important;
+    text-align-last: left !important;
+    text-justify: auto !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+}
+
+/* Aggressive text spacing fix for bibliography entries */
+.bibliography li,
+.bibliography li *,
+.bibliography li *::before,
+.bibliography li *::after {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.6 !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+    text-align: left !important;
+}
+
+.bibliography li p {
+    margin-bottom: 0.5rem !important;
+}
+
+.bibliography li p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Target specific bibliography plugin elements */
+.bibliography li .title,
+.bibliography li .author,
+.bibliography li .note,
+.bibliography li .publisher,
+.bibliography li .journal,
+.bibliography li .booktitle,
+.bibliography li .year,
+.bibliography li .url,
+.bibliography li .doi,
+.bibliography li .volume,
+.bibliography li .number,
+.bibliography li .pages,
+.bibliography li .month,
+.bibliography li .series,
+.bibliography li .address,
+.bibliography li .edition,
+.bibliography li .chapter,
+.bibliography li .type,
+.bibliography li .school,
+.bibliography li .institution,
+.bibliography li .organization {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.6 !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+    text-align: left !important;
+}
+
+/* Fix any inline elements */
+.bibliography li span,
+.bibliography li a,
+.bibliography li em,
+.bibliography li strong,
+.bibliography li i,
+.bibliography li b {
+    margin: 0 !important;
+    padding: 0 !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+    text-align: left !important;
+}
+</style>
+
+<div class="card card-success">
+    <div class="card-header">
+        <i class="fa fa-book"></i> Refereed Journal Articles
+    </div>
+    <div class="card-body">
+        {% bibliography --query @article %}
+    </div>
+</div>
+
+<div class="card card-info">
+    <div class="card-header">
+        <i class="fa fa-users"></i> Refereed Conference Proceedings
+    </div>
+    <div class="card-body">
+        {% bibliography --query @inproceedings %}
+    </div>
+</div> 

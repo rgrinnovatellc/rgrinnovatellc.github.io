@@ -1,0 +1,112 @@
+---
+title: "Home"
+layout: homelay
+sitemap: false
+permalink: /
+---
+
+<style>
+code {padding: 6px 8px; font-size: 90%;}
+.jumbotron {
+    text-align: left; 
+}
+.welcome-section {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: var(--tracking-tight);
+}
+.welcome-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: var(--font-medium);
+    margin-bottom: 1rem;
+}
+.welcome-description {
+    font-size: 1rem;
+    color: var(--text-primary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: var(--leading-relaxed);
+}
+</style>
+
+
+
+<div class="card card-featured">
+    <div class="card-header">
+        <i class="fa fa-user"></i> About Me
+    </div>
+    <div class="card-body">
+        <p>I am Uddhav P. Gautam, currently working as a researcher in the Linux Kernel and eBPF space at Virginia Tech, where my focus is on
+        exploring and improving various kernel components. My work includes developing eBPF-based tracing and profiling use
+        cases, and instrumenting the kernel for both micro and macro benchmarking.</p>
+        
+        <p>I've published a paper on eliminating eBPF tracing overhead on untraced processes and developed kernel modules for various use cases, 
+        such as propagating user-space code into kernel-space and triggering kernel functions. As part of my research, I added a custom Kfunc 
+        to enhance eBPF, enabling it to serialize and deserialize Protocol Buffers (protobuf).</p>
+        
+        <p>Additionally, I use tracing tools such as BPFTrace, Strace, and Ftrace for debugging and performance testing to drive
+        further optimizations in the Linux Kernel and its networking stack. I am also working on porting my research findings to
+        the Android Kernel to extend the impact of my work and improve performance across both platforms.</p>
+    </div>
+</div>
+
+
+
+<div class="card card-info" style="margin-bottom: 1.5rem;">
+    <div class="card-header">
+        <i class="fa fa-graduation-cap"></i> Education
+    </div>
+    <div class="card-body">
+        <div class="education-item" style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+            <h5 style="color: var(--text-primary); margin-bottom: 0.25rem;">PhD in Computer Engineering (2024-)</h5>
+            <p style="margin-bottom: 0.25rem;"><a href="https://www.vt.edu/" target="_blank">Virginia Tech</a> • Under the guidance of <a href="https://www.cs.vt.edu/people/faculty/haining-wang" target="_blank">Prof. Haining Wang</a> as chair and <a href="https://www.cs.vt.edu/people/faculty/randy-marchany" target="_blank">Randy Marchany</a> as co-chair</p>
+        </div>
+        
+        <div class="education-item" style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+            <h5 style="color: var(--text-primary); margin-bottom: 0.25rem;">M.S. in Computer Science (2015-2017)</h5>
+            <p style="margin-bottom: 0.25rem;"><a href="https://ualr.edu/" target="_blank">University of Arkansas at Little Rock</a></p>
+        </div>
+        
+        <div class="education-item" style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+            <h5 style="color: var(--text-primary); margin-bottom: 0.25rem;">B.S. in Computer Science (2009-2013)</h5>
+            <p style="margin-bottom: 0.25rem;"><a href="https://tu.edu.np/" target="_blank">Tribhuvan University</a>, Nepal</p>
+        </div>
+        
+        <div class="education-item">
+            <h5 style="color: var(--text-primary); margin-bottom: 0.25rem;">B.S. in Mathematics (2007-2010)</h5>
+            <p style="margin-bottom: 0.25rem;"><a href="https://tu.edu.np/" target="_blank">Tribhuvan University</a>, Nepal</p>
+        </div>
+    </div>
+</div>
+
+<div class="card card-success">
+    <div class="card-header">
+        <i class="fa fa-briefcase"></i> Experience
+    </div>
+    <div class="card-body">
+        <div class="experience-item" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);">
+            <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Researcher</h5>
+            <p style="margin-bottom: 0.25rem; font-weight: var(--font-medium);">Linux Kernel and eBPF Research</p>
+            <p style="margin-bottom: 0.25rem;"><a href="https://www.vt.edu/" target="_blank">Virginia Tech</a></p>
+            <small style="color: var(--text-secondary);">Current</small>
+        </div>
+        
+        <div class="experience-item">
+            <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Mobile Solutions Technical Lead & Architect</h5>
+            <p style="margin-bottom: 0.25rem; font-weight: var(--font-medium);"><a href="https://www.perficient.com/" target="_blank">Perficient Inc</a></p>
+            <p style="margin-bottom: 0.25rem;">Contracting for TD Ameritrade (now <a href="https://www.schwab.com/" target="_blank">Charles Schwab</a>)</p>
+            <small style="color: var(--text-secondary);">Previous</small>
+        </div>
+    </div>
+</div> 

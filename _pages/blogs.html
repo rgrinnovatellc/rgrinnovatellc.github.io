@@ -1,0 +1,31 @@
+---
+layout: gridlay
+sitemap: false
+permalink: /blogs/
+---
+
+<style>
+code {padding: 6px 8px; font-size: 90%;}
+.jumbotron {
+    text-align: left; 
+}
+.card {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+</style>
+
+<div class="card card-info">
+    <div class="card-header">
+        <i class="fa fa-list"></i> All Posts
+    </div>
+    <div class="card-body">
+        <ul>
+            {% for post in site.posts %}
+            <li>
+                {{ post.date | date_to_string }}: <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div> 

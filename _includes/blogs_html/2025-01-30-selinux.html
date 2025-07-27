@@ -9,7 +9,8 @@
 </ol>
 <p>Only one of MAC type (i.e., either AppArmor or SELinux) can run both at the same time. SELinux is lable based, while AppArmor is file path based. Both are equally popular. They are types of Linux Security Modules (LSM), including Smack, TOMOYO, LSB Bpf etc.</p>
 <p><strong>Note</strong>: Since AppArmor is enabled in Ubuntu by default, and SELinux not, it means Ubuntu doesn&#39;t have SELinux policies. It is not recommeded to disable AppArmor and enabled SELinux in production. </p>
-<h1 id="allow2audit">allow2audit</h1>
+
+<h2 id="audit2allow">audit2allow</h2>
 <p>eBPF to regularly modify SELINUX policies (Core 95%, device-specific 5%). But, we use only to create new needed rules. For those denials, we have audit2allow tool that automatically makes SELinux rules from those SELinux denials and then we can <strong>load</strong> to modify SELinux system. No kernel rebuild like eBPF. With allow2audit, we need to load policies but no reboot required. Fedora/Android use SELinux by default. </p>
 <p>When SELinux is enabled, it can sometimes deny certain actions or operations that are not explicitly allowed by the current SELinux policy. These denials are logged in the system&#39;s audit logs (e.g., /var/log/audit/audit.log or /var/log/messages). However, interpreting these logs and creating the appropriate SELinux policy rules to allow the denied actions can be complex and time-consuming.</p>
 <p>This is where audit2allow comes in. It simplifies the process by:</p>
@@ -18,7 +19,7 @@
 <li>Reducing Manual Effort: Instead of manually writing SELinux policy rules, administrators can use audit2allow to quickly generate them.</li>
 <li>Improving System Security: By creating precise allow rules, administrators can maintain a secure system without disabling SELinux entirely.</li>
 </ol>
-<h2 id="selinux-1">SELinux</h2>
+<h2 id="selinux-overview">SELinux Overview</h2>
 <p>SELinux is a mandatory access control (MAC) system that enforces policies at the kernel level. </p>
 <p>SELINUX restricts system access by enforcing SELINUX policies.
 Permissive mode logs all policy violation events (i.e., denials) but doesn&#39;t block them (opp. of enforcing mode)

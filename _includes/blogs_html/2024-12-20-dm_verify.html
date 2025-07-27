@@ -1,9 +1,8 @@
 <h1 id="dm-verify">dm-verify</h1>
-<p>Block devices&#39; integrity is important because it holds bootloader, system files, etc., and heavilty used in Android and Linux kernel. </p>
-<p>Let&#39;s play with it. </p>
-<ol>
-<li>create a virtual block device.</li>
-</ol>
+<p>Block devices&#39; integrity is important because it holds bootloader, system files, etc., and heavily used in Android and Linux kernel.</p>
+<p>Let&#39;s play with it.</p>
+
+<h2 id="create-virtual-block-device">Create a virtual block device</h2>
 <pre><code class="language-bash">upgautam@amd:~/Desktop$ dd if=/dev/zero of=~/Desktop/verity_test.img bs=1M count=100
 100+0 records in
 100+0 records out
@@ -17,15 +16,11 @@ Explanation:
     /dev/zero is sepcial input file that has 0x00 (all zero bytes)
     bs: block size
 </code></pre>
-<ol start="2">
-<li>Now we create a loopback device that points to our block img file</li>
-</ol>
+<h2 id="create-loopback-device">Create a loopback device</h2>
 <pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo losetup /dev/loop133 ~/Desktop/verity_test.img
 You can find all used loopback devices using losetup -a command, and don&#39;t use those. For example, in my case loop133 is not being used.
 </code></pre>
-<ol start="3">
-<li>Create a filesystem for the device</li>
-</ol>
+<h2 id="create-filesystem">Create a filesystem for the device</h2>
 <pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo mkfs.ext4 /dev/loop133
 mke2fs 1.47.0 (5-Feb-2023)
 Discarding device blocks: done
@@ -36,19 +31,17 @@ Writing inode tables: done
 Creating journal (1024 blocks): done
 Writing superblocks and filesystem accounting information: done
 </code></pre>
-<ol start="4">
-<li>Mount</li>
-</ol>
+<h2 id="mount-device">Mount the device</h2>
 <pre><code class="language-bash">sudo mount /dev/loop133 ~/Desktop/mount_point_loop_dm_verity
 </code></pre>
-<p>Now, we repeat most of the steps above to create to store hash tree. </p>
+<p>Now, we repeat most of the steps above to create and store hash tree.</p>
 <pre><code class="language-bash">upgautam@amd:~/Desktop$ dd if=/dev/zero of=~/Desktop/verity_hash.img bs=1M count=10
 10+0 records in
 10+0 records out
 10485760 bytes (10 MB, 10 MiB) copied, 0.00141643 s, 7.4 GB/s
 upgautam@amd:~/Desktop$ sudo losetup /dev/loop135 ~/Desktop/verity_hash.img
 </code></pre>
-<p>If not alreayd installed, install the required tools. </p>
+<p>If not already installed, install the required tools.</p>
 <pre><code class="language-bash">sudo apt install cryptsetup-bin
 </code></pre>
 <p>Kernel config,</p>
@@ -114,4 +107,4 @@ upgautam@amd:~/Desktop$ sudo umount /dev/mapper/vroot
 upgautam@amd:~/Desktop$ sudo veritysetup close vroot
 </code></pre>
 <h2 id="reflection">Reflection</h2>
-<p>Any two .img files (e..g, boot.img, userdata.img etc.) can be verified for their data integrity via dm-verify. In Android system, it is implemented many vendors including Samsung. You will see dm-very options in Recovery mode. </p>
+<p>Any two .img files (e.g., boot.img, userdata.img etc.) can be verified for their data integrity via dm-verify. In Android system, it is implemented by many vendors including Samsung. You will see dm-verify options in Recovery mode.</p>

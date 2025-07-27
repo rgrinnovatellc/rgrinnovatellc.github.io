@@ -42,7 +42,7 @@ using declarative scripts. The core lifecycle commands of Terraform are:</p>
 ├── terraform.tfvars
 └── variables.tf
 </code></pre>
-<h1 id="cloudinit_base_templatetf"><code>cloudinit_base_template.tf</code></h1>
+<h2 id="cloudinit_base_templatetf"><code>cloudinit_base_template.tf</code></h2>
 <pre><code class="language-hcl">data &quot;template_file&quot; &quot;cloudinit_template&quot; {
   template = &lt;&lt;EOF
 #cloud-config
@@ -68,14 +68,14 @@ EOF
   }
 }
 </code></pre>
-<h1 id="cloudinit_basetf"><code>cloudinit_base.tf</code></h1>
+<h2 id="cloudinit_basetf"><code>cloudinit_base.tf</code></h2>
 <pre><code class="language-hcl">data &quot;template_file&quot; &quot;cloudinit_base&quot; {
   template = data.template_file.cloudinit_template.rendered
   vars = {
     fqdn = &quot;base.${var.vm_domain}&quot;
   }
 </code></pre>
-<h1 id="cloudinit_xdptf"><code>cloudinit_xdp.tf</code></h1>
+<h2 id="cloudinit_xdptf"><code>cloudinit_xdp.tf</code></h2>
 <pre><code class="language-hcl">data &quot;template_file&quot; &quot;cloudinit_xdp&quot; {
   template = data.template_file.cloudinit_template.rendered
   vars = {
@@ -83,7 +83,7 @@ EOF
   }
 }
 </code></pre>
-<h1 id="cloudinit_clienttf"><code>cloudinit_client.tf</code></h1>
+<h2 id="cloudinit_clienttf"><code>cloudinit_client.tf</code></h2>
 <pre><code class="language-hcl">data &quot;template_file&quot; &quot;cloudinit_client&quot; {
   template = data.template_file.cloudinit_template.rendered
   vars = {
@@ -91,7 +91,7 @@ EOF
   }
 }
 </code></pre>
-<h1 id="common_domaintf"><code>common_domain.tf</code></h1>
+<h2 id="common_domaintf"><code>common_domain.tf</code></h2>
 <pre><code class="language-hcl"># common_domain.tf
 
 
@@ -123,7 +123,7 @@ locals {
   }
 }
 </code></pre>
-<h1 id="providerstf"><code>providers.tf</code></h1>
+<h2 id="providerstf"><code>providers.tf</code></h2>
 <pre><code class="language-hcl"># Define Terraform configuration requirements and providers
 terraform {
   required_version = &quot;&gt;= 1.9.2&quot;
@@ -150,7 +150,7 @@ terraform {
   # }
 }
 </code></pre>
-<h1 id="terraformtfvars"><code>terraform.tfvars</code></h1>
+<h2 id="terraformtfvars"><code>terraform.tfvars</code></h2>
 <pre><code class="language-hcl"># terraform.tfvars is a file where you provide values for the variables defined in variables.tf.
 # This file is used to set or override the default values of variables.
 
@@ -196,7 +196,7 @@ xdp_image     = &quot;images/xdp_root.img&quot;
 # Host Parameters
 libvirt_disk_path = &quot;/var/lib/libvirt/images/kernel_absorb&quot;
 </code></pre>
-<h1 id="variablestf"><code>variables.tf</code></h1>
+<h2 id="variablestf"><code>variables.tf</code></h2>
 <pre><code class="language-hcl"># variables.tf is a Terraform configuration file where you define variables that will be used throughout
 # your Terraform configuration. This file contains variable declarations, including descriptions,
 # types, and default values.
@@ -285,7 +285,7 @@ variable &quot;vms&quot; {
   }))
 }
 </code></pre>
-<h1 id="maintf"><code>main.tf</code></h1>
+<h2 id="maintf"><code>main.tf</code></h2>
 <pre><code class="language-hcl">provider &quot;libvirt&quot; {
   uri = &quot;qemu:///system&quot;
 }
@@ -505,7 +505,7 @@ resource &quot;libvirt_domain&quot; &quot;domain_xdp&quot; {
 
 }
 </code></pre>
-<h1 id="images"><code>images/</code></h1>
+<h2 id="images"><code>images/</code></h2>
 <pre><code class="language-c">upgautamvt@fedora:~/CLionProjects/KernelWithBpfPrograms/benchmarks/macrobenchmarks/terraform/xdp_terraform$ ls images/
 base_root.img  client_root.img  ubuntu-24.04-server-cloudimg-amd64.img  xdp_root.img
 </code></pre>

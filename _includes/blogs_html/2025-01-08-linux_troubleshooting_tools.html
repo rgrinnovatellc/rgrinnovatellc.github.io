@@ -1,62 +1,65 @@
 <h1 id="linux-troubleshooting-tools">Linux troubleshooting tools</h1>
+
+<div style="height: 2rem;"></div>
+
 <h2 id="uptime">uptime</h2>
 <pre><code class="language-bash">upgautam@amd:~$ uptime
  20:09:14 up 1 day,  9:38,  1 user,  load average: 0.18, 0.33, 0.31
 </code></pre>
-<p> It tells the load average is 0.18 for 1 minutes, 0.33 for 5 minutes, and 0.31 for 10 minutes. 0.33 means less than 1 process is running in last 5 minutes. </p>
-<p> We can use stress command to increase these load average values. </p>
-<pre><code class="language-bash"> upgautam@amd:~$ stress --cpu 64
+<p>It tells the load average is 0.18 for 1 minutes, 0.33 for 5 minutes, and 0.31 for 10 minutes. 0.33 means less than 1 process is running in last 5 minutes.</p>
+<p>We can use stress command to increase these load average values.</p>
+<pre><code class="language-bash">upgautam@amd:~$ stress --cpu 64
 stress: info: [156850] dispatching hogs: 64 cpu, 0 io, 0 vm, 0 hdd
 </code></pre>
-<p>This will saturate all 32 CPU (check using <code>nproc</code>).  We can also test this using System Monitor GUI tool. </p>
-<p>These are the uptime chronological outputs after stress command executed. </p>
+<p>This will saturate all 32 CPU (check using <code>nproc</code>). We can also test this using System Monitor GUI tool.</p>
+<p>These are the uptime chronological outputs after stress command executed.</p>
 <pre><code class="language-bash">upgautam@amd:~$ uptime
- 20:11:51 up 1 day,  9:41,  1 user,  load average: 10.35, 2.60, 1.07
+20:11:51 up 1 day,  9:41,  1 user,  load average: 10.35, 2.60, 1.07
 upgautam@amd:~$ uptime
- 20:11:53 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
+20:11:53 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
 upgautam@amd:~$ uptime
- 20:11:55 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
+20:11:55 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
 upgautam@amd:~$ uptime
- 20:11:58 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
+20:11:58 up 1 day,  9:41,  1 user,  load average: 14.72, 3.64, 1.41
 upgautam@amd:~$ uptime
- 20:12:07 up 1 day,  9:41,  1 user,  load average: 22.53, 5.67, 2.10
+20:12:07 up 1 day,  9:41,  1 user,  load average: 22.53, 5.67, 2.10
 upgautam@amd:~$ uptime
- 20:12:17 up 1 day,  9:41,  1 user,  load average: 29.06, 7.63, 2.77
+20:12:17 up 1 day,  9:41,  1 user,  load average: 29.06, 7.63, 2.77
 upgautam@amd:~$ uptime
- 20:12:19 up 1 day,  9:41,  1 user,  load average: 32.02, 8.60, 3.11
+20:12:19 up 1 day,  9:41,  1 user,  load average: 32.02, 8.60, 3.11
 upgautam@amd:~$ uptime
- 20:12:22 up 1 day,  9:41,  1 user,  load average: 32.02, 8.60, 3.11
+20:12:22 up 1 day,  9:41,  1 user,  load average: 32.02, 8.60, 3.11
 upgautam@amd:~$ uptime
- 20:12:24 up 1 day,  9:41,  1 user,  load average: 34.82, 9.57, 3.46
+20:12:24 up 1 day,  9:41,  1 user,  load average: 34.82, 9.57, 3.46
 upgautam@amd:~$ uptime
- 20:12:30 up 1 day,  9:41,  1 user,  load average: 37.23, 10.49, 3.79
+20:12:30 up 1 day,  9:41,  1 user,  load average: 37.23, 10.49, 3.79
 upgautam@amd:~$ uptime
- 20:12:32 up 1 day,  9:41,  1 user,  load average: 37.23, 10.49, 3.79
+20:12:32 up 1 day,  9:41,  1 user,  load average: 37.23, 10.49, 3.79
 upgautam@amd:~$ uptime
- 20:12:34 up 1 day,  9:41,  1 user,  load average: 39.46, 11.39, 4.12
+20:12:34 up 1 day,  9:41,  1 user,  load average: 39.46, 11.39, 4.12
 upgautam@amd:~$ uptime
- 20:12:35 up 1 day,  9:41,  1 user,  load average: 39.46, 11.39, 4.12
+20:12:35 up 1 day,  9:41,  1 user,  load average: 39.46, 11.39, 4.12
 upgautam@amd:~$ uptime
- 20:12:37 up 1 day,  9:42,  1 user,  load average: 39.46, 11.39, 4.12
+20:12:37 up 1 day,  9:42,  1 user,  load average: 39.46, 11.39, 4.12
 upgautam@amd:~$ uptime
- 20:13:16 up 1 day,  9:42,  1 user,  load average: 52.55, 18.27, 6.74
+20:13:16 up 1 day,  9:42,  1 user,  load average: 52.55, 18.27, 6.74
 upgautam@amd:~$ uptime
- 20:13:35 up 1 day,  9:42,  1 user,  load average: 56.27, 21.35, 8.00
+20:13:35 up 1 day,  9:42,  1 user,  load average: 56.27, 21.35, 8.00
 upgautam@amd:~$ uptime
- 20:13:55 up 1 day,  9:43,  1 user,  load average: 58.75, 24.18, 9.21
+20:13:55 up 1 day,  9:43,  1 user,  load average: 58.75, 24.18, 9.21
 upgautam@amd:~$ uptime
- 20:15:25 up 1 day,  9:44,  1 user,  load average: 63.68, 34.80, 14.37
+20:15:25 up 1 day,  9:44,  1 user,  load average: 63.68, 34.80, 14.37
 upgautam@amd:~$ uptime
- 20:15:39 up 1 day,  9:45,  1 user,  load average: 63.75, 36.23, 15.16
+20:15:39 up 1 day,  9:45,  1 user,  load average: 63.75, 36.23, 15.16
 upgautam@amd:~$ uptime
- 20:16:12 up 1 day,  9:45,  1 user,  load average: 64.04, 38.93, 16.73
+20:16:12 up 1 day,  9:45,  1 user,  load average: 64.04, 38.93, 16.73
 upgautam@amd:~$ uptime
- 20:16:45 up 1 day,  9:46,  1 user,  load average: 64.46, 41.81, 18.52
+20:16:45 up 1 day,  9:46,  1 user,  load average: 64.46, 41.81, 18.52
 </code></pre>
 <p>All values converse around 64, which is the total number of threads (2 times the total number of cores).
 When these numbers are higher than the number of cores, it means processes are competing for resources. </p>
 <h2 id="top">top</h2>
-<p>This displays the snapshot of system. </p>
+<p>This displays the snapshot of system.</p>
 <pre><code class="language-bash">upgautam@amd:~$ stress --cpu 64
 stress: info: [156850] dispatching hogs: 64 cpu, 0 io, 0 vm, 0 hdd
 </code></pre>
@@ -261,7 +264,7 @@ COMMAND: Name of the process/command
 <li><strong>Unit</strong>: None (The name of the process or command being executed)</li>
 <li>Example: <code>stress</code></li>
 </ul>
-<h1 id="vmstat">vmstat</h1>
+<h2 id="vmstat">vmstat</h2>
 <p>Use <code>vmstat x</code> to repeat on every x second</p>
 <pre><code class="language-bash">upgautam@amd:~$ vmstat
 procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------
@@ -329,7 +332,7 @@ procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu----
 <li><strong>Minimal Context Switching</strong>: With just 3 context switches per second, the system is stable and not overburdened with task switching.</li>
 <li><strong>Moderate Disk I/O</strong>: The system is performing some disk I/O, with a higher write rate (200 blocks out) compared to reads (40 blocks in).</li>
 </ul>
-<h1 id="iostat">iostat</h1>
+<h2 id="iostat">iostat</h2>
 <pre><code class="language-bash">upgautam@amd:~$ iostat
 Linux 6.8.0-51-generic (amd) 	01/06/2025 	_x86_64_	(32 CPU)
 
@@ -378,7 +381,7 @@ nvme0n1           4.33        25.90       151.37      5697.50    4461902   26079
 nvme1n1           0.00         0.02         0.00         0.00       3592          0          0
 sda               0.00         0.04         0.00         0.00       7456          0          0
 </code></pre>
-<h1 id="netstat">netstat</h1>
+<h2 id="netstat">netstat</h2>
 <p><strong>Note</strong>: Use modern alternative ss instead of netstat</p>
 <p>Below command shows all ESTABLISHED active connections</p>
 <pre><code class="language-bash">upgautam@amd:~$ netstat -an | grep ESTABLISHED
@@ -402,13 +405,13 @@ tcp6       0      0 2603:6081:6d01:b7:40170 2606:4700:4400::681:443 ESTABLISHED
 tcp6       0      0 2603:6081:6d01:b7:33916 2603:1036:303:6::2:443  ESTABLISHED
 tcp6       0      0 2603:6081:6d01:b7:41184 2606:4700:4400::681:443 ESTABLISHED
 </code></pre>
-<p>grep -c will count the connections. This is like a load to particular server. </p>
+<p>grep -c will count the connections. This is like a load to particular server.</p>
 <pre><code class="language-bash">upgautam@amd:~$ netstat -an | grep -c &#39;:443&#39;
 10
 </code></pre>
-<h1 id="sar">sar</h1>
+<h2 id="sar">sar</h2>
 <p>This is similar to iostat or vmstat but it additonally provides hitorical data (i.e., report)</p>
-<p>Below command to report on every second for three times. </p>
+<p>Below command to report on every second for three times.</p>
 <pre><code class="language-bash">upgautam@amd:~$ sar -u 1 3
 Linux 6.8.0-51-generic (amd) 	01/06/2025 	_x86_64_	(32 CPU)
 
@@ -440,11 +443,11 @@ Average:        all      0.00      0.00      0.01      0.00      0.00     99.99
 <li><p><strong>-f /var/log/sysstat/sa03</strong>: This option tells <code>sar</code> to read the system activity data from a specific file. In this case, the data is read from the file <code>/var/log/sysstat/sa03</code>. These files are created by the <code>sysstat</code> service and store daily system performance data, with <code>sa03</code> representing the system activity data for the 3rd day of the mqonth.</p>
 </li>
 </ul>
-<p>The sar report can be used to correlate specific events (e.g. check cpu utilization every day in certail time). </p>
-<h1 id="more-performance-tools">More performance tools</h1>
-<p>General system: Use <code>glances</code> instead of <code>top</code>, <code>htop</code> or <code>atop</code>. </p>
-<h2 id="cpu-1">CPU</h2>
-<p>Use <code>mpstat</code> to show real-time just for a session (no reporting, no historical data). </p>
+<p>The sar report can be used to correlate specific events (e.g. check cpu utilization every day in certail time).</p>
+<h2 id="more-performance-tools">More performance tools</h2>
+<p>General system: Use <code>glances</code> instead of <code>top</code>, <code>htop</code> or <code>atop</code>.</p>
+<h2 id="cpu-performance-tools">CPU Performance Tools</h2>
+<p>Use <code>mpstat</code> to show real-time just for a session (no reporting, no historical data).</p>
 <pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo mpstat -P ALL
 Linux 6.8.0-51-generic (amd) 	01/08/2025 	_x86_64_	(32 CPU)
 
@@ -630,7 +633,7 @@ or use free for simple output
 </code></pre>
 <p>About 12 GB free, 120 GB available, and 8 GB used. Available = free + reclaimable cache/buffer + some other tracked by system
 Free = completely unused RAM</p>
-<p>** Note**: Use lscpu to get detailed CPU information. </p>
+<p>** Note**: Use lscpu to get detailed CPU information.</p>
 <h3 id="turbostat">turbostat</h3>
 <pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo turbostat
 turbostat version 2023.11.07 - Len Brown &lt;lenb@kernel.org&gt;
@@ -688,7 +691,7 @@ Core	CPU	Avg_MHz	Busy%	Bzy_MHz	TSC_MHz	IPC	IRQ	POLL	C1	C2	C3	POLL%	C1%	C2%	C3%	C
 15	15	555	10.24	5424	4491	1.47	2454	8	69	274	1379	0.00	0.44	1.83	87.60	1.30
 15	31	37	0.68	5458	4491	0.61	1538	5	332	114	1222	0.00	1.90	0.50	97.00
 </code></pre>
-<p>I wrote separate post for perf already in my website. </p>
+<p>I wrote separate post for perf already in my website.</p>
 <h3 id="to-show-memory-usage-by-process">to show memory usage by process</h3>
 <pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo smem
   PID User     Command                         Swap      USS      PSS      RSS
@@ -730,7 +733,7 @@ Core	CPU	Avg_MHz	Busy%	Bzy_MHz	TSC_MHz	IPC	IRQ	POLL	C1	C2	C3	POLL%	C1%	C2%	C3%	C
  4573 upgautam /usr/libexec/gvfs-goa-volum        0      740      842     6828
  4157 upgautam /usr/libexec/gcr-ssh-agent         0      756      845     7268
 </code></pre>
-<h1 id="performance-tools-overview">Performance Tools Overview</h1>
+<h2 id="performance-tools-overview">Performance Tools Overview</h2>
 <h2 id="cpu-performance">CPU Performance</h2>
 <ul>
 <li><strong>perf</strong>: Versatile performance analysis and profiling tool.</li>
@@ -824,7 +827,7 @@ Core	CPU	Avg_MHz	Busy%	Bzy_MHz	TSC_MHz	IPC	IRQ	POLL	C1	C2	C3	POLL%	C1%	C2%	C3%	C
 <li><strong>bcc-tools</strong>: BPF Compiler Collection with tools like execsnoop, opensnoop.</li>
 <li><strong>Kernbench</strong>: Kernel compilation benchmarking tool.</li>
 </ul>
-<h1 id="gprof">gprof</h1>
+<h2 id="gprof">gprof</h2>
 <p>gprof is a type of application and code profiling tool.  Other tools include <code>strace, ltrace, valgrind, oprofile, systemtap, eBPF tools, perf record, time</code> etc.</p>
 <p>If you want to profile your own source code and want to know what functions takes more time, and where is the improvement places to fix etc.</p>
 <pre><code class="language-c">// advanced_gprof_example.c

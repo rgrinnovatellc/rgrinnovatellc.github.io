@@ -1,5 +1,8 @@
 <h1 id="linux-memory-management">Linux Memory Management</h1>
-<h1 id="what-is-memory">What is memory?</h1>
+
+<div style="height: 2rem;"></div>
+
+<h2 id="what-is-memory">What is memory?</h2>
 <p>Fundamentally, memory is just a form of storage. Computers have many layers of storage — CPU Registers, CPU Cache, RAM, Disk. Access to each layer of memory consumes time, lesser the cycles faster the access.</p>
 <pre><code>CPU Registers - 1 CPU cycle
 CPU Cache - 3-14 CPU cycles
@@ -696,7 +699,7 @@ Node 0, zone   Device
     <li>Variable size: Segments are of variable sizes, and the size of each segment depends on the needs of the program.</li>
     <li>Difficult swapping: Because segments can vary in size, swapping them in and out of memory can be more complicated than with paging.</li>
 </ol>
-<h2 id="paging-1">Paging</h2>
+<h2 id="paging-details">Paging Details</h2>
 <p>Paging is basically the movement of pages in and out of the main memory and storage. It allows partially loaded &amp; programs larger than memory to execute. Unlike Swapping which moves entire program in and out, Paging only moves pages, which are relatively small (e.g., 4KB). Processes that are swapped out are still known by the kernel as metadata is still resident in kernel memory. Kernel prioritizes swapping is based on various factors like thread priority, wait time, size of process. The longer it has been waiting and the smaller it is, the higher in the queue it will be. Modern Linux does not perform traditional swapping at all, it uses paging operation on a swap device or file instead. Some UNIX systems still perform actual swapping. In Linux, Kernel uses various caches to optimize performance.</p>
 <h3 id="file-system-paging">File System Paging</h3>
 <p>It involves reading/writing of pages in memory mapped files (mmap()) and on the file systems that uses page cache.</p>
@@ -710,7 +713,7 @@ Node 0, zone   Device
 <p>On demand paging is the act of mapping pages of virtual memory to main memory on demand. It defers CPU overhead of creating mapping until they are needed and accessed, instead of when memory is first allocated.</p>
 <p>A page fault occurs when a page is accessed that has no page memory from virtual memory to main memory.</p>
 <p>If the mapping can be satisfied from another page in memory, it is called a minor fault which may occur for mapping a new page from available memory. It can also occur when mapping to an existing page, such as reading a page from a shared library.</p>
-<h2 id="virtual-memory-1">Virtual memory</h2>
+<h2 id="virtual-memory-states">Virtual Memory States</h2>
 <p>The UNIX virtual memory has 4 states for a page:</p>
 <ol>
     <li>Unallocated</li>

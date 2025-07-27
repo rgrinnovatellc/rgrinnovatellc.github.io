@@ -1,4 +1,7 @@
 <h1 id="adaptive-android-system-tuning">Leveraging eBPF as a feedback loop to runtime tune of the systems</h1>
+
+<div style="height: 2rem;"></div>
+
 <h2 id="problem-motivation">Problem Motivation</h2>
 <p>When building large projects like Android AOSP, system resource limitations often dictate success or failure. For instance, running a make build (i.e., <code>make -j$(nproc)</code>) command on a high-end system (e.g., 128GB RAM and a modern multi-core CPU) typically completes successfully due to ample memory and processing power. By contrast, on a system with only 16GB RAM, the build process is prone to failures caused by Linux’s OOM (Out-Of-Memory) Killer terminating processes to reclaim memory, or other bugs stem from resource contention, such as segmentation faults due to extreme memory pressure.</p>
 <p>However, the issue is rarely just about RAM. System-wide bottlenecks—such as a slow CPU struggling to compile code efficiently, or sluggish I/O (e.g., HDDs or slow SSDs) delaying read/write operations—can compound memory pressure. These limitations force processes to linger in memory longer than necessary, overloading the system and triggering instability. In such cases, even adequate RAM may not prevent failures if the CPU or storage cannot keep pace with the build’s demands.</p>
@@ -43,8 +46,9 @@ if memory_usage &gt; 85% || cpu_usage &gt; 90% || io_latency &gt; 100ms:
     </li>
 </ol>
 <h2 id="references">References</h2>
-<p> [1] <a href="https://docs.kernel.org/accounting/psi.html">https://docs.kernel.org/accounting/psi.html</a> <br>
-    [2] <a href="https://source.android.com/docs/core/perf/lmkd">https://source.android.com/docs/core/perf/lmkd</a> <br>
-    [3] <a href="https://www.kernel.org/doc/gorman/html/understand/understand005.html">https://www.kernel.org/doc/gorman/html/understand/understand005.html</a> <br>
-    [4] <a href="https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf">https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf</a> <br>
-    [5]: <a href="https://dl.acm.org/doi/10.1016/j.sysarc.2024.103130">https://dl.acm.org/doi/10.1016/j.sysarc.2024.103130</a></p>
+
+<p>[1] <a href="https://docs.kernel.org/accounting/psi.html">https://docs.kernel.org/accounting/psi.html</a></p>
+<p>[2] <a href="https://source.android.com/docs/core/perf/lmkd">https://source.android.com/docs/core/perf/lmkd</a></p>
+<p>[3] <a href="https://www.kernel.org/doc/gorman/html/understand/understand005.html">https://www.kernel.org/doc/gorman/html/understand/understand005.html</a></p>
+<p>[4] <a href="https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf">https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf</a></p>
+<p>[5] <a href="https://dl.acm.org/doi/10.1016/j.sysarc.2024.103130">https://dl.acm.org/doi/10.1016/j.sysarc.2024.103130</a></p>

@@ -3,9 +3,9 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ site.url }}{{ site.baseurl }}/">
-     <img src="{{ site.url }}{{ site.baseurl }}/favicon.ico" width="30" height="30" style="margin-right:5px" class="d-inline-block align-top" alt="">
+<nav class="navbar sticky-top navbar-expand-md">
+    <a class="navbar-brand" href="{{ site.baseurl }}/">
+     <img src="{{ site.baseurl }}/favicon.ico" width="30" height="30" style="margin-right:5px" class="d-inline-block align-top" alt="">
       {{ site.title | escape }}
     </a>
     <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,10 +14,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="collapse navbar-collapse" id="navbarColor02">
         <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="{{ site.url }}{{ site.baseurl }}/">Home</a>
+            <a class="nav-item nav-link" href="{{ site.baseurl }}/">Home</a>
             {% for page in site.nav_pages %}       
-                <a class="nav-item nav-link" href="{{ site.url }}{{ site.baseurl }}/{{page.name}}">{{page.name | capitalize }}</a>
+                <a class="nav-item nav-link" href="{{ site.baseurl }}/{{page.name}}">{{page.name | capitalize }}</a>
             {% endfor %}
+        </div>
+        <div class="navbar-nav ms-auto">
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
         </div>
     </div>
 </nav>

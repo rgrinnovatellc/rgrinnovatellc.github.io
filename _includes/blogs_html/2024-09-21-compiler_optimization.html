@@ -1,6 +1,6 @@
 <p>Here, we perform Dead Code Elimination (DCE), Constant Propagation (CP), and Constant Folding(CF)
 compiler optimizations that are achievable because of inlined functions.</p>
-<h1 id="modelfunctioninlineduserc">ModelFunctionInlined.user.c</h1>
+<h2 id="modelfunctioninlineduserc">ModelFunctionInlined.user.c</h2>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
 #include &lt;time.h&gt;
 #include &lt;stdlib.h&gt;
@@ -68,7 +68,7 @@ gcc -O2 -g -o ModelFunctionInlined ModelFunctionInlined.s
 objdump -d ModelFunctionInlined &gt; objdump_inlined.txt
 */
 </code></pre>
-<h1 id="modelfunctionnotinlineduserc">ModelFunctionNotInlined.user.c</h1>
+<h2 id="modelfunctionnotinlineduserc">ModelFunctionNotInlined.user.c</h2>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
 #include &lt;time.h&gt;
 #include &lt;stdlib.h&gt;
@@ -196,7 +196,7 @@ code as dead code,
 where in the not-inlined version the dead code remained there.</p>
 <p>The runtime of these two versions of programs remain the same because during
 runtime the body inside the if condition, which is always false, doesn&#39;t get executed.</p>
-<h1 id="how-much-more-unnecessary-work-does-the-compiler-need-to-do-for-the-not-inlined-version-program-during-compilation">How much more unnecessary work does the compiler need to do for the not-inlined version program during compilation?</h1>
+<h2 id="how-much-more-unnecessary-work-does-the-compiler-need-to-do-for-the-not-inlined-version-program-during-compilation">How much more unnecessary work does the compiler need to do for the not-inlined version program during compilation?</h2>
 <h2 id="removing-the-common-from-both-programs-compilation-log">Removing the common from both programs’ compilation log</h2>
 <h3 id="inlined">Inlined</h3>
 <pre><code class="language-shell">ModelFunctionInlined.user.c:15:13: optimized:  Inlining getValue/39 into main/40.
@@ -261,8 +261,8 @@ ModelFunctionNotInlined.user.c:44:5: missed: statement clobbers memory: clock_ge
 /usr/include/x86_64-linux-gnu/bits/stdio2.h:86:10: missed: statement clobbers memory: __printf_chk (2, &quot;Execution time (not inlined): %lf seconds\n&quot;, elapsed_39);
 </code></pre>
 <p><strong>Note</strong>: The binary size is 16.1 KB vs 16.2 KB.</p>
-<h1 id="how-to-quantify-the-runtime">How to quantify the runtime?</h1>
-<h2 id="modelfunctioninlineduserc-1">ModelFunctionInlined.user.c</h2>
+<h2 id="how-to-quantify-the-runtime">How to quantify the runtime?</h2>
+<h2 id="modelfunctioninlineduserc-example">ModelFunctionInlined.user.c Example</h2>
 <pre><code class="language-c">
 #include &lt;stdio.h&gt;
 #include &lt;time.h&gt;
@@ -329,7 +329,7 @@ gcc -O2 -g -o ModelFunctionInlined ModelFunctionInlined.s
 objdump -d ModelFunctionInlined &gt; objdump_inlined.txt
 */
 </code></pre>
-<h2 id="modelfunctionnotinlineduserc-1">ModelFunctionNotInlined.user.c</h2>
+<h2 id="modelfunctionnotinlineduserc-example">ModelFunctionNotInlined.user.c Example</h2>
 <pre><code class="language-c">
 #include &lt;stdio.h&gt;
 #include &lt;time.h&gt;
@@ -404,7 +404,7 @@ Execution time (inlined): 0.000000 seconds
 (venv) upgautam@amd:~/Downloads/bpfabsorb/bpf-progs/filtering/DCE2$ ./ModelFunctionNotInlined
 Execution time (not inlined): 0.183777 seconds
 </code></pre>
-<h1 id="what-optimizations-performed">What optimizations performed?</h1>
+<h2 id="what-optimizations-performed">What optimizations performed?</h2>
 <p>Constant Propagation (CP): The value of x is propagated as 10 everywhere, so the compiler knows exactly what x is
 throughout the program.
 Constant Folding (CF): The expression x &gt; 100 can be folded into false, meaning the compiler already knows the result of

@@ -1,4 +1,7 @@
 <h1 id="bpf-compile-load-run-includes-libbpf-skeleton-generation-concept">BPF compile, load, run (Includes libbpf skeleton generation concept)</h1>
+
+<div style="height: 2rem;"></div>
+
 <h2 id="what-are-traceable-functions"><a name="_wozkdroeokc4"></a>What are traceable functions?</h2>
 <p>We can find all the list of functions in /sys/kernel/debug/tracing/available_filter_functions</p>
 <h2 id="what-is-vmlinuxh"><a name="_ml0aq6wgxgbs"></a>What is vmlinux.h?</h2>
@@ -359,7 +362,7 @@ int main(int argc, char **argv)
 `           `&lt;...&gt;-874076  [010] ...21 2531320.399947: bpf\_trace\_printk: Elapsed time: 1353 nanoseconds
 </code></pre>
 <p>Command like &quot;clear&quot; in terminal will trigger do_exit syscall.</p>
-<h1 id="automate-using-makefile">Automate using Makefile</h1>
+<h2 id="automate-using-makefile">Automate using Makefile</h2>
 <p>I added several bpf c files in my bpf directory
 <code>upgautam@ubuntu205:~/CLionProjects/fastpathtestBpf/bpf$ ls BillionLoopBpf.c  HundredMillionLoopBpf.c   Makefile          output      TenBillionLoopBpf.c  TenMillionLoopBpf.c   ThousandLoopBpf.c HundredLoopBpf.c  HundredThousandLoopBpf.c  MillionLoopBpf.c  template.c  TenLoopBpf.c         TenThousandLoopBpf.c  vmlinux.h</code></p>
 <p>I need to automate all build process (i.e., compile filename.c to filename.o then use bpftool gen to generate
@@ -533,7 +536,7 @@ HundredLoopBpf.skel.h  HundredThousandLoopBpf.skel.h  TenBillionLoopBpf.skel.h  
 </code></pre>
 <h2 id="if-docker-is-using-port-and-qemu-wont-start-then-you-can-restart-docker">If docker is using port, and qemu won&#39;t start then you can restart docker</h2>
 <p><code>sudo systemctl restart docker</code></p>
-<h1 id="other-ways-to-load-bpf-program">Other ways to load BPF program</h1>
+<h2 id="other-ways-to-load-bpf-program">Other ways to load BPF program</h2>
 <p>There are other ways to load BPF bytecode into the system other than using that generated skeleton header file.</p>
 <p>We can write manual loader C program, or using bpftool with autoattach. There are several other python or Go based
 loaders, or BCC loaders. I only discuss here bpftool autoattach and writing manual C loader program.</p>
@@ -638,9 +641,10 @@ cpustat_kernFinal    cpustat_kern.skel.h  TenLoopBpfFinal    TenLoopBpf.skel.h  
 cpustat_kern.skel.c  Makefile             TenLoopBpf.skel.c  tracex1Final       tracex1.skel.h
 </code></pre>
 <h2 id="few-useful-references">Few useful references</h2>
-<p><a href="https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md">https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md</a>
-<a href="https://liuhangbin.netlify.app/post/bpf-skeleton/">https://liuhangbin.netlify.app/post/bpf-skeleton/</a>
-<a href="https://docs.kernel.org/bpf/libbpf/libbpf_overview.html">https://docs.kernel.org/bpf/libbpf/libbpf_overview.html</a></p>
+
+<p><a href="https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md">https://github.com/iovisor/bcc/blob/master/docs/reference_guide.md</a></p>
+<p><a href="https://liuhangbin.netlify.app/post/bpf-skeleton/">https://liuhangbin.netlify.app/post/bpf-skeleton/</a></p>
+<p><a href="https://docs.kernel.org/bpf/libbpf/libbpf_overview.html">https://docs.kernel.org/bpf/libbpf/libbpf_overview.html</a></p>
 <h2 id="using-manual-loader">using manual loader</h2>
 <p>let&#39;s name this file as array.kern.c</p>
 <pre><code class="language-c">#include &lt;linux/bpf.h&gt;

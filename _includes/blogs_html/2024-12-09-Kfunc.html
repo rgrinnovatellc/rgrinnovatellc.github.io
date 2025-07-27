@@ -94,7 +94,7 @@ late_initcall(init_subsystem); //this gets called somehow</code></pre>
 
 <p>In our example, we have module init, where we register kfunc, and then module when unloaded automatically unregister kfunc (this is done by system), so you don’t need to unregister.</p>
 
-<h1 id="kfunc-practical-implementation-kfunc-practical-implementation">Kfunc practical implementation</h1>
+<h2 id="kfunc-practical-implementation">Kfunc practical implementation</h2>
 
 <p>Below linux directory contains linux kernel version 6.11. I have compiled the kernel there (make), installed headers, installed modules, compiled libbpf, and bpftool, and then updated grub. This makes sure that my host is running the same kernel version 6.11 and the bpf code, kfunc module. Later, I will compile and link against the same system v6.11.</p>
 
@@ -398,7 +398,7 @@ int main(int argc, char *argv[])
 
 
 
-<h1 id="testing-testing">Testing </h1>
+<h2 id="testing">Testing</h2>
 <pre>
 upgautamvt@upgautamlenovo:/opt/bpfabsorb$ cd bpf-progs/kfunc/kfunc_module/
 upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module$ make
@@ -448,7 +448,7 @@ upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ sudo dmesg | ta
 </pre>
 
 
-<h1 id="tcingress-kfunc-tcingress-kfunc">tc/ingress Kfunc </h1>
+<h2 id="tcingress-kfunc">tc/ingress Kfunc</h2>
 
 <p>Add kfunc in kernel module</p>
 <h2 id="kfunc_module_tc_ingressc-kfunc_module_tc_ingressc">kfunc_module_tc_ingress.c</h2>
@@ -611,5 +611,5 @@ tc filter add dev eth0 ingress bpf da obj ./dummy.kern.o sec tc/ingress
 Everything should work!
 
 
-<h1 id="docker-cleanup-docker-cleanup">Docker cleanup </h1>
+<h2 id="docker-cleanup">Docker cleanup</h2>
 <pre>docker ps -aq | xargs -r docker rm -f<br>docker images -q | xargs -r docker rmi -f<br>docker volume ls -q | xargs -r docker volume rm<br>docker system prune -a --volumes -f</pre>

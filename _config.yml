@@ -1,9 +1,16 @@
 # Site settings
 title: Uddhav Gautam
 email: upgautam@vt.edu
-description: Academic webpage of Uddhav P. Gautam
-baseurl: ""
-url: ""
+description: >- # this means to ignore newlines until "baseurl:"
+  Academic webpage of Uddhav P. Gautam
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://upgautamvt.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: upgautamvt
+github_username:  upgautamvt
+
+# GitHub API Configuration for Live Editor
+github_token: "" # Set this to your GitHub personal access token
+github_repo: "upgautamvt/upgautamvt.github.io"
 
 # Google analytics ID: Uncomment and your own, if you like
 # google_analytics: XX
@@ -25,13 +32,18 @@ contact: >
     <a href="mailto:upgautam@vt.edu" target="_blank"><i class="fa fa-envelope fa-1x"></i> Contact Udhav Gautam via email</a> <br/>
     <a href="https://github.com/sbryngelson/academic-website-template"><i class="fa fa-github fa-1x"></i> Use this site as a template!</a>
 
+# Additional contact info for footer
+phone: "+1 (919) 729-4141"
+office: "IT Security Office MC 0284<br/>1300 Torgersen Hall<br/>Blacksburg, Virginia 24061"
+google_maps_link: "https://maps.google.com/?q=Virginia+Tech+Blacksburg+VA"
+
 # Pages shown in navbar
 nav_pages:
   - name: about
   - name: publications
 #  - name: talks
 #  - name: research
-#  - name: software
+  - name: software
 #  - name: team
 #  - name: teaching
   - name: blogs
