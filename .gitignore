@@ -7,3 +7,17 @@ Gemfile.lock
 package-lock.json
 node_modules/
 .idea
+
+# Security and sensitive files
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.yml
+config/secrets.yml
+credentials.yml
+token.txt
+*.token

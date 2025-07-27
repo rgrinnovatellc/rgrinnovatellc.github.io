@@ -19,7 +19,7 @@ Open browser console and run this test:
 
 ```javascript
 // Test the default token
-const token = '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';
+const token = 'YOUR_GITHUB_TOKEN_HERE'; // Replace with your actual token
 
 // Test 1: Basic authentication
 fetch('https://api.github.com/user', {
@@ -103,10 +103,10 @@ If the default token isn't working:
 ### Test Token Permissions:
 ```bash
 # Test with curl (if you have it)
-curl -H "Authorization: token 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" \
+curl -H "Authorization: token YOUR_GITHUB_TOKEN_HERE" \
      https://api.github.com/user
 
-curl -H "Authorization: token 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" \
+curl -H "Authorization: token YOUR_GITHUB_TOKEN_HERE" \
      https://api.github.com/repos/upgautamvt/upgautamvt.github.io
 ```
 

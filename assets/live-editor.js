@@ -501,7 +501,7 @@ class LiveEditor {
     // Try to get token from various sources
     return localStorage.getItem('github_token') || 
            sessionStorage.getItem('github_token') || 
-           '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'; // Fallback token
+           'YOUR_GITHUB_TOKEN_HERE'; // Replace with your actual token
   }
 
   setGitHubToken(token) {
