@@ -58,12 +58,6 @@ content:
   enable_excerpts: true
   excerpt_length: 150
 
-# GitHub API Configuration (for Live Editor)
-github:
-  token: "" # Set via environment variable WEBSITE_TOKEN
-  repo: "rgrinnovatellc/rgrinnovatellc.github.io"
-  branch: "master"
-
 # Analytics Configuration
 analytics:
   google_analytics: "" # Set your GA ID here

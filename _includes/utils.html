@@ -1,18 +1,12 @@
 {% comment %}
   =============================================================================
-  UTILITY FUNCTIONS AND DATA ACCESS
+  UTILITY FUNCTIONS AND DATA ACCESS - OPTIMIZED
   =============================================================================
 {% endcomment %}
 
 {% comment %} Site Data Access {% endcomment %}
 {% assign site_data = site.data.site %}
 {% assign pi_data = site.data.pi %}
-
-{% comment %} URL Configuration {% endcomment %}
-{% assign site_url = site_data.urls.site | default: site.url %}
-{% assign base_url = site_data.urls.baseurl | default: site.baseurl %}
-{% assign repo_url = site_data.urls.github_repo %}
-{% assign api_url = site_data.urls.github_api %}
 
 {% comment %} Contact Information {% endcomment %}
 {% assign contact_email = site_data.contact.email | default: site.email %}
@@ -24,26 +18,11 @@
 {% assign academic_department = site_data.academic.department %}
 {% assign academic_university = site_data.academic.university %}
 {% assign academic_affiliation = site_data.academic.affiliation %}
-{% assign university_url = site_data.academic.university_url %}
-
-{% comment %} Location Information {% endcomment %}
-{% assign location_city = site_data.location.city %}
-{% assign location_state = site_data.location.state %}
-{% assign location_zip = site_data.location.zip %}
-{% assign location_country = site_data.location.country %}
-{% assign location_full_address = site_data.location.full_address %}
-
-{% comment %} Office Information {% endcomment %}
-{% assign office_building = site_data.office.building %}
-{% assign office_hall = site_data.office.hall %}
-{% assign office_address = site_data.office.address %}
-{% assign office_maps_link = site_data.office.google_maps_link %}
 
 {% comment %} Social Links {% endcomment %}
 {% assign github_link = site_data.social.github %}
 {% assign scholar_link = site_data.social.scholar %}
 {% assign researchgate_link = site_data.social.researchgate %}
-{% assign linkedin_link = site_data.social.linkedin %}
 
 {% comment %} Profile Information {% endcomment %}
 {% assign profile_photo = pi_data.photo | prepend: site.baseurl | prepend: "/images/" %}
@@ -51,37 +30,9 @@
 
 {% comment %} Navigation {% endcomment %}
 {% assign nav_items = site_data.navigation.main_menu %}
-{% assign footer_links = site_data.navigation.footer_links %}
-
-{% comment %} Theme Configuration {% endcomment %}
-{% assign theme_config = site_data.config %}
-
-{% comment %} Content Configuration {% endcomment %}
-{% assign content_config = site_data.config %}
 
 {% comment %} Utility Functions {% endcomment %}
 {% assign current_year = "now" | date: "%Y" %}
-
-{% comment %} Date Formatting {% endcomment %}
-{% capture format_date %}
-  {% assign date_format = "%B %d, %Y" %}
-{% endcapture %}
-
-{% comment %} Site URL Builder {% endcomment %}
-{% capture site_url_builder %}
-  {% assign full_url = site_url | append: base_url %}
-{% endcapture %}
-
-{% comment %} Education Formatter {% endcomment %}
-{% capture format_education %}
-  {% assign edu_text = "" %}
-  {% for edu in pi_data.education %}
-    {% assign edu_text = edu_text | append: edu.degree | append: " - " | append: edu.institution %}
-    {% unless forloop.last %}
-      {% assign edu_text = edu_text | append: ", " %}
-    {% endunless %}
-  {% endfor %}
-{% endcapture %}
 
 {% comment %} Active Page Checker {% endcomment %}
 {% capture is_active_page %}

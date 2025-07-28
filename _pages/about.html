@@ -110,13 +110,11 @@ code {padding: 6px 8px; font-size: 90%;}
         font-size: 1.1rem;
     }
 }
-
-
 </style>
 
 <div class="card card-info">
     <div class="card-header">
-        <i class="fa fa-user-circle"></i> Profile
+        <i class="fa fa-user-circle"></i> About Me
     </div>
     <div class="card-body">
         <div class="row">
@@ -128,10 +126,10 @@ code {padding: 6px 8px; font-size: 90%;}
             <div class="col-sm-9 col-xs-12">
                 <h3 class="name-display">{{ pi_data.name }}</h3>
                 <p class="founder-title">Founder, RGR Innovate LLC</p>
-                <div class="academic-info" style="margin-top: 1rem;">
-                    <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">{{ academic_position }}</h4>
-                    <p style="color: var(--text-secondary); margin-bottom: 0.25rem;">{{ academic_department }}</p>
-                    <p style="color: var(--text-secondary); margin-bottom: 0;">{{ academic_university }}</p>
+                
+                <div class="profile-description" style="margin-top: 1rem;">
+                    <p>I work at the intersection of the Linux kernel, eBPF, and IoT systems. My research focuses on system performance, observability, and security—developing lightweight tracing tools, optimizing kernel instrumentation, and enabling real-time protection for Bluetooth, networking, and kernel protocols. I also develop and maintain Android apps for RGR Innovate LLC that I own.</p>
+                    <p>Refer to <a href="{{ linkedin_link }}" target="_blank">LinkedIn Profile</a> for more information about me.</p>
                 </div>
                 
                 <div class="social-links" style="margin: 0.75rem 0;">
@@ -153,21 +151,10 @@ code {padding: 6px 8px; font-size: 90%;}
                         </a>
                     {% endif %}
                 </div>
-                
-                <div class="profile-description" style="margin-top: 1rem;">
-                    <p>I work at the intersection of the Linux kernel, eBPF, and IoT systems. My research focuses on system performance, observability, and security—developing lightweight tracing tools, optimizing kernel instrumentation, and enabling real-time protection for Bluetooth, networking, and kernel protocols. I also develop and maintain Android apps for RGR Innovate LLC that I own.</p>
-                    <p>Refer to <a href="{{ linkedin_link }}" target="_blank">LinkedIn Profile</a> for more information about me.</p>
-                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-
-
 
 <!-- PDF Viewer Modal -->
 <div id="pdfModal" class="pdf-modal">
