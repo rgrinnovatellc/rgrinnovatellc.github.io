@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Iptable router - Uddhav P. Gautam - Founder, RGR Innovate LLC</title>
+    <meta name="description" content="Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC">
+    
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="/2024/08/23/iptable_router.html">
+    <link rel="shortcut icon" type ="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    
+    <!-- Bootstrap JavaScript Bundle (includes Popper.js) -->
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+  </head>
+
+
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id="
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm">
+    <a class="navbar-brand" href="/">
+     <span class="brand-text">RGR Innovate LLC</span>
+    </a>
+    
+    <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/">Home</a>
+            
+                
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/publications">Publications</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/software">Software</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/blogs">Blogs</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/about">About</a>
+                    
+                
+            
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+            
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
+            
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <p>We create a ubuntu server a iptables based router</p>
+<h1 id="router-ubuntu">Router Ubuntu</h1>
+<pre><code>sudo gedit /etc/sysctl.conf
+net.ipv4.ip_forward = 1
+sudo sysctl -p
+</code></pre>
+<p><code>sudo iptables -t nat -A POSTROUTING -o wlx0013eff30e78 -j MASQUERADE</code></p>
+<ul>
+<li><code>-A POSTROUTING</code> specifies that the rule applies to packets after they have been routed.</li>
+<li><code>-o wlx0013eff30e78</code> specifies the outgoing interface, which is your Wi-Fi interface connected to the internet.</li>
+<li><code>-j MASQUERADE</code> tells the system to replace the source IP address of outgoing packets with the IP address of the
+interface (in this case, the public IP of <code>wlx0013eff30e78</code>). This way, the return packets can find their way back to
+the originating device.</li>
+</ul>
+<p><code>sudo iptables -A FORWARD -i wlx0013eff30e78 -o eth0 -j ACCEPT</code></p>
+<ul>
+<li><code>-A FORWARD</code> indicates that this rule applies to packets being forwarded.</li>
+<li><code>-i wlx0013eff30e78</code> specifies that the packets are coming in from the Wi-Fi interface.</li>
+<li><code>-o enp0s31f6</code> specifies that the packets are going out to the Ethernet interface connected to the other machine.</li>
+<li><code>-j ACCEPT</code> allows these packets to be forwarded.</li>
+</ul>
+<p><code>sudo iptables -A FORWARD -i enp0s31f6 -o wlx0013eff30e78 -m state --state RELATED,ESTABLISHED -j ACCEPT</code></p>
+<ul>
+<li><code>-m state --state RELATED,ESTABLISHED</code> matches packets that are related to existing connections (i.e., responses to
+requests made by the devices on the local network).</li>
+<li>This is crucial for allowing replies from the internet back to the local devices.</li>
+</ul>
+<p>Wlx0013eff30e78 is a wifi internet interface. Enp0s31f6 is connected to another machine’s enp0s31f6. They have manual IP
+192.168.1.102 and 101 respectively.</p>
+<h2 id="to-persist">To persist</h2>
+<p>We have two options: (1) Using iptables-persistent (2) Using script</p>
+<h3 id="using-iptables-persistent">Using iptables-persistent</h3>
+<pre><code>sudo apt install iptables-persistent
+sudo iptables -t nat -A POSTROUTING -o wlx0013eff30e78 -j MASQUERADE
+sudo iptables -A FORWARD -i wlx0013eff30e78 -o eth0 -j ACCEPT
+sudo iptables -A FORWARD -i enp0s31f6 -o wlx0013eff30e78 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo netfilter-persistent save
+</code></pre>
+<h3 id="using-script">Using script</h3>
+<pre><code>sudo nano /etc/network/if-up.d/router-iptables
+#!/bin/sh
+  iptables -t nat -A POSTROUTING -o wlx0013eff30e78 -j MASQUERADE
+  iptables -A FORWARD -i wlx0013eff30e78 -o eth0 -j ACCEPT
+  iptables -A FORWARD -i enp0s31f6 -o wlx0013eff30e78 -m state --state RELATED,ESTABLISHED -j ACCEPT
+</code></pre>
+<p><code>sudo chmod +x /etc/network/if-up.d/router-iptables</code></p>
+<p>To check</p>
+<pre><code>sudo iptables -L
+sudo iptables -t nat -L
+</code></pre>
+<h2 id="other-machine">Other machine</h2>
+<pre><code>sudo ip route add default via 192.168.1.102
+echo &quot;nameserver 8.8.8.8&quot; | sudo tee /etc/resolv.conf
+nameserver 8.8.8.8
+</code></pre>
+<h2 id="persist">Persist</h2>
+<p>Edit /etc/network/interfaces as</p>
+<pre><code>auto enp1s0
+iface enp1s0 inet dhcp
+post-up ip route add default via 192.168.1.102
+</code></pre>
+<p>And, sudo nano /etc/systemd/resolved.conf</p>
+<pre><code>[Resolve]
+DNS=8.8.8.8
+</code></pre>
+
+
+      </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto py-3" style="text-align: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center" style="text-align: center;">
+                <p class="mb-2 footer-quote" style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                    Research is the compass that guides us through the ever-changing landscape of technology.
+                </p>
+                <p class="mb-0 footer-text" style="text-align: center;">
+                    © 2025 Uddhav P. Gautam. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>PID Reuse Can Cause Supervisor Confusion - Uddhav P. Gautam - Founder, RGR Innovate LLC</title>
+    <meta name="description" content="Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC">
+    
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="/2025/02/12/pidfd.html">
+    <link rel="shortcut icon" type ="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    
+    <!-- Bootstrap JavaScript Bundle (includes Popper.js) -->
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+  </head>
+
+
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id="
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm">
+    <a class="navbar-brand" href="/">
+     <span class="brand-text">RGR Innovate LLC</span>
+    </a>
+    
+    <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/">Home</a>
+            
+                
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/publications">Publications</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/software">Software</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/blogs">Blogs</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/about">About</a>
+                    
+                
+            
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+            
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
+            
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">PID Reuse Can Cause Supervisor Confusion</h1>
+    <div class="post-meta">
+      <i class="fa fa-calendar"></i>
+      <time datetime="2025-02-12T00:00:00-05:00" itemprop="datePublished">Feb 12, 2025</time>
+      
+    </div>
+  </div>
+
+  <div class="card-body post-content" itemprop="articleBody">
+    <title>The power of pidfd</title>
+<h1 id="problem-pid-reuse-can-cause-supervisor-confusion">PID Reuse Can Cause Supervisor Confusion</h1>
+<p>In a traditional PID-based system, the supervisor <strong>tracks processes by their PID</strong>, leading to potential <strong>race conditions</strong>:</p>
+<ol>
+<li><strong>Supervisor starts a worker process</strong> (e.g., PID = <code>1234</code>).</li>
+<li><strong>Worker dies unexpectedly</strong> (needs a restart).</li>
+<li><strong>Kernel marks PID = <code>1234</code> as available</strong> for reuse.</li>
+<li><strong>A new, unrelated process spawns</strong> and gets <strong>PID = <code>1234</code></strong>.</li>
+<li><strong>Supervisor checks for PID <code>1234</code></strong>, sees it exists, and <strong>mistakenly assumes the worker is still running</strong>.</li>
+<li><strong>Supervisor does nothing</strong> (doesn’t restart the worker) → <strong>Bug!</strong></li>
+</ol>
+<hr />
+
+<h2 id="solution-pidfd-ensures-stable-process-tracking">Solution: <code>pidfd</code> Ensures Stable Process Tracking</h2>
+<p>With <code>pidfd</code>, the supervisor <strong>tracks the worker using a stable file descriptor</strong>, instead of relying on PIDs.</p>
+<h3 id="how-pidfd-works-to-prevent-this-bug">How <code>pidfd</code> Works to Prevent This Bug</h3>
+<ol>
+<li><strong>Supervisor creates a worker process</strong> (e.g., PID <code>1234</code>).</li>
+<li><strong>Supervisor opens a <code>pidfd</code> for the worker</strong> (<code>pidfd = 5</code>).<ul>
+<li><code>pidfd</code> is a <strong>stable reference</strong> to the worker process.</li>
+<li>Unlike PIDs, <code>pidfd</code> <strong>remains unique and cannot be reused</strong>.</li>
+</ul>
+</li>
+<li><strong>Worker dies unexpectedly.</strong>  <ul>
+<li>The <strong>PID <code>1234</code> is freed</strong> by the kernel.  </li>
+<li>The <strong><code>pidfd = 5</code> is automatically marked as invalid by the pidfd layer</strong>.  </li>
+<li>Any future operations on this pidfd (like pidfd_send_signal() or waitid()) will fail with ESRCH (No such process).</li>
+<li>The supervsior (e.g., systemd or user-space processes such as kubernetes controller) monitors the pidfs using poll() or epoll()</li>
+</ul>
+</li>
+<li><strong>A new, unrelated process spawns and gets PID <code>1234</code>.</strong>  <ul>
+<li><strong>The new process has no relation to the old <code>pidfd = 5</code></strong>.</li>
+</ul>
+</li>
+<li><strong>Supervisor checks <code>pidfd = 5</code></strong>:  <ul>
+<li><strong>Finds that it is closed</strong> → It knows the worker is truly gone.  </li>
+<li>The supervsior monitors the pidfs using poll() or epoll(). </li>
+<li>The pidfd becomes readable, it means the old process has exited. </li>
+<li>The supervisor knows the status and close the pidfd using close(pidfd).</li>
+</ul>
+</li>
+<li><strong>Supervisor restarts the worker process correctly with a new pid, and of course with new pidfd</strong></li>
+</ol>
+<h7 id="note-holding-pidfd-dosesnt-mean-holding-pid-once-the-process-dies-the-pidfd-is-marked-as-referring-to-a-non-existent-process-invalid"><strong>Note</strong>: Holding pidfd dosesn&#39;t mean holding pid. Once the process dies, the pidfd is marked as referring to a non-existent process (invalid).  </h7>
+<h2 id="why-pidfd-is-powerful"> Why <code>pidfd</code> is Powerful</h2>
+<ul>
+<li><strong>Stable Reference:</strong> Unlike PIDs, <code>pidfd</code> <strong>cannot be reused</strong> by another process.  </li>
+<li><strong>No Race Conditions:</strong> Ensures that the supervisor always <strong>knows when a worker dies</strong>.  </li>
+<li><strong>Safer Process Management:</strong> Prevents misidentifying processes due to PID reuse.</li>
+</ul>
+<h3 id="max-value-of-pid-vs-pidfd">Max. value of pid vs. pidfd</h3>
+<p>In 32-bit system, we can have /proc/sys/kernel/pid_max value 32768, but in 64-bit, it is 4194304. And we can change the value of pidfd using <code>ulimit -n</code> and <code>ulimit -Hn</code>.</p>
+<p>When a process exits, its exit code and status (e.g., whether it was killed by a signal) are stored in the kernel, and the parent process can retrieve this status only once using wait(), waitpid(), or waitid(). After a successful wait() (or its variants), the kernel cleans up the process’s status, fully reaping and removing it from the system, meaning any further calls to wait() on that PID will fail because the process no longer exists. A pidfd allows referring to a process safely and race-free, but it does not change the "at-most-once" rule of wait(). If another thread or process has already waited on and reaped the process, calling waitid() on pidfd will fail since the exit status is gone, though the pidfd itself remains valid but cannot retrieve the exit status again.</p>
+
+<h2 id="use-cases">Use-cases</h2>
+<ol>
+<li>Use pidfd_send_signal() to kill a process
+Manager (i.e., supervisor) process can kill process using pidfd_send_signal()</li>
+</ol>
+<pre><code class="language-c">#include &lt;sys/syscall.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+
+int main() {
+    pid_t worker_pid = fork();
+
+    if (worker_pid == 0) {
+        // Worker process: just sleep
+        sleep(100);
+        return 0;
+    }
+
+    // Supervisor process: open a pidfd for the worker
+    int pidfd = syscall(SYS_pidfd_open, worker_pid, 0);
+    if (pidfd == -1) {
+        perror(&quot;pidfd_open failed&quot;);
+        return 1;
+    }
+
+    // Send SIGKILL to terminate the worker process
+    if (syscall(SYS_pidfd_send_signal, pidfd, SIGKILL, NULL, 0) == -1) {
+        perror(&quot;pidfd_send_signal failed&quot;);
+        return 1;
+    }
+
+    printf(&quot;Worker process (PID %d) killed via pidfd.\n&quot;, worker_pid);
+    close(pidfd); // Clean up
+    return 0;
+}
+</code></pre>
+<h2 id="research-opportunities">Research Opportunities</h2>
+<p>This is not possible to directly do from eBPF, but we can track memory refault ratio in eBPF and then also track those low-priority background processes, and send signal to kill/freeze. </p>
+<p>But if we attach eBPF in <code>tp/sched/sched_process_fork</code>, I think we should be able to get the parent and child process from the context of this hook and use process_madvice() or pidfd_send_signal(FREEZE or KILL) through kfunc.</p>
+<p>Sample eBPF program</p>
+<pre><code class="language-c">#include &quot;vmlinux.h&quot;
+#include &lt;bpf/bpf_helpers.h&gt;
+#include &lt;bpf/bpf_tracing.h&gt;
+
+struct {
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __uint(max_entries, 1024);
+    __type(key, pid_t);
+    __type(value, u64);
+} child_pid_map SEC(&quot;.maps&quot;);
+
+SEC(&quot;tp/sched/sched_process_fork&quot;)
+int handle_sched_process_fork(struct trace_event_raw_sched_process_fork *ctx) {
+    pid_t parent_pid = ctx-&gt;parent_pid;
+    pid_t child_pid = ctx-&gt;child_pid;
+
+    // Check if the parent is our supervisor process
+    u64 *supervisor_pid = bpf_map_lookup_elem(&amp;child_pid_map, &amp;parent_pid);
+    if (supervisor_pid) {
+        // Store the child PID to be killed
+        bpf_map_update_elem(&amp;child_pid_map, &amp;child_pid, &amp;parent_pid, BPF_ANY);
+    }
+
+    return 0;
+}
+
+char LICENSE[] SEC(&quot;license&quot;) = &quot;GPL&quot;;
+</code></pre>
+<p>Sample eBPF program loader, </p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;sys/syscall.h&gt;
+#include &lt;linux/pidfd.h&gt;
+#include &lt;bpf/libbpf.h&gt;
+#include &quot;kill_child.skel.h&quot;
+
+static int handle_event(void *ctx, void *data, size_t len) {
+    pid_t child_pid = *(pid_t *)data;
+    printf(&quot;Detected child PID %d - sending SIGKILL\n&quot;, child_pid);
+
+    // Send SIGKILL via pidfd
+    int pidfd = syscall(SYS_pidfd_open, child_pid, 0);
+    if (pidfd &lt; 0) {
+        perror(&quot;pidfd_open&quot;);
+        return 1;
+    }
+
+    if (syscall(SYS_pidfd_send_signal, pidfd, SIGKILL, NULL, 0) &lt; 0) {
+        perror(&quot;pidfd_send_signal&quot;);
+    }
+
+    close(pidfd);
+    return 0;
+}
+
+int main() {
+    struct kill_child_bpf *skel;
+    int err;
+
+    // Load and verify BPF application
+    skel = kill_child_bpf__open_and_load();
+    if (!skel) {
+        fprintf(stderr, &quot;Failed to load BPF skeleton\n&quot;);
+        return 1;
+    }
+
+    // Register supervisor PID in the map
+    pid_t supervisor_pid = getpid();
+    err = bpf_map__update_elem(skel-&gt;maps.child_pid_map,
+                               &amp;supervisor_pid, sizeof(pid_t),
+                               &amp;supervisor_pid, sizeof(pid_t),
+                               BPF_ANY);
+    if (err) {
+        fprintf(stderr, &quot;Failed to update BPF map\n&quot;);
+        goto cleanup;
+    }
+
+    // Attach tracepoint handler
+    err = kill_child_bpf__attach(skel);
+    if (err) {
+        fprintf(stderr, &quot;Failed to attach BPF program\n&quot;);
+        goto cleanup;
+    }
+
+    printf(&quot;Supervisor PID %d monitoring for child processes...\n&quot;, supervisor_pid);
+
+    // Sleep to keep the program running
+    while (1) {
+        sleep(1);
+    }
+
+cleanup:
+    kill_child_bpf__destroy(skel);
+    return 0;
+}
+</code></pre>
+<p>Compilation, </p>
+<pre><code class="language-bash">clang -g -O2 -target bpf -D__TARGET_ARCH_x86_64 -I/usr/include/x86_64-linux-gnu -c kill_child.bpf.c -o kill_child.bpf.o
+bpftool gen skeleton kill_child.bpf.o &gt; kill_child.skel.h
+clang -g -O2 -Wall -I . -c kill_child.c -o kill_child.o
+clang -Wall -O2 -g kill_child.o -lbpf -lelf -lz -o kill_child
+</code></pre>
+<p>and run using <code>sudo ./kill_child</code></p>
+<p>Q) What happens if someone tamber pidfd from the File Descriptor Table before process terminates (or while the process is still runnign)? It means it is security side of the process hijacking.</p>
+
+
+  </div>
+
+</article>
+      </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto py-3" style="text-align: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center" style="text-align: center;">
+                <p class="mb-2 footer-quote" style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                    Research is the compass that guides us through the ever-changing landscape of technology.
+                </p>
+                <p class="mb-0 footer-text" style="text-align: center;">
+                    © 2025 Uddhav P. Gautam. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Terraform Infrastructure as Code - Uddhav P. Gautam - Founder, RGR Innovate LLC</title>
+    <meta name="description" content="Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC">
+    
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="/2024/04/04/terraform.html">
+    <link rel="shortcut icon" type ="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    
+    <!-- Bootstrap JavaScript Bundle (includes Popper.js) -->
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+  </head>
+
+
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id="
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm">
+    <a class="navbar-brand" href="/">
+     <span class="brand-text">RGR Innovate LLC</span>
+    </a>
+    
+    <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/">Home</a>
+            
+                
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/publications">Publications</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/software">Software</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/blogs">Blogs</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/about">About</a>
+                    
+                
+            
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+            
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
+            
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">Terraform Infrastructure as Code</h1>
+    <div class="post-meta">
+      <i class="fa fa-calendar"></i>
+      <time datetime="2024-04-04T00:00:00-04:00" itemprop="datePublished">Apr 4, 2024</time>
+      
+    </div>
+  </div>
+
+  <div class="card-body post-content" itemprop="articleBody">
+    <h2 id="overview">Overview</h2>
+<p><strong>Terraform</strong> is an open-source infrastructure as code (IaC) tool that allows you to define and provision infrastructure
+using declarative scripts. The core lifecycle commands of Terraform are:</p>
+<ul>
+<li><code>init</code>: Initialize a new or existing Terraform configuration.</li>
+<li><code>plan</code>: Create an execution plan.</li>
+<li><code>apply</code>: Apply the changes required to reach the desired state of the configuration.</li>
+<li><code>destroy</code>: Destroys everything you provisioned.</li>
+</ul>
+<p>In this guide, we will use Terraform to create three KVM virtual machines (VMs): <code>base</code>, <code>client</code>, and <code>xdp</code>.</p>
+<ul>
+<li><strong>Base</strong>: This is the base QEWU server VM.</li>
+<li><strong>XDP</strong>: This is the base VM with XDP (eBPF program) loaded.</li>
+<li><strong>Client</strong>: This VM will be used to measure the throughput of the <code>base</code> and <code>xdp</code> VMs.</li>
+</ul>
+<p>For simplicity, the <code>.img</code> files for the VMs will initially be the same as the Ubuntu 24.04 Server Cloud Image.</p>
+<p>Here’s a brief overview of what each VM will represent:</p>
+<ul>
+<li><strong><code>base_root.img</code></strong>: Image for the <code>base</code> VM.</li>
+<li><strong><code>xdp_root.img</code></strong>: Image for the <code>xdp</code> VM.</li>
+<li><strong><code>client_root.img</code></strong>: Image for the <code>client</code> VM.</li>
+</ul>
+<h2 id="downloading-the-base-cloud-image">Downloading the Base Cloud Image</h2>
+<p>First, download the base cloud image <code>.img</code> file from the official Ubuntu cloud image repository:</p>
+<p><a href="https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-24.04-server-cloudimg-amd64.img">Download Ubuntu 24.04 Server Cloud Image</a></p>
+<p>Store the downloaded image in the <code>images/</code> directory.</p>
+<h2 id="directory-structure">Directory Structure</h2>
+<p>Here is the directory structure for your Terraform configuration:</p>
+<pre><code class="language-plaintext">.
+├── cloudinit_base_template.tf
+├── cloudinit_base.tf
+├── cloudinit_client.tf
+├── cloudinit_xdp.tf
+├── common_domain.tf
+├── images
+│   ├── base_root.img
+│   ├── client_root.img
+│   ├── ubuntu-24.04-server-cloudimg-amd64.img
+│   └── xdp_root.img
+├── main.tf
+├── providers.tf
+├── terraform.tfvars
+└── variables.tf
+</code></pre>
+<h2 id="cloudinit_base_templatetf"><code>cloudinit_base_template.tf</code></h2>
+<pre><code class="language-hcl">data &quot;template_file&quot; &quot;cloudinit_template&quot; {
+  template = &lt;&lt;EOF
+#cloud-config
+fqdn: ${var.vm_domain}
+manage_etc_hosts: true
+package_update: true
+package_upgrade: true
+ssh_pwauth: 1
+timezone: &quot;America/New_York&quot;
+users:
+ - name: user
+   passwd: $y$j9T$90KTrNAm1VThpSJR99lD/1$V28A3c/tiTBCC1drC6jnu4LVChD1XpcLA2uQ.RD6uXB
+   home: /home/user
+   shell: /bin/bash
+   sudo: ALL=(ALL) NOPASSWD:ALL
+   lock_passwd: false
+   chpasswd: { expire: False }
+   groups: sudo, users, admin
+EOF
+
+  vars = {
+    fqdn = var.vm_domain
+  }
+}
+</code></pre>
+<h2 id="cloudinit_basetf"><code>cloudinit_base.tf</code></h2>
+<pre><code class="language-hcl">data &quot;template_file&quot; &quot;cloudinit_base&quot; {
+  template = data.template_file.cloudinit_template.rendered
+  vars = {
+    fqdn = &quot;base.${var.vm_domain}&quot;
+  }
+</code></pre>
+<h2 id="cloudinit_xdptf"><code>cloudinit_xdp.tf</code></h2>
+<pre><code class="language-hcl">data &quot;template_file&quot; &quot;cloudinit_xdp&quot; {
+  template = data.template_file.cloudinit_template.rendered
+  vars = {
+    fqdn = &quot;xdp.${var.vm_domain}&quot;
+  }
+}
+</code></pre>
+<h2 id="cloudinit_clienttf"><code>cloudinit_client.tf</code></h2>
+<pre><code class="language-hcl">data &quot;template_file&quot; &quot;cloudinit_client&quot; {
+  template = data.template_file.cloudinit_template.rendered
+  vars = {
+    fqdn = &quot;client.${var.vm_domain}&quot;
+  }
+}
+</code></pre>
+<h2 id="common_domaintf"><code>common_domain.tf</code></h2>
+<pre><code class="language-hcl"># common_domain.tf
+
+
+locals {
+  common_memory_vcpu = {
+    memory = var.vm_memory
+    vcpu   = var.vm_vcpu
+  }
+
+
+  common_console = [
+    {
+      type        = &quot;pty&quot;
+      target_port = &quot;0&quot;
+      target_type = &quot;serial&quot;
+    },
+    {
+      type        = &quot;pty&quot;
+      target_type = &quot;virtio&quot;
+      target_port = &quot;1&quot;
+    }
+  ]
+
+
+  common_graphics = {
+    type        = &quot;spice&quot;
+    listen_type = &quot;address&quot;
+    autoport    = true
+  }
+}
+</code></pre>
+<h2 id="providerstf"><code>providers.tf</code></h2>
+<pre><code class="language-hcl"># Define Terraform configuration requirements and providers
+terraform {
+  required_version = &quot;&gt;= 1.9.2&quot;
+
+
+  required_providers {
+    random = {
+      source  = &quot;hashicorp/random&quot;
+      # version = &quot;~&gt; 3.6.1&quot; # Allows any version &gt;= 3.6.1 and &lt; 3.7.0
+      version = &quot;~&gt; 3.6.1&quot; # Use the latest patch version of 3.6.x
+    }
+    libvirt = {
+      source  = &quot;dmacvicar/libvirt&quot;
+      version = &quot;~&gt; 0.7.6&quot; # Use the latest patch version of 0.7.x
+    }
+  }
+
+
+  # Optional: Configure backend for state storage
+  # backend &quot;s3&quot; {
+  #   bucket         = &quot;my-tf-state&quot;
+  #   key            = &quot;terraform/state&quot;
+  #   region         = &quot;us-east-1&quot;
+  # }
+}
+</code></pre>
+<h2 id="terraformtfvars"><code>terraform.tfvars</code></h2>
+<pre><code class="language-hcl"># terraform.tfvars is a file where you provide values for the variables defined in variables.tf.
+# This file is used to set or override the default values of variables.
+
+
+# Purpose
+# Assign Values: You use terraform.tfvars to assign actual values to the variables that were declared in variables.tf.
+# Override Defaults: If a variable has a default value in variables.tf, the value in terraform.tfvars will override it.
+# Provide Environment-Specific Configurations: You can use this file to specify different values
+# for different environments or scenarios.
+
+
+# VM Configurations
+vms = {
+  client = {
+    hostname = &quot;client&quot;
+    vm_ip     = [&quot;192.168.100.2&quot;]
+  },
+  base = {
+    hostname = &quot;base&quot;
+    vm_ip     = [&quot;192.168.100.3&quot;]
+  },
+  xdp = {
+    hostname = &quot;xdp&quot;
+    vm_ip     = [&quot;192.168.100.4&quot;]
+  },
+}
+
+
+# Node Configuration Parameters
+vm_vcpu      = 2
+vm_memory    = 4096  # Memory in MiB
+vm_disksize  = 40    # Disk size in GiB
+vm_domain    = &quot;local&quot;
+
+
+# VM Image Paths
+vm_baseimage = &quot;images/ubuntu-24.04-server-cloudimg-amd64.img&quot;
+client_image = &quot;images/client_root.img&quot;
+base_image   = &quot;images/base_root.img&quot;
+xdp_image     = &quot;images/xdp_root.img&quot;
+
+
+# Host Parameters
+libvirt_disk_path = &quot;/var/lib/libvirt/images/kernel_absorb&quot;
+</code></pre>
+<h2 id="variablestf"><code>variables.tf</code></h2>
+<pre><code class="language-hcl"># variables.tf is a Terraform configuration file where you define variables that will be used throughout
+# your Terraform configuration. This file contains variable declarations, including descriptions,
+# types, and default values.
+
+
+
+
+# Purpose
+# Declare Variables: You use variables.tf to declare what variables your Terraform configuration requires.
+# Provide Defaults: You can specify default values for variables, which will be used if no other value is provided.
+# Describe Variables: You can include descriptions to explain what each variable is for, which helps with
+# documentation and clarity.
+
+
+# Host Parameters
+variable &quot;libvirt_disk_path&quot; {
+  description = &quot;Path for the libvirt pool&quot;
+  type        = string
+  default     = &quot;/var/lib/libvirt/images/kernel_absorb&quot;
+}
+
+
+# Node Config
+variable &quot;vm_baseimage&quot; {
+  description = &quot;Path to the Ubuntu 24.04 base image&quot;
+  type        = string
+  default     = &quot;images/ubuntu-24.04-server-cloudimg-amd64.img&quot;
+}
+
+
+variable &quot;client_image&quot; {
+  description = &quot;Path to the client VM image&quot;
+  type        = string
+  default     = &quot;images/client_root.img&quot;
+}
+
+
+variable &quot;base_image&quot; {
+  description = &quot;Path to the base VM image&quot;
+  type        = string
+  default     = &quot;images/base_root.img&quot;
+}
+
+
+variable &quot;xdp_image&quot; {
+  description = &quot;Path to the XDP VM image&quot;
+  type        = string
+  default     = &quot;images/xdp_root.img&quot;
+}
+
+
+variable &quot;vm_vcpu&quot; {
+  description = &quot;Number of vCPUs for each VM&quot;
+  type        = number
+  default     = 2
+}
+
+
+variable &quot;vm_memory&quot; {
+  description = &quot;Memory in MiB for each VM&quot;
+  type        = number
+  default     = 4096
+}
+
+
+variable &quot;vm_disksize&quot; {
+  description = &quot;Disk size in GiB for each VM&quot;
+  type        = number
+  default     = 40
+}
+
+
+variable &quot;vm_domain&quot; {
+  description = &quot;FQDN for the network&quot;
+  type        = string
+  default     = &quot;local&quot;
+}
+
+
+# VMs
+variable &quot;vms&quot; {
+  description = &quot;Map of VM configurations&quot;
+  type = map(object({
+    hostname = string
+    vm_ip    = list(string)
+  }))
+}
+</code></pre>
+<h2 id="maintf"><code>main.tf</code></h2>
+<pre><code class="language-hcl">provider &quot;libvirt&quot; {
+  uri = &quot;qemu:///system&quot;
+}
+
+
+resource &quot;libvirt_pool&quot; &quot;kernel_absorb_pool&quot; {
+  name = &quot;kernel_absorb_pool&quot;
+  type = &quot;dir&quot;
+  path = var.libvirt_disk_path
+}
+
+
+# this denotes official cloud .img file
+resource &quot;libvirt_volume&quot; &quot;ubuntu_24_base&quot; {
+  name   = &quot;ubuntu_24.04&quot;
+  pool   = libvirt_pool.kernel_absorb_pool.name
+  format = &quot;qcow2&quot;
+  source = var.vm_baseimage
+}
+
+
+# client VM storage volume
+resource &quot;libvirt_volume&quot; &quot;qcow2_client&quot; {
+  name   = &quot;client_root.img&quot;
+  pool   = libvirt_pool.kernel_absorb_pool.name
+  format = &quot;qcow2&quot;
+  source = var.client_image
+}
+
+
+# base server VM storage volume
+resource &quot;libvirt_volume&quot; &quot;qcow2_base&quot; {
+  name   = &quot;base_root.img&quot;
+  pool   = libvirt_pool.kernel_absorb_pool.name
+  format = &quot;qcow2&quot;
+  source = var.base_image
+}
+
+
+# xdp server VM storage volume
+resource &quot;libvirt_volume&quot; &quot;qcow2_xdp&quot; {
+  name   = &quot;xdp_root.img&quot;
+  pool   = libvirt_pool.kernel_absorb_pool.name
+  format = &quot;qcow2&quot;
+  source = var.xdp_image
+}
+
+
+resource &quot;libvirt_cloudinit_disk&quot; &quot;cloudinit_client&quot; {
+  name      = &quot;cloudinit_client.iso&quot;
+  pool      = libvirt_pool.kernel_absorb_pool.name
+  user_data = data.template_file.cloudinit_client.rendered
+}
+
+
+resource &quot;libvirt_cloudinit_disk&quot; &quot;cloudinit_base&quot; {
+  name      = &quot;cloudinit_base.iso&quot;
+  pool      = libvirt_pool.kernel_absorb_pool.name
+  user_data = data.template_file.cloudinit_base.rendered
+}
+
+
+resource &quot;libvirt_cloudinit_disk&quot; &quot;cloudinit_xdp&quot; {
+  name      = &quot;cloudinit_xdp.iso&quot;
+  pool      = libvirt_pool.kernel_absorb_pool.name
+  user_data = data.template_file.cloudinit_xdp.rendered
+}
+
+
+# see https://github.com/dmacvicar/terraform_provider_libvirt/blob/v0.7.6/website/docs/r/network.markdown
+resource &quot;libvirt_network&quot; &quot;net&quot; {
+  name   = &quot;net&quot;
+  mode   = &quot;nat&quot;
+  domain = var.vm_domain
+  addresses = [&quot;192.168.100.0/24&quot;]
+  dhcp {
+    enabled = false
+  }
+  dns {
+    enabled    = true
+    local_only = false
+  }
+}
+
+
+resource &quot;libvirt_domain&quot; &quot;domain_client&quot; {
+  name   = var.vms[&quot;client&quot;].hostname
+
+
+  cloudinit = libvirt_cloudinit_disk.cloudinit_client.id
+
+
+  network_interface {
+    network_name   = &quot;net&quot;
+    wait_for_lease = true
+    hostname       = var.vms[&quot;client&quot;].hostname
+    addresses = var.vms[&quot;client&quot;].vm_ip
+  }
+
+
+  disk {
+    volume_id = libvirt_volume.qcow2_client.id
+  }
+
+
+  # common part
+  memory = local.common_memory_vcpu.memory
+  vcpu   = local.common_memory_vcpu.vcpu
+
+
+  dynamic &quot;console&quot; {
+    for_each = local.common_console
+    content {
+      type        = console.value.type
+      target_port = console.value.target_port
+      target_type = console.value.target_type
+    }
+  }
+
+
+  graphics {
+    type        = local.common_graphics.type
+    listen_type = local.common_graphics.listen_type
+    autoport    = local.common_graphics.autoport
+  }
+
+
+}
+
+
+resource &quot;libvirt_domain&quot; &quot;domain_base&quot; {
+  name   = var.vms[&quot;base&quot;].hostname
+
+
+  cloudinit = libvirt_cloudinit_disk.cloudinit_base.id
+
+
+  network_interface {
+    network_name   = &quot;net&quot;
+    wait_for_lease = true
+    hostname       = var.vms[&quot;base&quot;].hostname
+    addresses = var.vms[&quot;base&quot;].vm_ip
+  }
+
+
+  disk {
+    volume_id = libvirt_volume.qcow2_base.id
+  }
+
+
+  # common part
+  memory = local.common_memory_vcpu.memory
+  vcpu   = local.common_memory_vcpu.vcpu
+
+
+  dynamic &quot;console&quot; {
+    for_each = local.common_console
+    content {
+      type        = console.value.type
+      target_port = console.value.target_port
+      target_type = console.value.target_type
+    }
+  }
+
+
+  graphics {
+    type        = local.common_graphics.type
+    listen_type = local.common_graphics.listen_type
+    autoport    = local.common_graphics.autoport
+  }
+
+
+}
+
+
+resource &quot;libvirt_domain&quot; &quot;domain_xdp&quot; {
+  name   = var.vms[&quot;xdp&quot;].hostname
+
+
+  cloudinit = libvirt_cloudinit_disk.cloudinit_xdp.id
+
+
+  network_interface {
+    network_name   = &quot;net&quot;
+    wait_for_lease = true
+    hostname       = var.vms[&quot;xdp&quot;].hostname
+    addresses = var.vms[&quot;xdp&quot;].vm_ip
+  }
+
+
+  disk {
+    volume_id = libvirt_volume.qcow2_xdp.id
+  }
+
+
+  # common part
+  memory = local.common_memory_vcpu.memory
+  vcpu   = local.common_memory_vcpu.vcpu
+
+
+  dynamic &quot;console&quot; {
+    for_each = local.common_console
+    content {
+      type        = console.value.type
+      target_port = console.value.target_port
+      target_type = console.value.target_type
+    }
+  }
+
+
+  graphics {
+    type        = local.common_graphics.type
+    listen_type = local.common_graphics.listen_type
+    autoport    = local.common_graphics.autoport
+  }
+
+
+}
+</code></pre>
+<h2 id="images"><code>images/</code></h2>
+<pre><code class="language-c">upgautamvt@fedora:~/CLionProjects/KernelWithBpfPrograms/benchmarks/macrobenchmarks/terraform/xdp_terraform$ ls images/
+base_root.img  client_root.img  ubuntu-24.04-server-cloudimg-amd64.img  xdp_root.img
+</code></pre>
+<p>Refer
+to: <a href="https://github.com/upgautamvt/KernelWithBpfPrograms/tree/main/benchmarks/macrobenchmarks/terraform/xdp_terraform">https://github.com/upgautamvt/KernelWithBpfPrograms/tree/main/benchmarks/macrobenchmarks/terraform/xdp_terraform</a></p>
+
+
+  </div>
+
+</article>
+      </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto py-3" style="text-align: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center" style="text-align: center;">
+                <p class="mb-2 footer-quote" style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                    Research is the compass that guides us through the ever-changing landscape of technology.
+                </p>
+                <p class="mb-0 footer-text" style="text-align: center;">
+                    © 2025 Uddhav P. Gautam. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

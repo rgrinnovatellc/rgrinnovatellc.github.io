@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Add your own syscall to the Linux kernel - Uddhav P. Gautam - Founder, RGR Innovate LLC</title>
+    <meta name="description" content="Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC">
+    
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="/2024/06/05/custom_syscall.html">
+    <link rel="shortcut icon" type ="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    
+    <!-- Bootstrap JavaScript Bundle (includes Popper.js) -->
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+  </head>
+
+
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id="
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm">
+    <a class="navbar-brand" href="/">
+     <span class="brand-text">RGR Innovate LLC</span>
+    </a>
+    
+    <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/">Home</a>
+            
+                
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/publications">Publications</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/software">Software</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/blogs">Blogs</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/about">About</a>
+                    
+                
+            
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+            
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
+            
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <p>Below in the implementation section, there are implementation chapters for the user-space side and kernel side
+respectively, where I have provided the exact GitHub commit link, which you can access.</p>
+<p>I have also included program source code files and record, record-time, and syscall_diff.txt files there.</p>
+<h2 id="idea">Idea</h2>
+<p>In the user-space program, you write a C program to access your custom newly added syscall by using its syscall number.
+In my case, it was 548 for my 64-bit base syscall named <em>uddhav5204_64</em>. I also created Makefile to compile and in the
+same user-space directory, I will later store git diff file, record, and record-times.</p>
+<pre><code class="language-c++">upgautamvt@upg-vt-lab:~/CLionProjects/KernelWithBpfPrograms/user-space$ ls
+access-syscall  access-syscall.c  Makefile  record  record-time  syscall_diff.txt
+</code></pre>
+<ol>
+<li>In the kernel side, in the kernel directory, I added my syscall implementation file named sys_uddhav5204_64.c, where
+I used asmlinkage, and SYSCALL_DEFINE0 macro to return 5204 long value. The macro calls asmlinkage syscall function
+sys_udhav5204_64 (this is my custom syscall). In DEFINEX, the X part represents, how many parameters this macro uses.
+The asmlinkage is a keyword in the Linux kernel that specifies how a function should receive its arguments. It is
+primarily used for system calls, indicating that the function&#39;s arguments should be passed on the stack rather than
+in registers. This is required when use to kernel context switch happens like in syscall.</li>
+<li>In the kernel/Makefile, I added obj-y += sys_uddhav5204_64.o (this is the object file of my implementation source
+code sys_uddhav5204_64.c)</li>
+<li>In syscall_64.tbl, I added <em>548 64 common sys_uddhav5204_64 //add this at the end</em></li>
+<li>This tbl file is to add 64-bit bases syscall with their type, name, and number.</li>
+<li>In syscalls.h file, I provided my syscall function definition. This is what contains function prototype (or
+definition) of syscalls.</li>
+<li>In uninstd_64.h file, I exposed syscall number so that user-space program can access it. Because this file contains
+architecture specific syscall number, and it is the part of User-space API (UAPI).</li>
+<li>Then I did git diff, compiled the kernel, and then compiled user-space program, and then ran the user-space program.</li>
+</ol>
+<p>That was everything.</p>
+<p>Below, I have provided all implementation that tells what files added or modified and where.</p>
+<h2 id="implementation">Implementation</h2>
+<h2 id="user-space-program-to-access-system-call-uddhav5204_64">User-space program to access system call <em>uddhav5204_64</em></h2>
+<p><strong>User-space directory</strong></p>
+<ul>
+<li><p>Makefile</p>
+<pre><code>CC = gcc
+CFLAGS = -Wall -Werror
+SRCS = $(wildcard *.c)
+TARGETS = $(patsubst %.c,%, $(SRCS))
+all: $(TARGETS)
+%: %.c
+   $(CC) $(CFLAGS) -o $@ $&lt;
+clean:
+   rm -f $(TARGETS)
+</code></pre>
+</li>
+<li><p>access-syscall.c</p>
+</li>
+</ul>
+<pre><code class="language-c++">#include &lt;stdio.h&gt;
+  #include &lt;unistd.h&gt;
+  #include &lt;sys/syscall.h&gt;
+  #include &lt;errno.h&gt;
+
+  #define __NR_uddhav5204_64 548
+
+  int main() {
+     long result;
+     *// Test 64-bit syscall*
+     result = syscall(__NR_uddhav5204_64);
+     if (result == -1) {
+         perror(&quot;64-bit syscall failed&quot;);
+     } else {
+         printf(&quot;%ldn&quot;, result);
+     }
+
+     return 0;
+  }
+</code></pre>
+<h2 id="kernel-side-modification">Kernel side modification</h2>
+<h3 id="archx86entrysyscallssyscall_64tbl">arch/x86/entry/syscalls/syscall_64.tbl</h3>
+<p>548 64 common sys_uddhav5204_64 //add this at the end</p>
+<h3 id="includelinuxsyscallsh">include/linux/syscalls.h</h3>
+<p><code>asmlinkage long sys_uddhav5204_64(void); //add this at the end</code></p>
+<h3 id="toolsarchx86includeuapiasmunistd_64h-this-is-to-provide-syscall-number">tools/arch/x86/include/uapi/asm/unistd_64.h (this is to provide syscall number)</h3>
+<pre><code class="language-c++">#ifndef __NR_uddhav5204_64
+#define __NR_uddhav5204_64 548
+#endif
+</code></pre>
+<h3 id="kernelsys_uddhav5204_64c-this-is-the-main-syscall-implementation-file">kernel/sys_uddhav5204_64.c (this is the main syscall implementation file)</h3>
+<pre><code class="language-c++">#include &lt;linux/kernel.h&gt;
+#include &lt;linux/syscalls.h&gt;
+
+*// 64-bit syscall definition*
+asmlinkage long sys_uddhav5204_64(void) {
+       return 1000; *// Always return 1000*
+}
+
+*//DEINEX is a macro, X tells number of arguments*
+SYSCALL_DEFINE0(uddhav5204_64)
+{
+       return sys_uddhav5204_64();
+}
+
+### kernel/Makefile
+
+obj-y += sys_uddhav5204_64.o //add this at the end
+</code></pre>
+<h3 id="git-diff">Git diff</h3>
+<pre><code class="language-c++">diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index 7e8d46f4147f..e15e3c190ea6 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -426,5 +426,6 @@
+ 545	x32	execveat		compat_sys_execveat
+ 546	x32	preadv2			compat_sys_preadv64v2
+ 547	x32	pwritev2		compat_sys_pwritev64v2
++548 64 common sys_uddhav5204_64 //add this at the end
+ # This is the end of the legacy x32 range.  Numbers 548 and above are
+ # not special and are not to be used for x32-specific syscalls.
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 77eb9b0e7685..05f3fb914b54 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -1295,3 +1295,4 @@ int __sys_getsockopt(int fd, int level, int optname, char __user *optval,
+ int __sys_setsockopt(int fd, int level, int optname, char __user *optval,
+         int optlen);
+ #endif
++asmlinkage long sys_uddhav5204_64(void); //add this at the end
+\ No newline at end of file
+diff --git a/kernel/Makefile b/kernel/Makefile
+index ce105a5558fc..803f7c8b6548 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -159,3 +159,4 @@ $(obj)/kheaders_data.tar.xz: FORCE
+     $(call cmd,genikh)
+
+ clean-files := kheaders_data.tar.xz kheaders.md5
++obj-y += sys_uddhav5204_64.o //add this at the end
+\ No newline at end of file
+diff --git a/kernel/sys_uddhav5204_64.c b/kernel/sys_uddhav5204_64.c
+new file mode 100644
+index 000000000000..2fada3bf3d18
+--- /dev/null
++++ b/kernel/sys_uddhav5204_64.c
+@@ -0,0 +1,13 @@
++#include &lt;linux/kernel.h&gt;
++#include &lt;linux/syscalls.h&gt;
++
++// 64-bit syscall definition
++asmlinkage long sys_uddhav5204_64(void) {
++	return 1000; // Always return 1000
++}
++
++//DEINEX is a macro, X tells number of arguments
++SYSCALL_DEFINE0(uddhav5204_64)
++{
++	return sys_uddhav5204_64();
++}
+diff --git a/tools/arch/x86/include/uapi/asm/unistd_64.h b/tools/arch/x86/include/uapi/asm/unistd_64.h
+index d0f2043d7132..001570df7d88 100644
+--- a/tools/arch/x86/include/uapi/asm/unistd_64.h
++++ b/tools/arch/x86/include/uapi/asm/unistd_64.h
+@@ -29,3 +29,6 @@
+ #ifndef __NR_seccomp
+ #define __NR_seccomp 317
+ #endif
++#ifndef __NR_uddhav5204_64
++#define __NR_uddhav5204_64 548
++#endif
+</code></pre>
+
+
+      </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto py-3" style="text-align: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center" style="text-align: center;">
+                <p class="mb-2 footer-quote" style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                    Research is the compass that guides us through the ever-changing landscape of technology.
+                </p>
+                <p class="mb-0 footer-text" style="text-align: center;">
+                    © 2025 Uddhav P. Gautam. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

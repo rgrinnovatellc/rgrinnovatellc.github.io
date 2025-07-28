@@ -1,7 +1,7 @@
 # Jekyll build files
-_site/
-.jekyll-cache/
-.sass-cache/
+# _site/
+# .jekyll-cache/
+# .sass-cache/
 
 # OS generated files
 .DS_Store

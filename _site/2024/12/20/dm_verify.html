@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>dm-verify - Uddhav P. Gautam - Founder, RGR Innovate LLC</title>
+    <meta name="description" content="Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC">
+    
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="/2024/12/20/dm_verify.html">
+    <link rel="shortcut icon" type ="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    
+    <!-- Bootstrap JavaScript Bundle (includes Popper.js) -->
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+  </head>
+
+
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id="
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm">
+    <a class="navbar-brand" href="/">
+     <span class="brand-text">RGR Innovate LLC</span>
+    </a>
+    
+    <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/">Home</a>
+            
+                
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/publications">Publications</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/software">Software</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/blogs">Blogs</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/about">About</a>
+                    
+                
+            
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+            
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
+            
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <h1 id="dm-verify">dm-verify</h1>
+<p>Block devices' integrity is important because it holds bootloader, system files, etc., and heavily used in Android and Linux kernel.</p>
+<p>Let's play with it.</p>
+
+<h2 id="create-virtual-block-device">Create a virtual block device</h2>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ dd if=/dev/zero of=~/Desktop/verity_test.img bs=1M count=100
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB, 100 MiB) copied, 0.00858481 s, 12.2 GB/s
+upgautam@amd:~/Desktop$ ls
+ DummyApp   filtering   pack.txt  &#39;QEMU modification&#39;   verity_test.img
+
+Explanation:
+    of: output file
+    if: input file
+    /dev/zero is sepcial input file that has 0x00 (all zero bytes)
+    bs: block size
+</code></pre>
+<h2 id="create-loopback-device">Create a loopback device</h2>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo losetup /dev/loop133 ~/Desktop/verity_test.img
+You can find all used loopback devices using losetup -a command, and don&#39;t use those. For example, in my case loop133 is not being used.
+</code></pre>
+<h2 id="create-filesystem">Create a filesystem for the device</h2>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo mkfs.ext4 /dev/loop133
+mke2fs 1.47.0 (5-Feb-2023)
+Discarding device blocks: done
+Creating filesystem with 25600 4k blocks and 25600 inodes
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+</code></pre>
+<h2 id="mount-device">Mount the device</h2>
+<pre><code class="language-bash">sudo mount /dev/loop133 ~/Desktop/mount_point_loop_dm_verity
+</code></pre>
+<p>Now, we repeat most of the steps above to create and store hash tree.</p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ dd if=/dev/zero of=~/Desktop/verity_hash.img bs=1M count=10
+10+0 records in
+10+0 records out
+10485760 bytes (10 MB, 10 MiB) copied, 0.00141643 s, 7.4 GB/s
+upgautam@amd:~/Desktop$ sudo losetup /dev/loop135 ~/Desktop/verity_hash.img
+</code></pre>
+<p>If not already installed, install the required tools.</p>
+<pre><code class="language-bash">sudo apt install cryptsetup-bin
+</code></pre>
+<p>Kernel config,</p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ grep DM_VERITY /boot/config-$(uname -r)
+CONFIG_DM_VERITY=m
+CONFIG_DM_VERITY_VERIFY_ROOTHASH_SIG=y
+CONFIG_DM_VERITY_VERIFY_ROOTHASH_SIG_SECONDARY_KEYRING=y
+# CONFIG_DM_VERITY_FEC is not set
+
+sudo modprobe dm-verity
+</code></pre>
+<p>Now, we can format those devices and then create vroot using the same hash value that we got during format.</p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo veritysetup format /dev/loop133 /dev/loop135
+VERITY header information for /dev/loop135
+UUID:            	7a5d78ac-caad-4ce7-b0a4-ca1b2c9b77d4
+Hash type:       	1
+Data blocks:     	25600
+Data block size: 	4096
+Hash blocks:     	203
+Hash block size: 	4096
+Hash algorithm:  	sha256
+Salt:            	bd25e6c7da025b83ae5e1cf9750228a7e3f01649e8454adedd9e32d9fac7cadd
+Root hash:      	3de39aa81b1c32508dd559ae7e3d1fab35d86f2daa03854ffcdf644ba3fd438a
+Hash device size: 	835584 [bytes]
+upgautam@amd:~/Desktop$ sudo veritysetup create vroot /dev/loop133 /dev/loop135 3de39aa81b1c32508dd559ae7e3d1fab35d86f2daa03854ffcdf644ba3fd438a
+upgautam@amd:~/Desktop$ sudo dmsetup status
+vroot: 0 204800 verity V
+</code></pre>
+<p>The command <code>sudo veritysetup create vroot /dev/loop133 /dev/loop135</code> creates vroot block device that tracks both loop133 (i.e., data), and loop135 (i..e, corresponding hashes of root and then block by block basis of data). Then we can mount vroot to /mnt using `sudo mount /dev/mapper/vroot /mnt'. Since dm-verity creates a read-only device, all writes to /dev/mapper/vroot will be rejected. The device is designed to ensure that only valid data (data that matches the hash tree) is accessible. Modifications or corruptions will automatically be flagged, preventing tampered data from being accessed. When the system accesses data from /dev/loop133 through /dev/mapper/vroot, the hashes in /dev/loop135 are checked to verify that the data has not been altered. The vroot is basically readonly mount of loop133. We can also mount loop135 to see the corresponding hash, and we can also mount loop133 and then write something. Then we consume from vroot mounted at /mnt that is the time when verity system checks its hashes. </p>
+<p>When a block is accessed from /dev/mapper/vroot (which is the verity device created using veritysetup), the kernel performs a hash check on the corresponding block in the data device (e.g., /dev/loop133). This is all on-demand. </p>
+<h2 id="some-troubleshootings">Some troubleshootings</h2>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo umount /dev/loop133
+upgautam@amd:~/Desktop$ sudo veritysetup close vroot
+upgautam@amd:~/Desktop$ sudo fsck /dev/loop135
+fsck from util-linux 2.39.3
+upgautam@amd:~/Desktop$ sudo fsck /dev/loop133
+fsck from util-linux 2.39.3
+e2fsck 1.47.0 (5-Feb-2023)
+/dev/loop133: clean, 16/25600 files, 2653/25600 blocks
+
+upgautam@amd:~/Desktop$ sudo umount /dev/mapper/vroot
+umount: /mnt: target is busy.
+upgautam@amd:~/Desktop$ sudo veritysetup close vroot
+Device vroot is still in use.
+upgautam@amd:~/Desktop$ sudo lsof /dev/mapper/vroot
+lsof: WARNING: can&#39;t stat() fuse.portal file system /run/user/1000/doc
+      Output information may be incomplete.
+lsof: WARNING: can&#39;t stat() fuse.gvfsd-fuse file system /run/user/1000/gvfs
+      Output information may be incomplete.
+COMMAND    PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+nautilus 33410 upgautam   46r   DIR  252,0     4096    2 /mnt
+upgautam@amd:~/Desktop$ sudo lsof /mnt
+lsof: WARNING: can&#39;t stat() fuse.portal file system /run/user/1000/doc
+      Output information may be incomplete.
+lsof: WARNING: can&#39;t stat() fuse.gvfsd-fuse file system /run/user/1000/gvfs
+      Output information may be incomplete.
+COMMAND    PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+nautilus 33410 upgautam   46r   DIR  252,0     4096    2 /mnt
+upgautam@amd:~/Desktop$ sudo kill -9 33410
+upgautam@amd:~/Desktop$ sudo veritysetup close vroot
+Device vroot is still in use.
+upgautam@amd:~/Desktop$ sudo umount /dev/mapper/vroot
+upgautam@amd:~/Desktop$ sudo veritysetup close vroot
+</code></pre>
+<h2 id="reflection">Reflection</h2>
+<p>Any two .img files (e.g., boot.img, userdata.img etc.) can be verified for their data integrity via dm-verify. In Android system, it is implemented by many vendors including Samsung. You will see dm-verify options in Recovery mode.</p>
+
+
+      </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto py-3" style="text-align: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center" style="text-align: center;">
+                <p class="mb-2 footer-quote" style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                    Research is the compass that guides us through the ever-changing landscape of technology.
+                </p>
+                <p class="mb-0 footer-text" style="text-align: center;">
+                    © 2025 Uddhav P. Gautam. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

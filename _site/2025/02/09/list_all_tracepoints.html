@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>List All Tracepoints of Your System - Uddhav P. Gautam - Founder, RGR Innovate LLC</title>
+    <meta name="description" content="Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC">
+    
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="/2025/02/09/list_all_tracepoints.html">
+    <link rel="shortcut icon" type ="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    
+    <!-- Bootstrap JavaScript Bundle (includes Popper.js) -->
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+  </head>
+
+
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id="
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm">
+    <a class="navbar-brand" href="/">
+     <span class="brand-text">RGR Innovate LLC</span>
+    </a>
+    
+    <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/">Home</a>
+            
+                
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/publications">Publications</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/software">Software</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/blogs">Blogs</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/about">About</a>
+                    
+                
+            
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+            
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
+            
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">List All Tracepoints of Your System</h1>
+    <div class="post-meta">
+      <i class="fa fa-calendar"></i>
+      <time datetime="2025-02-09T00:00:00-05:00" itemprop="datePublished">Feb 9, 2025</time>
+      
+    </div>
+  </div>
+
+  <div class="card-body post-content" itemprop="articleBody">
+    <h1 id="list-all-tracepoints-of-your-system">List all tracepoints of your system</h1>
+<p>From inside qemu, start a python based webserver, </p>
+<p>go to qemu, <code>make qemu-run</code></p>
+<p><code>root@q:/linux-dev-env# python3 -m http.server 52223 --directory .</code>
+//note this runs over TCP</p>
+<p>Here, our QEMU, where we run python web server is inside privileged docker container.</p>
+<p>Now, from host brwose,
+<code>http://127.0.0.1:52223/</code></p>
+<p>Also you can ssh to qemu from host,
+<code>make qemu-ssh</code></p>
+<pre><code class="language-bash">root@q:/linux-dev-env# find /sys/kernel/debug/tracing/events/ -type f -name &quot;id&quot; | sed &#39;s|/sys/kernel/debug/tracing/events/|SEC(&quot;tp/|; s|/id|&quot;)|&#39; &gt; all_tracepoints.txt
+
+SEC(&quot;tp/initcall/initcall_finish&quot;)
+SEC(&quot;tp/initcall/initcall_start&quot;)
+SEC(&quot;tp/initcall/initcall_level&quot;)
+SEC(&quot;tp/vsyscall/emulate_vsyscall&quot;)
+SEC(&quot;tp/syscalls/sys_exit_arch_prctl&quot;)
+SEC(&quot;tp/syscalls/sys_enter_arch_prctl&quot;)
+SEC(&quot;tp/syscalls/sys_exit_rt_sigreturn&quot;)
+SEC(&quot;tp/syscalls/sys_enter_rt_sigreturn&quot;)
+SEC(&quot;tp/syscalls/sys_exit_iopl&quot;)
+SEC(&quot;tp/syscalls/sys_enter_iopl&quot;)
+SEC(&quot;tp/syscalls/sys_exit_ioperm&quot;)
+SEC(&quot;tp/syscalls/sys_enter_ioperm&quot;)
+SEC(&quot;tp/syscalls/sys_exit_modify_ldt&quot;)
+SEC(&quot;tp/syscalls/sys_enter_modify_ldt&quot;)
+SEC(&quot;tp/syscalls/sys_exit_mmap&quot;)
+SEC(&quot;tp/syscalls/sys_enter_mmap&quot;)
+SEC(&quot;tp/syscalls/sys_exit_uretprobe&quot;)
+SEC(&quot;tp/syscalls/sys_enter_uretprobe&quot;)
+SEC(&quot;tp/syscalls/sys_exit_unshare&quot;)
+SEC(&quot;tp/syscalls/sys_enter_unshare&quot;)
+SEC(&quot;tp/syscalls/sys_exit_clone3&quot;)
+SEC(&quot;tp/syscalls/sys_enter_clone3&quot;)
+SEC(&quot;tp/syscalls/sys_exit_clone&quot;)
+SEC(&quot;tp/syscalls/sys_enter_clone&quot;)
+SEC(&quot;tp/syscalls/sys_exit_vfork&quot;)
+SEC(&quot;tp/syscalls/sys_enter_vfork&quot;)
+SEC(&quot;tp/syscalls/sys_exit_fork&quot;)
+SEC(&quot;tp/syscalls/sys_enter_fork&quot;)
+SEC(&quot;tp/syscalls/sys_exit_set_tid_address&quot;)
+SEC(&quot;tp/syscalls/sys_enter_set_tid_address&quot;)
+SEC(&quot;tp/syscalls/sys_exit_personality&quot;)
+SEC(&quot;tp/syscalls/sys_enter_personality&quot;)
+SEC(&quot;tp/syscalls/sys_exit_wait4&quot;)
+SEC(&quot;tp/syscalls/sys_enter_wait4&quot;)
+SEC(&quot;tp/syscalls/sys_exit_waitid&quot;)
+SEC(&quot;tp/syscalls/sys_enter_waitid&quot;)
+SEC(&quot;tp/syscalls/sys_exit_exit_group&quot;)
+SEC(&quot;tp/syscalls/sys_enter_exit_group&quot;)
+SEC(&quot;tp/syscalls/sys_exit_exit&quot;)
+SEC(&quot;tp/syscalls/sys_enter_exit&quot;)
+SEC(&quot;tp/syscalls/sys_exit_capset&quot;)
+SEC(&quot;tp/syscalls/sys_enter_capset&quot;)
+SEC(&quot;tp/syscalls/sys_exit_capget&quot;)
+SEC(&quot;tp/syscalls/sys_enter_capget&quot;)
+SEC(&quot;tp/syscalls/sys_exit_ptrace&quot;)
+SEC(&quot;tp/syscalls/sys_enter_ptrace&quot;)
+SEC(&quot;tp/syscalls/sys_exit_rt_sigsuspend&quot;)
+SEC(&quot;tp/syscalls/sys_enter_rt_sigsuspend&quot;)
+SEC(&quot;tp/syscalls/sys_exit_pause&quot;)
+SEC(&quot;tp/syscalls/sys_enter_pause&quot;)
+SEC(&quot;tp/syscalls/sys_exit_rt_sigaction&quot;)
+SEC(&quot;tp/syscalls/sys_enter_rt_sigaction&quot;)
+SEC(&quot;tp/syscalls/sys_exit_sigaltstack&quot;)
+SEC(&quot;tp/syscalls/sys_enter_sigaltstack&quot;)
+SEC(&quot;tp/syscalls/sys_exit_rt_tgsigqueueinfo&quot;)
+SEC(&quot;tp/syscalls/sys_enter_rt_tgsigqueueinfo&quot;)
+SEC(&quot;tp/syscalls/sys_exit_rt_sigqueueinfo&quot;)
+SEC(&quot;tp/syscalls/sys_enter_rt_sigqueueinfo&quot;)
+SEC(&quot;tp/syscalls/sys_exit_tkill&quot;)
+SEC(&quot;tp/syscalls/sys_enter_tkill&quot;)
+SEC(&quot;tp/syscalls/sys_exit_tgkill&quot;)
+SEC(&quot;tp/syscalls/sys_enter_tgkill&quot;)
+SEC(&quot;tp/syscalls/sys_exit_pidfd_send_signal&quot;)
+SEC(&quot;tp/syscalls/sys_enter_pidfd_send_signal&quot;)
+SEC(&quot;tp/syscalls/sys_exit_kill&quot;)
+SEC(&quot;tp/syscalls/sys_enter_kill&quot;)
+SEC(&quot;tp/syscalls/sys_exit_rt_sigtimedwait&quot;)
+SEC(&quot;tp/syscalls/sys_enter_rt_sigtimedwait&quot;)
+SEC(&quot;tp/syscalls/sys_exit_rt_sigpending&quot;)
+SEC(&quot;tp/syscalls/sys_enter_rt_sigpending&quot;)
+SEC(&quot;tp/syscalls/sys_exit_rt_sigprocmask&quot;)
+SEC(&quot;tp/syscalls/sys_enter_rt_sigprocmask&quot;)
+SEC(&quot;tp/syscalls/sys_exit_restart_syscall&quot;)
+SEC(&quot;tp/syscalls/sys_enter_restart_syscall&quot;)
+SEC(&quot;tp/syscalls/sys_exit_sysinfo&quot;)
+SEC(&quot;tp/syscalls/sys_enter_sysinfo&quot;)
+SEC(&quot;tp/syscalls/sys_exit_getcpu&quot;)
+SEC(&quot;tp/syscalls/sys_enter_getcpu&quot;)
+SEC(&quot;tp/syscalls/sys_exit_prctl&quot;)
+SEC(&quot;tp/syscalls/sys_enter_prctl&quot;)
+SEC(&quot;tp/syscalls/sys_exit_umask&quot;)
+SEC(&quot;tp/syscalls/sys_enter_umask&quot;)
+SEC(&quot;tp/syscalls/sys_exit_getrusage&quot;)
+SEC(&quot;tp/syscalls/sys_enter_getrusage&quot;)
+SEC(&quot;tp/syscalls/sys_exit_setrlimit&quot;)
+SEC(&quot;tp/syscalls/sys_enter_setrlimit&quot;)
+SEC(&quot;tp/syscalls/sys_exit_prlimit64&quot;)
+SEC(&quot;tp/syscalls/sys_enter_prlimit64&quot;)
+</code></pre>
+
+
+  </div>
+
+</article>
+      </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto py-3" style="text-align: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center" style="text-align: center;">
+                <p class="mb-2 footer-quote" style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                    Research is the compass that guides us through the ever-changing landscape of technology.
+                </p>
+                <p class="mb-0 footer-text" style="text-align: center;">
+                    © 2025 Uddhav P. Gautam. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

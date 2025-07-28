@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Runtime Tuning of Linux System - Uddhav P. Gautam - Founder, RGR Innovate LLC</title>
+    <meta name="description" content="Academic webpage of Uddhav P. Gautam, Founder of RGR Innovate LLC">
+    
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="/2025/02/05/On_demand_Runtime_Tuning_of_Build_Jobs_in_Linux.html">
+    <link rel="shortcut icon" type ="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+    
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    
+    <!-- Bootstrap JavaScript Bundle (includes Popper.js) -->
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+  </head>
+
+
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id="
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm">
+    <a class="navbar-brand" href="/">
+     <span class="brand-text">RGR Innovate LLC</span>
+    </a>
+    
+    <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="/">Home</a>
+            
+                
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/publications">Publications</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/software">Software</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/blogs">Blogs</a>
+                    
+                
+                    
+                        <a class="nav-item nav-link" href="/about">About</a>
+                    
+                
+            
+        </div>
+        
+        <div class="navbar-nav ms-auto">
+            
+            <button id="theme-toggle" class="btn btn-outline-light btn-sm" aria-label="Toggle dark/light theme">
+                <i id="theme-icon" class="fa fa-moon-o"></i>
+            </button>
+            
+        </div>
+    </div>
+</nav>
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <h1 id="adaptive-android-system-tuning">Leveraging eBPF as a feedback loop to runtime tune of the systems</h1>
+
+<div style="height: 2rem;"></div>
+
+<h2 id="problem-motivation">Problem Motivation</h2>
+<p>When building large projects like Android AOSP, system resource limitations often dictate success or failure. For instance, running a make build (i.e., <code>make -j$(nproc)</code>) command on a high-end system (e.g., 128GB RAM and a modern multi-core CPU) typically completes successfully due to ample memory and processing power. By contrast, on a system with only 16GB RAM, the build process is prone to failures caused by Linux’s OOM (Out-Of-Memory) Killer terminating processes to reclaim memory, or other bugs stem from resource contention, such as segmentation faults due to extreme memory pressure.</p>
+<p>However, the issue is rarely just about RAM. System-wide bottlenecks—such as a slow CPU struggling to compile code efficiently, or sluggish I/O (e.g., HDDs or slow SSDs) delaying read/write operations—can compound memory pressure. These limitations force processes to linger in memory longer than necessary, overloading the system and triggering instability. In such cases, even adequate RAM may not prevent failures if the CPU or storage cannot keep pace with the build’s demands.</p>
+<h2 id="background">Background</h2>
+<p>We use eBPF to trace system-wide metrics for CPU, memory, IO, and Scheduler events. Our throttling (i.e., build process resource consumption rate) is based on resource thresholds, such as Pressure Stall Information [1-2] APIs or watermarks [3] for memory solutions. We can use eBPF to read those different watermarks levels and tune the system, such as increase background kswapd frequencey on-demand so that we have enough available memory all the time. PSI APIs for all memory, IO, and CPU that gives how long the system has been under resource pressure. </p>
+<p>Our solution is two steps: (1) we do runtime tuning of system, such as reducing the numbe of parallel jobs (2) If the system gets saturated and no options left, then we freeze the entire process per cgroup granularity instead of getting killed, tune the system, then thaw the ongoing process.  One solution is to intercept <code>make -j$(nproc)</code> and use ninja with pool that scales dynamically. </p>
+<p>I am thinking to build an eBPF intercept (i.e., wrapper) layer that takes "make -j<code>nproc</code>" and based on runtime system condition, it throttles the resource use rate by the process. Can I do this so that every build will pass.  This may need to extend its functionality to kernel, if that is the case this we will use kfunc from eBPF to kernel modules, do those throttling logic inside kernel to runtime tune the system for the current job. One challenge would be we need to guarantee whatever we extend to kernel, we need to make sure that is free of bugs, and is well optimized. For FDO (Feedback directed optimization) + LTO (link time optimization) + other compiler optimizations. </p>
+<p>Let us try to come up with how exactly we use eBPF wrapper to intercept build process. </p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Create cgroup <span class="k">for </span>manage CPU, memory, and IO <span class="o">(</span>i.e., cgcreate <span class="nt">-g</span> cpu,io,memory:<span class="si">$(</span>throttle_build_cgroup<span class="si">)</span>
+We develop an eBPF program that observes watermarks, or PSI APIs <span class="k">for </span>CPU, IO, and Memory.
+We attach our cgroup with this eBPF tool <span class="o">(</span>i.e, <span class="sb">`</span><span class="si">$(</span>eBPF_tool<span class="si">)</span> <span class="nt">--cgroup</span> <span class="si">$(</span>throttle_build_cgroup<span class="si">)</span><span class="sb">`</span>
+We run build process inside cgroup <span class="o">(</span>i.e., cgexec <span class="nt">-g</span> cpu,io,memory :<span class="si">$(</span>throttle_build_cgroup<span class="si">)</span> <span class="si">$(</span>our_build_job<span class="si">)</span>&amp;quot<span class="p">;</span><span class="nb">.</span>
+Our <span class="si">$(</span>eBPF_tool<span class="si">)</span> has callbacks that detect memory, io, CPU pressure, alerts it and handles it directly or by delegating to other <span class="k">in</span><span class="nt">-kernel</span> <span class="o">(</span>or user-space<span class="o">)</span> handler.
+</code></pre></div></div>
+<p>Upto step 5 is easy to solve. But how to handle exactly is hard question. </p>
+<p>The handling logic should be something like this. </p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if </span>memory_usage &amp;gt<span class="p">;</span> 85% <span class="o">||</span> cpu_usage &amp;gt<span class="p">;</span> 90% <span class="o">||</span> io_latency &amp;gt<span class="p">;</span> 100ms:
+    - Solution 1:
+        - pause to build <span class="o">(</span><span class="sb">`</span>pkill <span class="nt">-STOP</span> <span class="si">$(</span>pid_of_build_process<span class="sb">`</span><span class="o">)</span>
+        - <span class="nv">NEW_JOBS</span><span class="o">=</span><span class="si">$(</span>calc_new_job_count<span class="si">)</span> //this is difficult, so this should be our research
+        - make <span class="nt">-j</span><span class="nv">$NEW_JOBS</span>
+    - Solution 2:
+        -  cgroup throttling
+            -  <span class="nb">echo</span> &amp;quot<span class="p">;</span>50000 100000&amp;quot<span class="p">;</span> &amp;gt<span class="p">;</span> /sys/fs/cgroup/&amp;quot<span class="p">;</span><span class="si">$(</span>throttle_build_cgroup<span class="si">)</span>&amp;quot<span class="p">;</span>/cpu.max
+    -  Solution 3:
+        -  In <span class="k">case</span>, system saturates and we are <span class="k">in </span>high watermarks level, <span class="k">then </span>we may freeze entire cgroup.
+</code></pre></div></div>
+
+<p>One note, we also need to disable default OOM killer that system uses, and guarantee our throttler is the only thing that is solving this low-resources issue.</p>
+<p>Second note, if doing tuning or throttling in user-space is slow incase we delegated solution to user-space, then we can do that via kernel-mdules. Or when cases such as we reach out eBPF limitation to perform certain things then we may need to use kfunc to kernel modules, where we have superpower and larger context, and then do those actions that were hard or impossible in eBPF alone. One challenge is that we need to guarantee the kernel modules won't bring new kernel bugs. </p>
+
+<h2 id="other-dynamic-system-tuning-ideas">Other on-the-fly system tuning ideas</h2>
+<ol>
+    <li><p>To make build process pass is that we can also track the resource utilization, and where there is bottleneck (for example, if we detect CPU bottleneck) then we can overclock the CPU on the fly. [5]</p>
+    </li>
+    <li><p>Let&#39;s say we use Mellanox Gigabit NIC that has chance of overheating. We detect this using eBPF and modify the fan speed on the fly. Other ideas can be, track those recently modified files and speed up incrementatl backups [5]</p>
+    </li>
+    <li><p>Detect what process hangs (e.g., the firefox tab which is slow and stuck your mouse) and kill the process.</p>
+    </li>
+</ol>
+<h2 id="references">References</h2>
+
+<p>[1] <a href="https://docs.kernel.org/accounting/psi.html">https://docs.kernel.org/accounting/psi.html</a></p>
+<p>[2] <a href="https://source.android.com/docs/core/perf/lmkd">https://source.android.com/docs/core/perf/lmkd</a></p>
+<p>[3] <a href="https://www.kernel.org/doc/gorman/html/understand/understand005.html">https://www.kernel.org/doc/gorman/html/understand/understand005.html</a></p>
+<p>[4] <a href="https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf">https://lpc.events/event/4/contributions/404/attachments/326/550/Handling_memory_pressure_on_Android.pdf</a></p>
+<p>[5] <a href="https://dl.acm.org/doi/10.1016/j.sysarc.2024.103130">https://dl.acm.org/doi/10.1016/j.sysarc.2024.103130</a></p>
+
+
+      </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto py-3" style="text-align: center;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center" style="text-align: center;">
+                <p class="mb-2 footer-quote" style="text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+                    Research is the compass that guides us through the ever-changing landscape of technology.
+                </p>
+                <p class="mb-0 footer-text" style="text-align: center;">
+                    © 2025 Uddhav P. Gautam. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>
