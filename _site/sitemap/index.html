@@ -99,9 +99,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <nav class="navbar sticky-top navbar-expand-sm">
-    <a class="navbar-brand" href="/">
+    <span class="navbar-brand">
      <span class="brand-text">RGR Innovate LLC</span>
-    </a>
+    </span>
     
     <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -275,12 +275,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     font-size: 1.1rem;
     margin: 0;
 }
+
+.seo-info {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.seo-info h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.seo-info ul {
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
 </style>
 
 <div class="container mt-4">
     <div class="sitemap-header">
         <h1><i class="fa fa-sitemap"></i> Site Map</h1>
         <p>Complete overview of all pages and content on this website</p>
+    </div>
+    
+    <!-- SEO Information -->
+    <div class="seo-info">
+        <h4><i class="fa fa-search"></i> Search Engine Optimization</h4>
+        <ul>
+            <li>This sitemap helps search engines discover and index all pages on this website</li>
+            <li>XML sitemap available at <a href="/sitemap.xml" target="_blank">/sitemap.xml</a> for automated crawling</li>
+            <li>All pages are optimized for search engines with proper meta tags and structured data</li>
+            <li>Regular updates ensure fresh content for better search rankings</li>
+        </ul>
     </div>
     
     <div class="row">
@@ -320,6 +349,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="col-lg-6">
             <div class="sitemap-card">
                 <h3><i class="fa fa-info-circle"></i> Additional Pages</h3>
+                <a href="/team" class="sitemap-link">
+                    <i class="fa fa-users"></i>
+                    <span>Team</span>
+                    <span class="description">Team members</span>
+                </a>
+                <a href="/research" class="sitemap-link">
+                    <i class="fa fa-flask"></i>
+                    <span>Research</span>
+                    <span class="description">Research areas</span>
+                </a>
+                <a href="/talks" class="sitemap-link">
+                    <i class="fa fa-microphone"></i>
+                    <span>Talks</span>
+                    <span class="description">Presentations</span>
+                </a>
+                <a href="/teaching" class="sitemap-link">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span>Teaching</span>
+                    <span class="description">Courses taught</span>
+                </a>
                 <a href="/allnews" class="sitemap-link">
                     <i class="fa fa-newspaper-o"></i>
                     <span>All News</span>
@@ -330,10 +379,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <span>Privacy Policy</span>
                     <span class="description">Privacy information</span>
                 </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Technical Resources -->
+    <div class="sitemap-card">
+        <h3><i class="fa fa-cogs"></i> Technical Resources</h3>
+        <div class="row">
+            <div class="col-md-6">
                 <a href="/sitemap.xml" target="_blank" class="sitemap-link">
                     <i class="fa fa-code"></i>
                     <span>XML Sitemap</span>
                     <span class="description">For search engines</span>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="/404" class="sitemap-link">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <span>404 Page</span>
+                    <span class="description">Error handling</span>
                 </a>
             </div>
         </div>
@@ -493,6 +558,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </p>
                 <p class="mb-0 footer-text" style="text-align: center;">
                     © 2025 Uddhav P. Gautam. All rights reserved.
+                </p>
+                <p class="mb-0 mt-2" style="text-align: center; font-size: 0.85rem;">
+                    <a href="/privacy/" style="color: var(--text-secondary); text-decoration: none;">Privacy Policy</a>
                 </p>
             </div>
         </div>

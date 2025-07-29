@@ -133,12 +133,41 @@ permalink: /sitemap/
     font-size: 1.1rem;
     margin: 0;
 }
+
+.seo-info {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.seo-info h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.seo-info ul {
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
 </style>
 
 <div class="container mt-4">
     <div class="sitemap-header">
         <h1><i class="fa fa-sitemap"></i> Site Map</h1>
         <p>Complete overview of all pages and content on this website</p>
+    </div>
+    
+    <!-- SEO Information -->
+    <div class="seo-info">
+        <h4><i class="fa fa-search"></i> Search Engine Optimization</h4>
+        <ul>
+            <li>This sitemap helps search engines discover and index all pages on this website</li>
+            <li>XML sitemap available at <a href="{{ site.baseurl }}/sitemap.xml" target="_blank">/sitemap.xml</a> for automated crawling</li>
+            <li>All pages are optimized for search engines with proper meta tags and structured data</li>
+            <li>Regular updates ensure fresh content for better search rankings</li>
+        </ul>
     </div>
     
     <div class="row">
@@ -178,6 +207,26 @@ permalink: /sitemap/
         <div class="col-lg-6">
             <div class="sitemap-card">
                 <h3><i class="fa fa-info-circle"></i> Additional Pages</h3>
+                <a href="{{ site.baseurl }}/team" class="sitemap-link">
+                    <i class="fa fa-users"></i>
+                    <span>Team</span>
+                    <span class="description">Team members</span>
+                </a>
+                <a href="{{ site.baseurl }}/research" class="sitemap-link">
+                    <i class="fa fa-flask"></i>
+                    <span>Research</span>
+                    <span class="description">Research areas</span>
+                </a>
+                <a href="{{ site.baseurl }}/talks" class="sitemap-link">
+                    <i class="fa fa-microphone"></i>
+                    <span>Talks</span>
+                    <span class="description">Presentations</span>
+                </a>
+                <a href="{{ site.baseurl }}/teaching" class="sitemap-link">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span>Teaching</span>
+                    <span class="description">Courses taught</span>
+                </a>
                 <a href="{{ site.baseurl }}/allnews" class="sitemap-link">
                     <i class="fa fa-newspaper-o"></i>
                     <span>All News</span>
@@ -188,10 +237,26 @@ permalink: /sitemap/
                     <span>Privacy Policy</span>
                     <span class="description">Privacy information</span>
                 </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Technical Resources -->
+    <div class="sitemap-card">
+        <h3><i class="fa fa-cogs"></i> Technical Resources</h3>
+        <div class="row">
+            <div class="col-md-6">
                 <a href="{{ site.baseurl }}/sitemap.xml" target="_blank" class="sitemap-link">
                     <i class="fa fa-code"></i>
                     <span>XML Sitemap</span>
                     <span class="description">For search engines</span>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="{{ site.baseurl }}/404" class="sitemap-link">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <span>404 Page</span>
+                    <span class="description">Error handling</span>
                 </a>
             </div>
         </div>

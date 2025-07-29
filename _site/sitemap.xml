@@ -1,45 +1,254 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Pages -->
   <url>
     <loc>http://localhost:4000/</loc>
-    <lastmod>2025-07-28T21:53:16-04:00</lastmod>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://localhost:4000/about</loc>
-    <lastmod>2025-07-28T21:53:16-04:00</lastmod>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>http://localhost:4000/publications</loc>
-    <lastmod>2025-07-28T21:53:16-04:00</lastmod>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>http://localhost:4000/software</loc>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:4000/software</loc>
-    <lastmod>2025-07-28T21:53:16-04:00</lastmod>
+    <loc>http://localhost:4000/blogs</loc>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:4000/team</loc>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:4000/blogs</loc>
-    <lastmod>2025-07-28T21:53:16-04:00</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>http://localhost:4000/research</loc>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:4000/talks</loc>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:4000/privacy</loc>
-    <lastmod>2025-07-28T21:53:16-04:00</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>http://localhost:4000/teaching</loc>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>http://localhost:4000/allnews</loc>
-    <lastmod>2025-07-28T21:53:16-04:00</lastmod>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>http://localhost:4000/sitemap</loc>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>http://localhost:4000/privacy</loc>
+    <lastmod>2025-07-29T08:38:57-04:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Blog Posts -->
+  
+  <url>
+    <loc>http://localhost:4000/2025/02/12/pidfd.html</loc>
+    <lastmod>2025-02-12T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/02/09/list_all_tracepoints.html</loc>
+    <lastmod>2025-02-09T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/02/05/On_demand_Runtime_Tuning_of_Build_Jobs_in_Linux.html</loc>
+    <lastmod>2025-02-05T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/01/30/selinux.html</loc>
+    <lastmod>2025-01-30T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/01/12/linux_memory_management.html</loc>
+    <lastmod>2025-01-12T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/01/09/zotero_library_organizer.html</loc>
+    <lastmod>2025-01-09T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/01/09/offline-docs-kiwix.html</loc>
+    <lastmod>2025-01-09T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/01/08/linux_troubleshooting_tools.html</loc>
+    <lastmod>2025-01-08T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/01/05/linux_perf.html</loc>
+    <lastmod>2025-01-05T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2025/01/04/research_paper_venues.html</loc>
+    <lastmod>2025-01-04T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/20/dm_verify.html</loc>
+    <lastmod>2024-12-20T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/18/android_dumpsys.html</loc>
+    <lastmod>2024-12-18T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/18/android_dummy_system_app.html</loc>
+    <lastmod>2024-12-18T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/18/android_boot_sequence.html</loc>
+    <lastmod>2024-12-18T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/14/aosp_source_code_build.html</loc>
+    <lastmod>2024-12-14T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/14/aosp_make_a_change.html</loc>
+    <lastmod>2024-12-14T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/13/kati.html</loc>
+    <lastmod>2024-12-13T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/09/Kfunc.html</loc>
+    <lastmod>2024-12-09T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/12/04/linux_network_programming_basic.html</loc>
+    <lastmod>2024-12-04T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/09/21/compiler_optimization.html</loc>
+    <lastmod>2024-09-21T00:00:00-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/08/23/iptable_router.html</loc>
+    <lastmod>2024-08-23T00:00:00-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/06/05/custom_syscall.html</loc>
+    <lastmod>2024-06-05T00:00:00-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/04/04/terraform.html</loc>
+    <lastmod>2024-04-04T00:00:00-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2024/01/23/bpf_compile_build_run.html</loc>
+    <lastmod>2024-01-23T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:4000/2023/12/13/running_static_website_using_jekyll.html</loc>
+    <lastmod>2023-12-13T00:00:00-05:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 </urlset> 
