@@ -10900,7 +10900,6 @@ img {
 .jumbotron {
   padding: 2rem;
   padding-bottom: 1.5rem;
-  margin-top: 2rem;
   margin-bottom: 2rem;
   border-radius: 0.5rem;
   background-color: var(--bg-secondary);
@@ -10909,7 +10908,6 @@ img {
 }
 
 .navbar {
-  margin-bottom: 20px;
   border-bottom: 4px solid var(--secondary);
 }
 
@@ -11864,7 +11862,46 @@ html {
 }
 
 body {
-  padding-top: 90px;
+  padding-top: 90px !important;
+}
+
+.content-wrapper {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.container-fluid,
+.container {
+  margin-top: 0;
+}
+
+.row {
+  margin-top: 0;
+}
+
+#gridid,
+#homeid,
+#newsid,
+.content-section,
+.main-content,
+.page-content {
+  margin-top: 0;
+}
+
+.card,
+.jumbotron,
+.hero-section,
+article,
+section,
+div[class*=content] {
+  margin-top: 0;
+}
+
+.content-wrapper > .row > div:first-child,
+.container-fluid > .row > div:first-child,
+.container > .row > div:first-child {
+  margin-top: 0;
 }
 
 [data-theme=dark] .navbar {
@@ -11939,10 +11976,6 @@ footer.footer p {
 .nav-link {
   will-change: transform;
   backface-visibility: hidden;
-}
-
-.home-content {
-  margin: 2vh 0;
 }
 
 .research-diagram {
@@ -12340,8 +12373,8 @@ footer.footer p {
 
 .hero-section {
   text-align: left;
-  margin-bottom: 2vh;
-  padding: 2vh 2vw;
+  margin-bottom: 0.1vh;
+  padding: 0.1vh 0.1vw;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   border: 1px solid var(--border-color);
 }
@@ -12349,14 +12382,15 @@ footer.footer p {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: var(--font-bold);
   color: var(--text-primary);
-  margin-bottom: 1vh;
+  margin-top: 0;
+  margin-bottom: 0.05vh;
   letter-spacing: -0.02em;
 }
 .hero-section p {
   font-size: clamp(0.9rem, 2vw, 1.1rem);
   color: var(--text-primary);
   line-height: 1.4;
-  margin: 0 0 1vh 0;
+  margin: 0 0 0.05vh 0;
 }
 
 .btn-group-compact {

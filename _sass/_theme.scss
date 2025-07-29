@@ -992,7 +992,52 @@ html {
 
 // Add padding to body to account for fixed navbar
 body {
-  padding-top: 90px;
+  padding-top: 90px !important;
+}
+
+// Universal content spacing for all pages
+.content-wrapper {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+// Universal spacing for all main content containers
+.container-fluid,
+.container {
+  margin-top: 0;
+}
+
+// Universal spacing for all row containers
+.row {
+  margin-top: 0;
+}
+
+// Universal spacing for all content divs
+#gridid,
+#homeid,
+#newsid,
+.content-section,
+.main-content,
+.page-content {
+  margin-top: 0;
+}
+
+// Universal spacing for all content elements
+.card,
+.jumbotron,
+.hero-section,
+article,
+section,
+div[class*="content"] {
+  margin-top: 0;
+}
+
+// Ensure the first content element has proper spacing from navbar
+.content-wrapper > .row > div:first-child,
+.container-fluid > .row > div:first-child,
+.container > .row > div:first-child {
+  margin-top: 0;
 }
 
 // Dark theme adjustments - maintain the blue theme

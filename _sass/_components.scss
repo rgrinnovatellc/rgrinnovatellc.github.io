@@ -15,9 +15,9 @@
   backface-visibility: hidden;
 }
 
-// Homepage Components
+// Homepage Components - Universal styling
 .home-content {
-  margin: 2vh 0;
+  // No specific margins - uses universal content-wrapper spacing
 }
 
 .research-diagram {
@@ -430,8 +430,8 @@
 // Hero Section Styling
 .hero-section {
   text-align: left;
-  margin-bottom: 2vh;
-  padding: 2vh 2vw;
+  margin-bottom: 0.1vh;
+  padding: 0.1vh 0.1vw;
   background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
   border: 1px solid var(--border-color);
   
@@ -439,7 +439,8 @@
     font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: var(--font-bold);
     color: var(--text-primary);
-    margin-bottom: 1vh;
+    margin-top: 0;
+    margin-bottom: 0.05vh;
     letter-spacing: -0.02em;
   }
   
@@ -447,7 +448,7 @@
     font-size: clamp(0.9rem, 2vw, 1.1rem);
     color: var(--text-primary);
     line-height: 1.4;
-    margin: 0 0 1vh 0;
+    margin: 0 0 0.05vh 0;
   }
 }
 
