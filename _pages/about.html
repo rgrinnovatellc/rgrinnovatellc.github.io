@@ -139,6 +139,12 @@ code {padding: 6px 8px; font-size: 90%;}
                         </a>
                     {% endif %}
                     
+                    {% if linkedin_link %}
+                        <a href="{{ linkedin_link }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="fa fa-linkedin"></i> LinkedIn
+                        </a>
+                    {% endif %}
+                    
                     {% if scholar_link %}
                         <a href="{{ scholar_link }}" target="_blank" class="btn btn-outline-info btn-sm">
                             <i class="ai ai-google-scholar"></i> Scholar
