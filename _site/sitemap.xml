@@ -3,78 +3,85 @@
   <!-- Main Pages -->
   <url>
     <loc>http://localhost:4000/</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://localhost:4000/about</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>http://localhost:4000/publications</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>http://localhost:4000/software</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>http://localhost:4000/blogs</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>http://localhost:4000/team</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://localhost:4000/research</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>http://localhost:4000/talks</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://localhost:4000/teaching</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>http://localhost:4000/allnews</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>http://localhost:4000/sitemap</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>http://localhost:4000/privacy</loc>
-    <lastmod>2025-08-02T15:07:34-04:00</lastmod>
+    <lastmod>2025-09-06T11:17:13-04:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   
   <!-- Blog Posts -->
+  
+  <url>
+    <loc>http://localhost:4000/2025/09/05/software_design_and_quality.html</loc>
+    <lastmod>2025-09-05T00:00:00-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   
   <url>
     <loc>http://localhost:4000/2025/02/12/pidfd.html</loc>

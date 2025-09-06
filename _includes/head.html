@@ -10,7 +10,11 @@
     
     <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl }}">
-    <link rel="shortcut icon" type ="image/x-icon" href="{{ site.baseurl }}/favicon.ico">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="{{ site.baseurl }}/favicon.svg">
+    <link rel="apple-touch-icon" href="{{ site.baseurl }}/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -1,0 +1,943 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Software Design and Quality</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Software Design and Quality Assignments</h1>
+</header>
+<h1 id="software-quality-attributes">Software Quality Attributes</h1>
+<ol>
+<li><p>Robert Glass does not include all of the quality attributes that
+are in McCall’s list of quality factors. Do you believe the extra
+attributes in McCall’s list are necessary for "quality" software, or is
+Glass’ definition sufficient? Justify your answer.</p>
+<p><strong>Answer:</strong> I believe McCall’s extra attributes are
+necessary for comprehensive software quality. Glass’ definition, while
+valuable, is insufficient for a complete understanding of software
+quality.</p>
+<p>McCall’s framework provides a more comprehensive and systematic
+approach by categorizing factors into three critical dimensions: product
+operation (correctness, reliability, efficiency, integrity, usability),
+product revision (maintainability, flexibility, testability), and
+product transition (portability, reusability, interoperability). This
+framework addresses not only immediate functional needs but also
+long-term sustainability and adaptability of software systems. Glass
+focuses on seven attributes: reliability, efficiency, human engineering
+(which is usability in McCall’s framework), understandability,
+modifiability (this overlaps somewhat with McCall’s flexibility and, to
+a lesser extent, maintainability, I think), testability, and
+portability. Glass is missing several important dimensions that McCall
+includes: correctness, integrity, reusability, interoperability, and
+maintainability. While Glass correctly identifies the crucial link
+between quality and maintenance, his framework lacks several important
+dimensions that McCall covers.</p>
+<p>These missing attributes and McCall’s categorization are essential
+for modern software systems that must integrate with diverse platforms,
+maintain data security, and provide reusable components for
+cost-effective development. McCall’s framework supports both operational
+excellence and long-term strategic value. This makes it more useful for
+evaluating quality in today’s complex environments. McCall’s
+categorization helps teams prioritize quality attributes based on
+project phase: operation attributes during development, revision
+attributes during maintenance planning, and transition attributes during
+deployment decisions. It provides a common language for stakeholders to
+discuss quality trade-offs when making architectural decisions. For
+example, when developing a mobile banking app, a team would focus on
+correctness (ensuring financial calculations are accurate) and usability
+(making the interface intuitive for elderly users) during the
+development phase. During maintenance planning, they would prioritize
+maintainability (structuring code so security patches can be applied
+quickly) and testability (ensuring automated tests can verify new
+features). When deploying, they would consider portability (making the
+app work on both iOS and Android) and interoperability (integrating with
+the bank’s core banking system and payment gateways).</p></li>
+<li><p>In Glass’ definition, which single attribute do you believe is
+most important, and why?</p>
+<p><strong>Answer:</strong> I believe <strong>modifiability</strong> is
+the most important single attribute in Glass’ definition for today’s
+context, though this represents an evolution from Glass’s original
+emphasis on understandability.</p>
+<p>In 1990s, Glass defined understandability as "the ability of a reader
+of the software to understand its function"—the most critical attribute
+because only humans could read, comprehend, and modify code. However, in
+today’s AI-driven development environment, modifiability has become more
+important than understandability. With AI code generation, automated
+refactoring tools, and machine learning systems that can analyze and
+modify code automatically, human understanding becomes less critical
+than the actual ability to make changes to the software. Modifiability
+is fundamental to the entire software lifecycle: from when developers
+start writing code, through quality testing phases, to the point where
+consumers might need to modify the software. It directly addresses
+Glass’s core insight that "the task of building quality into software is
+almost the same as the task of making it maintainable."</p>
+<p>If we expand Glass’s definition of understandability to include
+machine comprehension, then understandability could regain its position
+as the most important attribute. But if we maintain Glass’s original
+human-centric definition, then modifiability becomes the critical
+enabler for continuous software improvement and maintenance in our
+modern development ecosystem.</p></li>
+</ol>
+<h1 id="architectural-styles-and-programming-paradigms">Architectural
+Styles and Programming Paradigms</h1>
+<ol>
+<li><p>What are the important similarities and differences between an
+"architectural style" and a "programming paradigm" (like functional
+programming, logic programming, dataflow, OO, etc.)?</p>
+<p><strong>Answer:</strong> Architectural styles and programming
+paradigms represent different levels of abstraction, with architectural
+styles operating at a higher system organization level than programming
+paradigms.</p>
+<p>Programming paradigms (functional, object-oriented, logic
+programming) focus on how individual components are constructed and
+computation is expressed within components, establishing constraints
+like immutable data or encapsulation. As Garlan and Shaw <span
+class="citation" data-cites="garlan1993introduction">(Garlan and Shaw
+1994)</span> note, they evolved from "vocabulary of programming-language
+constructs" to "vocabulary of data types" but still operate at the
+component level. Architectural styles (layered, client-server,
+publish-subscribe) operate at the system level, focusing on overall
+structure, component interactions, and global organization. An
+architectural style "defines a family of such systems in terms of a
+pattern of structural organization" and "determines the vocabulary of
+components and connectors that can be used in instances of that style,
+together with a set of constraints on how they can be combined." The key
+difference lies in their scope and impact: programming paradigms
+primarily influence internal code quality within components, while
+architectural styles directly impact system-wide attributes like
+performance, scalability, and reliability. A programming paradigm might
+dictate how to write a sorting function, but an architectural style
+determines how that component relates to other system components and how
+data flows through the entire system.</p>
+<p>This distinction is evolving with modern languages like Rust <span
+class="citation" data-cites="rust_lang">(Rust Team 2025)</span>, where
+architectural concerns (safety, concurrency) are baked into the language
+itself, shifting from "hoping developers do the right thing" to "making
+it impossible to do the wrong thing."</p></li>
+<li><p>How do you think "architectural style" affects software
+quality?</p>
+<p><strong>Answer:</strong> Architectural style fundamentally shapes
+software quality by establishing structural constraints that directly
+determine how quality attributes are achieved throughout the system.
+This principle is clearly demonstrated in the Key Word In Context (KWIC)
+case study analysis <span class="citation"
+data-cites="garlan1993introduction">(Garlan and Shaw 1994)</span>.</p>
+<p>The structural properties of each style create inherent trade-offs
+across quality dimensions. Pipe-and-filter architectures excel at
+performance and reusability but struggle with interactive applications.
+For example, Unix command pipelines like
+<code>cat file.txt | grep "error" | sort | uniq</code> achieve high
+performance where each (cat, grep, sort, uniq) acts as an independent
+filter that processes data streams, connected by pipes <code>|</code>
+that pass output from one filter to the next <span class="citation"
+data-cites="unix_pipes">(Unix Documentation 2025)</span>, but cannot
+handle real-time user input effectively (e.g., a text editor where users
+type characters that need immediate display and response cannot use
+pipe-and-filter because it processes complete data streams, not
+incremental user interactions). Layered architectures promote
+modifiability and testability yet may introduce performance overhead.
+For instance, the OSI network model with seven distinct layers enables
+isolated testing and protocol changes, but each layer adds processing
+latency and data transformation costs <span class="citation"
+data-cites="osi_model">(ISO/IEC 2025)</span>. Event-driven architectures
+improve responsiveness and scalability while enabling graceful failure
+isolation. For example, Android applications using event-driven patterns
+like click listeners and broadcast receivers can respond to user
+interactions and system events asynchronously without blocking the UI
+thread, and if one component fails, other components continue operating
+independently <span class="citation"
+data-cites="android_mvvm_repository">(Android Developers 2025a)</span>.
+In contrast, shared-data architectures can create bottlenecks when
+multiple components contend for the same resource. For example, GUI
+applications using event handlers can respond to user interactions
+asynchronously without blocking, while database systems with shared
+tables experience lock contention when multiple transactions access the
+same records simultaneously.</p>
+<p>As Medvidovic and Taylor <span class="citation"
+data-cites="10.1145/288408.288435">(Medvidovic and Taylor 1998)</span>
+note, architectural styles are particularly effective for "large-scale
+development of distributed applications, using off-the-shelf components
+and connectors" and provide "separation of computation from interaction
+in a system." This separation elevates software connectors to
+first-class status, removing from components the responsibility of
+knowing how they are interconnected and minimizing component
+interdependencies.</p>
+<p>The choice of architectural style determines the system’s
+evolutionary capacity. Microservices <span class="citation"
+data-cites="microservices_patterns">(Richardson 2018)</span> and
+component-based styles allow independent changes and horizontal scaling,
+while monolithic architectures make modifications riskier and more
+expensive. However, as the readings <span class="citation"
+data-cites="medvidovic2020software">(Medvidovic and Taylor 2010)</span>
+emphasize, architecture "cannot be effectively employed to support
+fine-grain evolution" and "cannot guarantee the properties of the
+implemented system" - properties like reliability or performance cannot
+be fully assessed at the architectural level alone. These structural
+constraints establish a "quality envelope" that either enables or
+prevents certain quality improvements. A well-chosen architectural style
+makes desired quality attributes achievable, while a poorly chosen one
+can make certain quality goals nearly impossible without major system
+restructuring.</p>
+<p>For example, Android’s MVVM architecture combined with the Repository
+pattern demonstrates how architectural choices directly impact quality
+attributes <span class="citation"
+data-cites="android_mvvm_repository">(Android Developers 2025a)</span>.
+The Repository pattern provides clean separation between data sources
+and the ViewModel, enabling easy testing through dependency injection
+<span class="citation" data-cites="android_hilt">(Android Developers
+2025b)</span> and improving maintainability by centralizing data access
+logic. Adding Room DB API <span class="citation"
+data-cites="android_room">(Android Developers 2025c)</span> to handle
+large data flow further exemplifies this architectural impact on
+scalability, providing application-level scalability through efficient
+local data management, pagination support, and background processing.
+However, this pattern also illustrates the limitations discussed in the
+readings: while MVVM+Repository+Room+DI etc. excels at application-level
+quality attributes and local data scalability, true system-level
+scalability requires distributed architectural styles such as
+microservices or event-driven architectures that allow independent
+deployment and scaling across multiple servers and geographic
+locations.</p></li>
+</ol>
+<h1 id="information-hiding-and-system-design">Information Hiding and
+System Design</h1>
+<ol>
+<li><p>From Parnas’ paper, what system properties does he believe are
+critical to high-quality designs?</p>
+<p><strong>Answer:</strong> Parnas <span class="citation"
+data-cites="parnas1972information">(Parnas 1972)</span> believes that
+"information hiding" is the most important principle for creating
+high-quality software designs. Information hiding means that each
+module/component only knows what it needs to know and hides the internal
+details of how it works through interfaces (contracts) with just
+function names and configurations.</p>
+<p>The most important property is changeability - I can change one
+module without breaking other modules. Parnas shows this with his KWIC
+index example where the old way would break every module when changing
+data storage, but the new way only affects the storage module. I see
+this in real projects when we switch from SQL to NoSQL databases -
+systems with good information hiding (using interfaces instead of
+concrete classes) adapt easily while others break everywhere. Parnas
+says modules should hide their secrets, knowing about design decisions
+that other modules don’t need to know, like how data is stored or what
+character codes are used. This is why microservices <span
+class="citation" data-cites="microservices_patterns">(Richardson
+2018)</span> work well - each service keeps its data and business logic
+private.</p>
+<p>Another critical property is comprehensibility - I should be able to
+understand one module without knowing about the whole system. In Parnas’
+KWIC example, the old way required me to understand the alphabetizer,
+shifter, and input modules just to work on the output module, but the
+new way lets me understand each module by itself. This makes teams more
+productive because developers can work on parts they understand.
+Independent development is also important - different teams can work on
+different modules with minimal communication because interfaces are
+simple (just function names and parameters, not complex data formats).
+However, there’s a trade-off: information hiding can make systems slower
+because of all the function calls between modules. Parnas admits this
+and suggests we might need new ways to implement modules
+efficiently.</p></li>
+<li><p>The "tool abstraction" approach addresses some weaknesses in the
+system design in Parnas’ paper. What are the key weaknesses or
+disadvantages of the tool abstraction strategy?</p>
+<p><strong>Answer:</strong> Tool abstraction has several major
+weaknesses that make it difficult to use in practice. The biggest
+problem is complexity - managing interactions between independent
+toolies becomes a nightmare as the system grows. I’ve seen this in
+event-driven systems where keeping track of which toolies need to be
+notified and in what order becomes almost impossible. The system has to
+handle event notifications and ensure proper sequencing, which gets
+worse when multiple toolies work on the same data. This also creates
+performance problems because the event-driven mechanism adds overhead
+every time a toolie needs to be invoked, especially when there are
+complex dependency chains.</p>
+<p>Another major weakness is debugging and testing. Since toolies are
+called implicitly through events rather than explicit function calls, I
+find it much harder to trace what’s happening when something goes wrong.
+It’s like trying to debug a system where you can’t see the call stack
+clearly. This makes the system unpredictable and harder to reason about
+- I can’t be sure all the right toolies will be called in all
+situations. I see this problem in Android development where managing
+component lifecycles becomes a nightmare. Components have lifecycles and
+they shouldn’t die when being used, otherwise we get memory leaks. We
+have to use ViewModelScope, CoroutineScope, and other scopes <span
+class="citation" data-cites="kotlin_coroutines">(Android Developers
+2025d)</span> to manage this complexity, but it’s still challenging to
+ensure everything works correctly. Tool abstraction also doesn’t work
+well for systems that need strict control or predictable behavior, like
+safety-critical systems or real-time applications, because the
+event-driven nature introduces randomness that can cause serious
+problems.</p></li>
+</ol>
+<h1 id="process-control-and-design-flexibility">Process Control and
+Design Flexibility</h1>
+<ol>
+<li><p>What characteristics of a software design problem would make it a
+good match for a process control solution style?</p>
+<p><strong>Answer:</strong> A software design problem is a good match
+for process control when it involves continuous behavior. The system
+must be regulated over time, not solved with a single computation. The
+system requires ongoing regulation and monitoring. For example, cruise
+control constantly adjusts throttle to maintain speed. The system needs
+feedback loops. The system’s output affects its input. Current speed is
+compared to target speed. The difference drives throttle adjustments.
+The system must have measurable variables. These can be sensed (speed,
+temperature) and controlled (throttle, heater). The system operates in
+an environment with external disturbances. These require continuous
+response. For example, a heating system responds to temperature changes
+and door openings.</p>
+<p>In software terms, this style is best when the system must
+continuously react to sensor input and external changes rather than
+execute a fixed sequence of computations. I see parallels in modern
+cloud autoscaling systems: metrics like CPU load are continuously
+monitored and fed back into scaling decisions, much like feedback loops
+in process control. I’ve also worked with IoT sensor networks where
+temperature and humidity sensors continuously feed data to control
+algorithms that adjust HVAC systems in real-time.</p></li>
+<li><p>Looking at the designs in the readings and how each attempts to
+be flexible, what kinds of potential change/adaptability can you
+identify for the cruise control design problem?</p>
+<p><strong>Answer:</strong> The two cruise control designs show
+different types of flexibility. Shaw’s <span class="citation"
+data-cites="garlan1993introduction">(Garlan and Shaw 1994)</span>
+object-oriented design enables flexibility through component
+substitution. It uses interface contracts. Individual objects like
+Engine, Throttle, and SpeedSensor can be replaced with different
+implementations. They must maintain the same interfaces. This allows
+hardware changes. For example, a gasoline engine can be replaced with an
+electric motor. New features can be added through object composition.
+For example, voice commands can be added this way.</p>
+<p>Shaw’s process control design shows flexibility through separation of
+concerns. It also shows control algorithm evolution. The process
+definition is separated from the control policy. This allows the system
+to switch from simple on/off control to PID control. The underlying
+process model is not affected. Different speed measurement approaches
+can be incorporated. These include wheel pulses and GPS. Only the sensor
+abstraction layer needs modification. Control parameters can be adjusted
+based on road conditions. The core architecture does not change.</p>
+<p>The OO style primarily supports design-time adaptability, while
+process control supports runtime adaptability. In software terms, this
+reflects Shaw’s point: the choice of architectural style should depend
+on the type of flexibility required.</p></li>
+</ol>
+<h1 id="participatory-design-and-requirements-analysis">Participatory
+Design and Requirements Analysis</h1>
+<ol>
+<li><p>What do you believe is the central difference between the
+requirements analysis approach(es) you studied in 5704 and the
+"participatory design"-based approach discussed in the assigned
+material?</p>
+<p><strong>Answer:</strong></p>
+<p>I see a fundamental difference between requirements analysis that
+learned in 5704 (let’s call it traditional requirements analysis) and
+participatory design approaches <span class="citation"
+data-cites="carroll2000making">(Carroll et al. 1998)</span>. Traditional
+requirements analysis treats requirements gathering as a single,
+discrete step where analysts "capture" or "gather" information from
+users and stakeholders. In contrast, participatory design treats
+requirements development as an ongoing, collaborative process where
+requirements emerge through design activities, not just through initial
+information gathering. The key difference is that traditional approaches
+assume requirements exist independently and can be discovered through
+interviews or surveys, while participatory design recognizes that
+requirements develop through the interaction between users and
+designers. I see this as a more dynamic process where different design
+activities evoke different views of requirements. The practical benefit
+is that participatory design is iterative, bringing exact practical
+considerations and requirements that lead to much higher customer
+satisfaction. When we do this in different phases and multiple times, we
+get even better results because users can see and test real prototypes,
+provide feedback, and help refine the system continuously. For example,
+in the virtual physics laboratory case study, requirements evolved from
+initial high-level goals to detailed workplace practice requirements
+about classroom space constraints, teaching styles, and collaboration
+patterns that only emerged through sustained observation and
+collaboration with teachers. However, I also recognize a potential
+limitation: this approach requires significant time investment and may
+not be feasible for all projects with tight deadlines or limited user
+availability. This suggests that while participatory design yields
+richer requirements, it demands a long-term commitment that traditional
+software engineering approaches avoid.</p></li>
+<li><p>If you were to use this HCI-based approach on a new project,
+would you worry about prematurely considering or making important design
+decisions during requirements gathering? Why or why not?</p>
+<p><strong>Answer:</strong></p>
+<p>When using an HCI-based, scenario-driven approach, it’s fine if
+design ideas come up early during requirements gathering — that’s
+expected and not something to worry about. I believe this is actually a
+strength of the participatory design method because the HCI approach
+recognizes that requirements and design are tightly interleaved
+processes. I learned that scenario-based design encourages designers to
+envision outcomes before attempting to specify them, which helps make
+requirements more proactive in system development. I see several reasons
+why early design consideration is beneficial: it helps stakeholders
+understand the implications of their requirements better, early design
+exploration reveals requirements that would otherwise remain hidden
+(like the social collaboration patterns discovered in the air traffic
+control case study), and the iterative nature of participatory design
+means that early design ideas can be refined and corrected through
+multiple iterations. I think the key is to treat early design
+exploration as a learning tool rather than a commitment, using scenarios
+and claims analysis to explore design possibilities while remaining open
+to changing direction based on what I learn from users. However, I must
+acknowledge that this approach carries risks: early design decisions
+could bias stakeholders toward particular solutions, and the iterative
+nature might lead to scope creep or analysis paralysis. The challenge is
+balancing the benefits of early user engagement with the need to
+maintain project momentum and deliver on time.</p></li>
+</ol>
+<h1 id="scenario-based-design">Scenario-Based Design</h1>
+<ol>
+<li><p>How does a scenario-based design approach help you identify key
+design decisions on a project?</p>
+<p><strong>Answer:</strong></p>
+<p>Scenario-based design helps identify key design decisions by focusing
+on concrete user activities and experiences rather than abstract system
+features. According to Carroll <span class="citation"
+data-cites="carroll2000making">(Carroll et al. 1998)</span>,
+constructing scenarios "inescapably evokes reflection in the context of
+design," shifting attention to the work tasks and goals of prospective
+users. This reflection reveals decisions that might otherwise be
+overlooked when considering system requirements in isolation.</p>
+<p>Scenarios are both concrete and flexible, which allows designers to
+explore multiple ways users might interact with a system. For example,
+in the accountant scenario from the readings, the task of opening a memo
+while a spreadsheet covers a folder highlights design considerations for
+window management, application switching, and display organization. In
+our Earthquakes app, a scenario in which a user searches for earthquakes
+by location highlights design choices such as integrating the Google
+Places API for address autocomplete, handling location-based filtering,
+and presenting results clearly. Scenarios make these design decisions
+explicit by illustrating how users coordinate information and interact
+with the interface. They also help reveal tradeoffs and dependencies,
+showing how one design choice can affect multiple aspects of the user
+experience.</p>
+<p>Carroll identifies five fundamental challenges that scenarios
+address. These include evoking reflection, being concrete yet flexible,
+affording multiple views, enabling abstraction, and promoting
+work-oriented communication. However, this strength also creates a
+limitation. Scenarios naturally focus on visible user interactions,
+overlooking the technical architecture decisions that enable them. Thus,
+scenario-based design connects design decisions directly to user goals,
+making requirements tangible and actionable.</p></li>
+<li><p>What kinds of design decisions might not be identified when using
+scenario-based design (i.e., are there design decisions it doesn’t help
+you with)?</p>
+<p><strong>Answer:</strong></p>
+<p>While scenarios excel at highlighting user-centered decisions, they
+naturally overlook technical and non-functional concerns. Carroll notes
+that scenarios are fundamentally about "descriptions of how people
+accomplish tasks" and the consequences for human work. As a result,
+important backend and architectural decisions—such as system
+architecture, database design, data persistence, caching strategies, API
+integration patterns, and error handling—are often not revealed.</p>
+<p>In our intended Earthquakes app, scenarios guide the design of the
+user interface and workflows, but they do not address performance
+optimization, security, scalability, offline synchronization, or
+long-term maintainability. For example, a user is at home during an
+earthquake, needs to quickly find nearby quakes, is stressed and has
+shaky hands, needs large touch targets (i.e., accessibility engineering)
+and clear visual hierarchy, might be sharing the phone with family
+members Scenarios also tend to focus on current or near-term work
+practices, so they may not expose decisions about system evolution,
+extensibility, or compliance with technical standards.</p>
+<p>This limitation directly stems from Carroll’s framework itself—the
+very characteristics that make scenarios effective for user-centered
+design (being concrete, work-oriented, and focused on human activities)
+inherently exclude technical concerns that users never directly
+experience. Hence, scenario-based design should be complemented with
+other methods such as formal software engineering techniques (systematic
+decomposition, functional specifications), technical representations
+(data flow diagrams, state transition networks), usability engineering
+methods (performance metrics, user testing), and prototyping approaches
+to capture technical, non-functional, and long-term
+considerations.</p></li>
+</ol>
+<h1 id="process-vs.-product-metrics">Process vs. Product Metrics</h1>
+<ol>
+<li><p>If your main quality focus is on monitoring and improving your
+process, are there any critical quality attributes that will fall
+through the cracks?</p>
+<p><strong>Answer:</strong> Yes, focusing primarily on process
+monitoring and improvement can cause several critical quality attributes
+to fall through the cracks. Process-focused approaches like Six Sigma
+(data-driven methodology using DMAIC (Define, Measure, Analyze, Improve,
+Control)/DMADV (Define, Measure, Analyze, Design, Verify) processes to
+eliminate defects and reduce process variation) and statistical Software
+Quality Assurance (SQA) (e.g., tracking where errors originate) are
+excellent at identifying and eliminating root causes of defects <span
+class="citation" data-cites="10.5555/1593949">(Pressman 2009)</span>.
+However, they tend to emphasize measurable, quantifiable aspects of
+quality, which may overlook important product-specific quality
+attributes that are harder to measure but equally critical to end
+users.</p>
+<p>Specifically, user-facing quality attributes like usability, user
+experience, and customer satisfaction may be neglected because they are
+difficult to quantify through traditional process metrics. Process focus
+also tends to emphasize defect reduction and efficiency metrics,
+potentially missing qualitative aspects such as software
+maintainability, understandability, and reusability that are crucial for
+long-term software success. Additionally, process-centric approaches may
+not adequately address domain-specific quality requirements, security
+concerns, or performance characteristics that are unique to particular
+applications or user contexts. The readings emphasize that while process
+improvement is essential, it must be balanced with attention to the
+actual quality attributes that matter to end users and stakeholders.</p>
+<p>How well the product (or developed software) works is a product
+metric, while how well the development process works is a process
+metric. But I believe there is a blurry line between these two, and the
+context and timing of when you measure something can shift it between
+process and product metrics. For example, scanning for false positives
+in the CI/CD pipeline is a process metric, while scanning the delivered
+Android APK is a product metric. Sometimes, best practices cannot be
+fully applied during development. Issues may only surface during testing
+or even in production. So, both are important and they are really
+complementary to each other. In short, process metrics are proactive and
+preventive, while product metrics are reactive. Both are essential, but
+sustainable quality starts with process metrics.</p></li>
+<li><p>Which plays a more important role in managing software quality:
+product metrics or process metrics? Why?</p>
+<p><strong>Answer:</strong> Process metrics (e.g., those we do during
+our DevSecOps or CI/CD pipeline, such as testing failure rate or X% code
+coverage) play a more important role in managing software quality
+because they address the root causes of quality problems rather than
+just measuring their symptoms. And, in industries, this is what I found
+in my experience as a software engineer over a decade. We usually put
+all the best practices during development in CI/CD pipeline, and then we
+do various security scanning and testing (e.g., of product metrics)
+against the final delivered product (e.g., android apk). Pressman notes
+that process metrics help identify and eliminate the ’vital few’ causes
+responsible for most defects, following the Pareto principle (20% of
+causes generate 80% of problems). This proactive approach is more
+effective than reactive product metrics (e.g., defect density,
+reliability measures, user satisfaction scores) that only measure
+quality after problems have already occurred.</p>
+<p>Process metrics provide actionable insights (e.g., fixing the actual
+root causes of defects) for continuous improvement by tracking error
+sources, defect amplification patterns, and the effectiveness of quality
+control activities. The readings demonstrate that statistical SQA
+methods can achieve up to 50 percent reduction in defects per year by
+focusing on process improvement. While product metrics are essential for
+measuring current quality levels and validating that quality goals are
+met, they are inherently reactive and cannot prevent quality problems
+from occurring. Process metrics enable organizations to build quality
+into their software development practices from the beginning, making
+them the foundation for sustainable quality management.</p></li>
+</ol>
+<h1 id="testing-strategy-and-measurement">Testing Strategy and
+Measurement</h1>
+<ol>
+<li><p>What role should measurement play in a good testing strategy?</p>
+<p><strong>Answer:</strong></p>
+<p>Measurement plays a critical role in a good testing strategy because
+it provides objective data about test effectiveness and helps determine
+when testing is sufficient. Pressman <span class="citation"
+data-cites="10.5555/1593949">(Pressman 2009)</span> emphasizes that a
+test strategy should be measurable and that metrics collected during
+testing should feed into statistical process control. Similarly, Zhu et
+al. <span class="citation" data-cites="zhu1997software">(Zhu, Hall, and
+May 1997)</span> define measurement as the use of adequacy criteria that
+serve both as stopping rules and as quantitative indicators of test
+quality. Common measurable aspects include coverage metrics (e.g.,
+statement, branch, and path coverage), defect detection rates (errors
+found per unit effort), security adequacy scores (from tools that assess
+vulnerability detection rates), and overall test effectiveness (defect
+density, pass/fail rates, discovery trends, and post-release reports).
+In practice, such measurements ensure testing decisions are based on
+evidence rather than intuition. For example, in our Earthquakes app
+DevSecOps pipeline, we rely on JaCoCo <span class="citation"
+data-cites="jacoco">(JaCoCo Team 2025)</span> for 95%+ code coverage,
+Detekt <span class="citation" data-cites="detekt">(Detekt Team
+2025)</span> and SpotBugs <span class="citation"
+data-cites="spotbugs">(SpotBugs Team 2025)</span> for code quality
+metrics, Mobile Security Framework (MobSF) <span class="citation"
+data-cites="mobsf">(MobSF Team 2025)</span> and Mobile Verification
+Toolkit (MVT) <span class="citation" data-cites="mvt">(Amnesty
+International 2025)</span> for security analysis, and CI/CD dashboards
+to ensure 99+ automated tests run under 30 minutes with no critical
+production defects. By aligning measurements with project objectives,
+testing evolves from mere bug-finding into a disciplined, data-driven
+process that ensures confidence, efficiency, and continuous
+improvement.</p>
+<p>Furthermore, we plan to enhance our testing strategy by implementing
+mutation testing, which provides unique benefits that traditional
+coverage metrics (because we Jacoco, we couldn’t get 90% code coverage
+although we have all the unit tests written) and static analysis cannot
+deliver. As emphasized in the Zhu et al. <span class="citation"
+data-cites="zhu1997software">(Zhu, Hall, and May 1997)</span> survey,
+mutation testing offers a more sophisticated approach to measuring test
+adequacy through fault injection, where the mutation adequacy score is
+calculated as D/(T-E), with D representing dead mutants, T total
+mutants, and E equivalent mutants. For our Earthquakes app, we intend to
+integrate Android-specific mutation testing frameworks such as MDroid+
+<span class="citation" data-cites="mdroid_plus">(Moran et al.
+2018)</span> and PIT <span class="citation"
+data-cites="pit_mutation">(PIT Team 2025)</span> (we intend to add both
+if feasible) to achieve mutation adequacy scores above 80%,
+systematically testing the quality of our test suites by introducing
+artificial faults and measuring how effectively our tests detect these
+mutations. This approach will complement our existing DevSecOps pipeline
+by providing deeper insights into test effectiveness and ensuring our
+test cases are not just covering code but actually validating correct
+behavior.</p></li>
+<li><p>If you were involved in a development group that already had used
+a testing strategy for its products, what is the best way to decide how
+that strategy can be improved?</p>
+<p><strong>Answer:</strong></p>
+<p>The best way to decide how a testing strategy can be improved is to
+systematically evaluate current outcomes (e.g., defect detection rates,
+coverage reports, post-release defect counts), measurable adequacy
+criteria (e.g., mutation scores from MDroid+ <span class="citation"
+data-cites="mdroid_plus">(Moran et al. 2018)</span> or PIT <span
+class="citation" data-cites="pit_mutation">(PIT Team 2025)</span> for
+Android — frameworks we intend to add if feasible; code coverage
+thresholds such as JaCoCo <span class="citation"
+data-cites="jacoco">(JaCoCo Team 2025)</span> 80%, which must be met for
+CI/CD pipeline builds), and project objectives (e.g., release deadlines,
+quality attributes such as integrity, modifiability, usability, and
+reliability). Pressman <span class="citation"
+data-cites="10.5555/1593949">(Pressman 2009)</span> emphasizes that
+continuous improvement requires measurement and statistical process
+control, while Zhu et al. <span class="citation"
+data-cites="zhu1997software">(Zhu, Hall, and May 1997)</span> highlight
+adequacy criteria as a way to assess and enhance test quality. In
+practice, this means collecting comprehensive performance data (e.g.,
+time-to-fix bugs, defect density, regression cycle duration) and using
+it to identify weaknesses in the existing approach. For example, in our
+Earthquakes app DevSecOps environment, we achieve high unit test
+coverage (95%) with 99+ automated tests running under 30 minutes, yet
+occasional integration issues required additional end-to-end testing
+strategies. This evidence showed that while our unit testing strategy
+was comprehensive, we needed stronger integration and fault-based
+testing approaches. Once such gaps are identified, advanced techniques
+like mutation testing (e.g., MDroid+ <span class="citation"
+data-cites="mdroid_plus">(Moran et al. 2018)</span> or PIT <span
+class="citation" data-cites="pit_mutation">(PIT Team 2025)</span> for
+Android) or fault-based adequacy criteria (e.g., seeded fault detection
+rates) can be introduced to validate test quality itself. The key is to
+move from intuition-based adjustments to an empirical, feedback-driven
+process where each improvement is measurable (e.g., trend dashboards in
+CI/CD), sustainable, and aligned with organizational quality goals
+(e.g., zero critical defects in production).</p></li>
+</ol>
+<h1 id="testing-and-software-quality-assessment">Testing and Software
+Quality Assessment</h1>
+<ol>
+<li><p>How does testing help in assessing software quality? Does simply
+"running enough tests" ensure quality? Why or why not?</p>
+<p><strong>Answer:</strong></p>
+<p>Testing helps assess software quality by providing objective evidence
+of defects and verifying the reliability of software behavior under
+various conditions. As Pressman <span class="citation"
+data-cites="10.5555/1593949">(Pressman 2009)</span> emphasizes, testing
+requires developers to discard preconceived notions of correctness and
+systematically design test cases to "break" the software, uncovering
+errors before delivery.</p>
+<p>However, simply "running enough tests" does not ensure quality.
+Effectiveness depends on the adequacy and comprehensiveness of the test
+cases, not just their number. Zhu et al. <span class="citation"
+data-cites="zhu1997software">(Zhu, Hall, and May 1997)</span> define
+test adequacy criteria as predicates that determine what properties of a
+program must be exercised to constitute a "thorough" test. Quality
+assessment requires systematic coverage of code paths, boundary
+conditions, and fault scenarios rather than arbitrary test
+execution.</p>
+<p>In practice, I have seen projects with many tests but poor quality
+outcomes. This often occurs because tests lack proper coverage, miss
+critical error paths, or focus on trivial functionality while ignoring
+complex business logic. Effective quality assessment requires
+measurement-driven approaches using adequacy criteria such as statement
+coverage, branch coverage, mutation testing scores, and fault-based
+testing techniques. These provide quantitative indicators of test
+comprehensiveness and defect detection capability.</p>
+<p>Furthermore, testing must evaluate non-functional attributes such as
+performance, security, usability, and maintainability. Testing is only
+one component of a comprehensive software quality assurance ecosystem.
+As Nance and Arthur <span class="citation"
+data-cites="nance2002managing">(Nance and Arthur 2002)</span> emphasize,
+effective software quality measurement requires a holistic approach that
+goes beyond traditional testing to include multiple complementary
+methods. Static analysis tools like Detekt <span class="citation"
+data-cites="detekt">(Detekt Team 2025)</span> and SpotBugs <span
+class="citation" data-cites="spotbugs">(SpotBugs Team 2025)</span>
+examine code without execution to detect potential bugs,
+vulnerabilities, and coding standard violations early in development.
+Mutation testing frameworks such as MDroid+ <span class="citation"
+data-cites="mdroid_plus">(Moran et al. 2018)</span> and PIT <span
+class="citation" data-cites="pit_mutation">(PIT Team 2025)</span>
+introduce artificial faults to measure test suite adequacy beyond
+coverage metrics.</p>
+<p>In our Earthquakes app DevSecOps pipeline, we integrate multiple
+complementary approaches: JaCoCo <span class="citation"
+data-cites="jacoco">(JaCoCo Team 2025)</span> for code coverage, MobSF
+<span class="citation" data-cites="mobsf">(MobSF Team 2025)</span> for
+security assessment, fuzzing for input validation testing, and
+continuous monitoring for runtime verification. Quality emerges from a
+systematic, multi-layered approach combining dynamic testing, static
+analysis, mutation testing, security analysis, and formal verification
+methods, each providing different evidence about software reliability
+and correctness.</p></li>
+<li><p>How much testing is "enough"?</p>
+<p><strong>Answer:</strong></p>
+<p>Determining "enough" testing requires establishing adequacy criteria
+that serve as stopping rules and quantitative measures of test quality,
+as defined by Zhu et al. <span class="citation"
+data-cites="zhu1997software">(Zhu, Hall, and May 1997)</span>. These
+criteria function as predicates to decide when sufficient testing has
+been performed. Common metrics include statement coverage, branch
+coverage, path coverage, or mutation adequacy scores measuring fault
+detection through artificial fault injection. Pressman <span
+class="citation" data-cites="10.5555/1593949">(Pressman 2009)</span>
+emphasizes that testing must be conducted systematically to find the
+highest possible number of errors. Adequacy is achieved when
+comprehensive coverage criteria are met rather than when arbitrary time
+or resource limits are reached.</p>
+<p>In practice, "enough" testing is determined by project-specific
+quality objectives, risk tolerance, and software criticality.
+Safety-critical systems may require 100% path coverage, while less
+critical systems might accept 80% statement coverage. Adequacy criteria
+alone are insufficient without considering context and test
+effectiveness. Practical decisions involve balancing coverage
+requirements with resource constraints and business priorities.</p>
+<p>In our Earthquakes app, we establish multi-layered adequacy
+thresholds: 95% code coverage via JaCoCo, zero critical security
+vulnerabilities via MobSF, comprehensive static analysis results, and
+successful mutation testing scores with MDroid+ and PIT. We also
+consider test execution time, maintenance overhead, and diminishing
+returns of additional testing. Complementary approaches like fuzzing and
+runtime verification help ensure overall quality. The key is to move
+from subjective intuition to objective, measurable criteria across
+multiple dimensions, providing confidence in software quality while
+remaining practical and cost-effective.</p></li>
+</ol>
+<h1 id="quality-indicators-and-assessment">Quality Indicators and
+Assessment</h1>
+<ol>
+<li><p>If you are indirectly measuring an attribute, what makes for a
+"good" indicator?</p>
+<p><strong>Answer:</strong></p>
+<p>A "good" indicator for indirectly measuring an attribute must have
+key characteristics that ensure it is valid and reliable as a surrogate
+measure. According to the OPA Framework developed by Nance and Arthur
+<span class="citation" data-cites="nance2002managing">(Nance and Arthur
+2002)</span>, an indicator is a variable that can be measured directly
+and is linked to a concept through an operational definition, serving as
+a proxy for unmeasurable attributes. The most important characteristic
+is an "undeniable relationship" with the concept being measured, as
+emphasized by Meier and Brudney. In other words, a good indicator must
+reflect the presence or absence of the desired attribute, not merely
+correlate with it. For instance, in software quality measurement, code
+complexity metrics serve as indicators of maintainability because they
+directly reflect the cognitive effort required to understand and modify
+code.</p>
+<p>Additionally, good indicators must be measurable through observable
+characteristics, avoiding subjective or ambiguous measures that
+introduce variability. As Carley notes, indicators are "surrogates" that
+must always relate back to the unmeasurable concept. In our Earthquakes
+app, we use multiple complementary indicators: JaCoCo <span
+class="citation" data-cites="jacoco">(JaCoCo Team 2025)</span> code
+coverage as a measure of test thoroughness, Detekt <span
+class="citation" data-cites="detekt">(Detekt Team 2025)</span> and
+SpotBugs <span class="citation" data-cites="spotbugs">(SpotBugs Team
+2025)</span> results for code quality and maintainability, MobSF <span
+class="citation" data-cites="mobsf">(MobSF Team 2025)</span> security
+scores for vulnerability risk, and mutation testing adequacy scores for
+test effectiveness. Indicators should be quantifiable on an ordered
+scale and practical to collect. Using multiple confirming and
+contrasting indicators strengthens measurement reliability, as
+recommended by the OPA Framework <span class="citation"
+data-cites="nance2002managing">(Nance and Arthur 2002)</span>, since no
+single metric can capture all aspects of software quality.</p></li>
+<li><p>What is the difference between quality assurance and quality
+assessment?</p>
+<p><strong>Answer:</strong></p>
+<p>Quality assurance (QA) and quality assessment (QA*—assessment) are
+distinct approaches to managing software quality. The primary difference
+lies in timing, focus, and purpose. Quality assessment examines the
+product for desirable characteristics after it has been developed,
+evaluating the current state of quality through direct analysis of code,
+documentation, and deliverables. It measures product attributes to
+determine whether quality objectives have been met, using indicators
+such as code complexity, test coverage, and documentation completeness.
+In our Earthquakes app DevSecOps pipeline, we perform quality assessment
+with tools like Detekt <span class="citation"
+data-cites="detekt">(Detekt Team 2025)</span>, MobSF <span
+class="citation" data-cites="mobsf">(MobSF Team 2025)</span>, and JaCoCo
+<span class="citation" data-cites="jacoco">(JaCoCo Team
+2025)</span>.</p>
+<p>In contrast, quality assurance focuses on preventing defects and
+ensuring quality through proactive processes during development. QA
+encompasses establishing standards, procedures, and controls to prevent
+problems, including static analysis tools (Detekt, SpotBugs), mutation
+testing frameworks (MDroid+ <span class="citation"
+data-cites="mdroid_plus">(Moran et al. 2018)</span>, PIT <span
+class="citation" data-cites="pit_mutation">(PIT Team 2025)</span>),
+security analysis tools (MobSF), and continuous runtime verification.
+Assessment evaluates the effectiveness of these assurance activities by
+analyzing resulting product quality. The key distinction is temporal:
+assurance is preventive and process-oriented, occurring during
+development, while assessment is evaluative and product-oriented,
+occurring after development. Effective software quality management
+integrates both, with assurance preventing defects and assessment
+providing feedback on the effectiveness of these preventive
+measures.</p></li>
+</ol>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-mvt" class="csl-entry" role="listitem">
+Amnesty International. 2025. <span>“Mobile Verification Toolkit
+(MVT).”</span> <a
+href="https://github.com/mvt-project/mvt">https://github.com/mvt-project/mvt</a>.
+</div>
+<div id="ref-android_mvvm_repository" class="csl-entry" role="listitem">
+Android Developers. 2025a. <span>“App Architecture.”</span> <a
+href="https://developer.android.com/topic/architecture">https://developer.android.com/topic/architecture</a>.
+</div>
+<div id="ref-android_hilt" class="csl-entry" role="listitem">
+———. 2025b. <span>“Dependency Injection with Hilt.”</span> <a
+href="https://developer.android.com/training/dependency-injection/hilt-android">https://developer.android.com/training/dependency-injection/hilt-android</a>.
+</div>
+<div id="ref-android_room" class="csl-entry" role="listitem">
+———. 2025c. <span>“Room Persistence Library.”</span> <a
+href="https://developer.android.com/jetpack/androidx/releases/room">https://developer.android.com/jetpack/androidx/releases/room</a>.
+</div>
+<div id="ref-kotlin_coroutines" class="csl-entry" role="listitem">
+———. 2025d. <span>“Use Kotlin Coroutines with Lifecycle-Aware
+Components.”</span> <a
+href="https://developer.android.com/topic/libraries/architecture/coroutines">https://developer.android.com/topic/libraries/architecture/coroutines</a>.
+</div>
+<div id="ref-carroll2000making" class="csl-entry" role="listitem">
+Carroll, J. M., M. B. Rosson, G. Chin, and J. Koenemann. 1998.
+<span>“Requirements Development in Scenario-Based Design.”</span>
+<em>IEEE Transactions on Software Engineering</em> 24 (12): 1156–70. <a
+href="https://doi.org/10.1109/32.738344">https://doi.org/10.1109/32.738344</a>.
+</div>
+<div id="ref-detekt" class="csl-entry" role="listitem">
+Detekt Team. 2025. <span>“Detekt Static Code Analysis for
+Kotlin.”</span> <a
+href="https://detekt.github.io/detekt/">https://detekt.github.io/detekt/</a>.
+</div>
+<div id="ref-garlan1993introduction" class="csl-entry" role="listitem">
+Garlan, David, and Mary Shaw. 1994. <span>“An Introduction to Software
+Architecture.”</span> CMU/SEI-94-TR-021. Carnegie Mellon University,
+Software Engineering Institute. <a
+href="https://www.sei.cmu.edu/library/an-introduction-to-software-architecture/">https://www.sei.cmu.edu/library/an-introduction-to-software-architecture/</a>.
+</div>
+<div id="ref-osi_model" class="csl-entry" role="listitem">
+ISO/IEC. 2025. <span>“OSI Model.”</span> <a
+href="https://en.wikipedia.org/wiki/OSI_model">https://en.wikipedia.org/wiki/OSI_model</a>.
+</div>
+<div id="ref-jacoco" class="csl-entry" role="listitem">
+JaCoCo Team. 2025. <span>“JaCoCo Java Code Coverage Library.”</span> <a
+href="https://www.jacoco.org/jacoco/">https://www.jacoco.org/jacoco/</a>.
+</div>
+<div id="ref-10.1145/288408.288435" class="csl-entry" role="listitem">
+Medvidovic, Nenad, and Richard N. Taylor. 1998. <span>“Separating Fact
+from Fiction in Software Architecture.”</span> In <em>Proceedings of the
+Third International Workshop on Software Architecture</em>, 105–8. ISAW
+’98. New York, NY, USA: Association for Computing Machinery. <a
+href="https://doi.org/10.1145/288408.288435">https://doi.org/10.1145/288408.288435</a>.
+</div>
+<div id="ref-medvidovic2020software" class="csl-entry" role="listitem">
+———. 2010. <span>“Software Architecture: Foundations, Theory, and
+Practice.”</span> In <em>2010 ACM/IEEE 32nd International Conference on
+Software Engineering</em>, 2:471–72. <a
+href="https://doi.org/10.1145/1810295.1810435">https://doi.org/10.1145/1810295.1810435</a>.
+</div>
+<div id="ref-mobsf" class="csl-entry" role="listitem">
+MobSF Team. 2025. <span>“MobSF Mobile Security Framework.”</span> <a
+href="https://mobsf.github.io/MobSF/">https://mobsf.github.io/MobSF/</a>.
+</div>
+<div id="ref-mdroid_plus" class="csl-entry" role="listitem">
+Moran, Kevin, Michele Tufano, Carlos Bernal-Cárdenas, Mario
+Linares-Vásquez, Gabriele Bavota, Christopher Vendome, Massimiliano Di
+Penta, and Denys Poshyvanyk. 2018. <span>“<a href="">MDroid+: A Mutation
+Testing Framework for Android</a>.”</span> In <em>2018 IEEE/ACM 40th
+International Conference on Software Engineering: Companion
+(ICSE-Companion)</em>, 33–36.
+</div>
+<div id="ref-nance2002managing" class="csl-entry" role="listitem">
+Nance, Richard E., and James D. Arthur. 2002. <em>Managing Software
+Quality: A Measurement Framework for Assessment and Prediction</em>. 1st
+ed. Practitioner Series. London, UK: Springer London. <a
+href="https://doi.org/10.1007/978-1-4471-0117-8">https://doi.org/10.1007/978-1-4471-0117-8</a>.
+</div>
+<div id="ref-parnas1972information" class="csl-entry" role="listitem">
+Parnas, D. L. 1972. <span>“On the Criteria to Be Used in Decomposing
+Systems into Modules.”</span> <em>Commun. ACM</em> 15 (12): 1053–58. <a
+href="https://doi.org/10.1145/361598.361623">https://doi.org/10.1145/361598.361623</a>.
+</div>
+<div id="ref-pit_mutation" class="csl-entry" role="listitem">
+PIT Team. 2025. <span>“PIT Mutation Testing.”</span> <a
+href="https://pitest.org/">https://pitest.org/</a>.
+</div>
+<div id="ref-10.5555/1593949" class="csl-entry" role="listitem">
+Pressman, Roger. 2009. <em>Software Engineering: A Practitioner’s
+Approach</em>. 7th ed. USA: McGraw-Hill, Inc.
+</div>
+<div id="ref-microservices_patterns" class="csl-entry" role="listitem">
+Richardson, Chris. 2018. <em>Microservices Patterns: With Examples in
+Java</em>. Shelter Island, NY: Manning Publications.
+</div>
+<div id="ref-rust_lang" class="csl-entry" role="listitem">
+Rust Team. 2025. <span>“The Rust Programming Language.”</span> <a
+href="https://www.rust-lang.org/">https://www.rust-lang.org/</a>.
+</div>
+<div id="ref-spotbugs" class="csl-entry" role="listitem">
+SpotBugs Team. 2025. <span>“SpotBugs Static Analysis Tool.”</span> <a
+href="https://spotbugs.github.io/">https://spotbugs.github.io/</a>.
+</div>
+<div id="ref-unix_pipes" class="csl-entry" role="listitem">
+Unix Documentation. 2025. <span>“Unix Pipes and Filters.”</span> <a
+href="https://en.wikipedia.org/wiki/Pipeline_(Unix)">https://en.wikipedia.org/wiki/Pipeline_(Unix)</a>.
+</div>
+<div id="ref-zhu1997software" class="csl-entry" role="listitem">
+Zhu, Hong, Patrick A. V. Hall, and John H. R. May. 1997. <span>“Software
+Unit Test Coverage and Adequacy.”</span> <em>ACM Comput. Surv.</em> 29
+(4): 366–427. <a
+href="https://doi.org/10.1145/267580.267590">https://doi.org/10.1145/267580.267590</a>.
+</div>
+</div>
+</body>
+</html>
+
