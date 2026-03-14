@@ -1,0 +1,48 @@
+{% include utils.html %}
+
+<!-- Google Tag Manager (noscript) -->
+{% if site.analytics.google_tag_manager != blank %}
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ site.analytics.google_tag_manager }}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+{% endif %}
+
+<nav class="navbar sticky-top navbar-expand-sm" aria-label="Primary site navigation">
+    <div class="navbar-inner">
+        <div class="navbar-brand">
+            <a href="{{ site.baseurl }}/" class="brand-link" aria-label="Go to homepage">
+                <span class="brand-kicker">Research and Software</span>
+                <span class="brand-text">Uddhav P. Gautam</span>
+            </a>
+        </div>
+
+        <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse site-nav-collapse" id="navbarColor02">
+            <div class="navbar-nav site-nav-links me-auto">
+                <a class="nav-item nav-link{% if page.url == '/' %} active{% endif %}" href="{{ site.baseurl }}/"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
+                {% if site_data.navigation.main_menu %}
+                    {% for item in site_data.navigation.main_menu %}
+                        {% if item.name != "home" %}
+                            <a class="nav-item nav-link{% if page.url == item.url or page.url == item.url | append: '/' %} active{% endif %}" href="{{ site.baseurl }}{{ item.url }}"{% if page.url == item.url or page.url == item.url | append: '/' %} aria-current="page"{% endif %}>{{ item.title }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% elsif site.nav_pages %}
+                    {% for page in site.nav_pages %}
+                        <a class="nav-item nav-link" href="{{ site.baseurl }}/{{ page.name }}">{{ page.title | default: page.name | capitalize }}</a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="navbar-nav site-nav-actions ms-auto">
+                {% if site_data.config.enable_dark_mode %}
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light theme">
+                    <i id="theme-icon" class="fa fa-moon-o"></i>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

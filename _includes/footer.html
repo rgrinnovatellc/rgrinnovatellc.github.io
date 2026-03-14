@@ -1,0 +1,19 @@
+{% include utils.html %}
+
+<footer class="footer mt-auto">
+    <div class="footer-shell">
+        <section class="footer-utility" aria-label="Footer utilities">
+            <div class="footer-inline" role="list">
+                <span class="footer-label" role="listitem">CONNECT:</span>
+                <a role="listitem" href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+                {% if site_data.social.github %}<a role="listitem" href="{{ site_data.social.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>{% endif %}
+                {% if site_data.social.scholar %}<a role="listitem" href="{{ site_data.social.scholar }}" target="_blank" rel="noopener noreferrer">Google Scholar</a>{% endif %}
+                {% if site_data.social.linkedin %}<a role="listitem" href="{{ site_data.social.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>{% endif %}
+                <span class="footer-separator" aria-hidden="true" role="listitem"></span>
+                <span class="footer-text" role="listitem">© {{ current_year }} {{ pi_data.name }}.</span>
+                <a role="listitem" href="{{ site.baseurl }}/sitemap/">Sitemap</a>
+                <a role="listitem" href="{{ site.baseurl }}/privacy/">Privacy</a>
+            </div>
+        </section>
+    </div>
+</footer>

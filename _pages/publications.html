@@ -1,0 +1,54 @@
+---
+title: "Publications"
+layout: gridlay
+sitemap: true
+permalink: /publications/
+years: [2016, 2017, 2018, 2019, 2020, 2021]
+description: "Journal and conference publications by Uddhav P. Gautam."
+image: /images/Uddhav.jpg
+---
+
+<section class="page-hero surface-panel publication-intro publication-hero">
+    <div class="page-hero-grid publication-hero-grid">
+        <div class="hero-copy">
+            <p class="eyebrow">Publications</p>
+            <h1>Publications</h1>
+            <p class="hero-lead">Journal and conference papers. See research, software, and writing for context.</p>
+        </div>
+
+        <aside class="publication-aside-card">
+            <span class="signal-label">Browse</span>
+            <div class="publication-aside-links">
+                <a href="{{ '/research/' | relative_url }}">Research themes</a>
+                <a href="{{ '/software/' | relative_url }}">Software work</a>
+                <a href="{{ '/blogs/' | relative_url }}">Technical writing</a>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<section class="surface-panel bibliography-section">
+    <p class="eyebrow">Manuscripts</p>
+    <h2 class="section-heading">Submitted and under review</h2>
+    <div class="resource-stack">
+        {% for manuscript in site.data.manuscripts %}
+        <article class="resource-card">
+            <h3>{{ manuscript.title }}</h3>
+            <p>{{ manuscript.summary }}</p>
+            <span class="tag-chip">{{ manuscript.status }} · {{ manuscript.year }}</span>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="surface-panel bibliography-section">
+    <p class="eyebrow">Journals</p>
+    <h2 class="section-heading">Journal articles</h2>
+    {% bibliography --query @article %}
+</section>
+
+<section class="surface-panel bibliography-section">
+    <p class="eyebrow">Conferences</p>
+    <h2 class="section-heading">Conference proceedings</h2>
+    {% bibliography --query @inproceedings %}
+</section>

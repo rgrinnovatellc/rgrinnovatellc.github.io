@@ -1,0 +1,83 @@
+---
+title: "Talks"
+layout: gridlay
+sitemap: true
+permalink: /talks/
+description: "Speaking topics and presentation formats."
+---
+
+{% include utils.html %}
+
+<section class="page-hero surface-panel">
+    <p class="eyebrow">Talks</p>
+    <h1>Talks</h1>
+    <p class="hero-lead">Systems, observability, and security. Research talks, seminars, guest lectures, and practitioner presentations.</p>
+</section>
+
+<section class="page-section">
+    <div class="section-heading-row">
+        <div>
+            <p class="eyebrow">Speaking themes</p>
+            <h2 class="section-heading">Topics I can present now</h2>
+        </div>
+        <p class="section-copy">From active projects, published work, and recurring research themes.</p>
+    </div>
+
+    <div class="focus-grid">
+        <article class="focus-card surface-panel">
+            <h3>Reducing eBPF tracing overhead</h3>
+            <p>Measurement overhead costs, untraced process impact, instrumentation design that preserves usefulness without distorting workloads.</p>
+        </article>
+        <article class="focus-card surface-panel">
+            <h3>Linux performance investigation</h3>
+            <p>Reasoning about system bottlenecks, designing performance experiments, evidence-based optimization.</p>
+        </article>
+        <article class="focus-card surface-panel">
+            <h3>Security in operational and embedded contexts</h3>
+            <p>Platform security questions spanning Android, IoT, industrial environments, and the systems constraints that make visibility difficult.</p>
+        </article>
+        <article class="focus-card surface-panel">
+            <h3>From research idea to working artifact</h3>
+            <p>Ideas into software, measurements, documentation, and workflows usable beyond prototypes.</p>
+        </article>
+    </div>
+</section>
+
+<section class="page-section split-grid">
+    <div class="surface-panel">
+        <p class="eyebrow">Recent</p>
+        <h2 class="section-heading">Results and milestones</h2>
+        <div class="news-feed">
+            {% for item in site.data.news limit: 5 %}
+            <article class="news-feed-item">
+                <span class="news-date">{{ item.date }}</span>
+                <div class="news-headline">{{ item.headline | strip_html }}</div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="surface-panel">
+        <p class="eyebrow">Formats</p>
+        <h2 class="section-heading">Presentation formats</h2>
+        <ul class="compact-list">
+            <li>Research seminars for systems, security, networking, and performance audiences.</li>
+            <li>Guest lectures on Linux internals, eBPF, benchmarking, and engineering methodology.</li>
+            <li>Practitioner talks that connect low-level systems ideas to practical engineering decisions.</li>
+            <li>Paper walkthroughs that emphasize experiment design, limits, and reproducibility.</li>
+        </ul>
+    </div>
+</section>
+
+<section class="page-section surface-panel contact-panel" aria-labelledby="talks-invite-heading">
+    <div>
+        <p class="eyebrow">Invite</p>
+        <h2 class="section-heading" id="talks-invite-heading">Invitations</h2>
+        <p class="section-copy">Talks work best when scoped to a concrete systems question. Reach out with your audience and problem focus.</p>
+    </div>
+    <div class="cta-row">
+        {% if contact_email %}<a href="mailto:{{ contact_email }}" class="btn btn-primary">Invite</a>{% endif %}
+        <a href="{{ '/publications/' | relative_url }}" class="btn btn-outline-primary">Publications</a>
+        <a href="{{ '/research/' | relative_url }}" class="btn btn-outline-dark">Research</a>
+    </div>
+</section>

@@ -1,0 +1,25 @@
+<!-- Inline PDF viewer - hidden by default, toggles on CV click -->
+<div id="pdfViewer" class="pdf-viewer" style="display: none;">
+    <iframe id="pdfIframe" class="pdf-iframe-fullwidth" src=""></iframe>
+</div>
+
+<script>
+(function() {
+    let currentPdfUrl = null;
+    const viewer = document.getElementById('pdfViewer');
+    const iframe = document.getElementById('pdfIframe');
+
+    window.togglePDFViewer = function(pdfUrl) {
+        if (!viewer || !iframe) return;
+        if (viewer.style.display === 'none' || currentPdfUrl !== pdfUrl) {
+            currentPdfUrl = pdfUrl;
+            iframe.src = pdfUrl;
+            viewer.style.display = 'block';
+        } else {
+            currentPdfUrl = null;
+            iframe.src = '';
+            viewer.style.display = 'none';
+        }
+    };
+})();
+</script>

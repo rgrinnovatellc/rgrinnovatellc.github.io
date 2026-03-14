@@ -1,0 +1,45 @@
+<div class="card card-featured">
+    <div class="card-header">
+        <i class="fa fa-newspaper-o"></i> Latest News
+    </div>
+    <div class="card-body">
+        {% for article in site.data.news limit:3 %}
+        <div class="news-item">
+            <div class="news-date">{{ article.date }}</div>
+            <div class="news-headline">{{ article.headline }}</div>
+        </div>
+        {% endfor %}
+        
+        <div class="text-center mt-3">
+            <a href="{{ site.baseurl }}/allnews/" class="btn btn-outline-primary btn-sm">
+                <i class="fa fa-arrow-right"></i> View All News
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card card-info">
+    <div class="card-header">
+        <i class="fa fa-calendar"></i> Upcoming Events
+    </div>
+    <div class="card-body">
+        {% assign event_count = site.data.events.size %}
+        {% if event_count > 10 %}
+            {% assign events_to_show = 10 %}
+        {% else %}
+            {% assign events_to_show = event_count %}
+        {% endif %}
+        
+        {% for article in site.data.events limit:events_to_show %}
+        <div class="event-item">
+            <div class="event-date">{{ article.date }}</div>
+            <div class="event-title">{{ article.headline }}</div>
+            <div class="event-location">
+                <i class="fa fa-map-marker"></i> {{ article.location }}
+            </div>
+        </div>
+        {% endfor %}
+        
+
+    </div>
+</div>

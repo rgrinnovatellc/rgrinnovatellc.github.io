@@ -1,0 +1,45 @@
+# Jekyll build files
+_site/
+.jekyll-cache/
+.sass-cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Package managers
+Gemfile.lock
+package-lock.json
+node_modules/
+yarn.lock
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Security and sensitive files
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.yml
+config/secrets.yml
+credentials.yml
+token.txt
+*.token

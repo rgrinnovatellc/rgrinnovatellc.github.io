@@ -1,0 +1,503 @@
+<h1 id="aosp">AOSP</h1>
+
+<div style="height: 2rem;"></div>
+
+<h2 id="download-aosp-source">Download AOSP Source</h2>
+<pre><code class="language-bash"># takes hours depending on your internet speed
+cd aosp
+# Note that we are init-ing based on platform&#39;s manifest
+repo init -b android-15.0.0_r9 -u https://android.googlesource.com/platform/manifest
+
+....
+# repo has been initialized in /opt/aosp
+# then do repo sync to download the source code
+repo sync
+
+
+# Do source build/envsetup.sh
+source build/envsetup.sh
+lunch
+
+    You&#39;re building on Linux
+
+    Warning: Cannot display lunch menu.
+
+    Note: You can invoke lunch with an explicit target:
+
+      usage: lunch [target]
+
+    Which would you like? [aosp_cf_x86_64_phone-trunk_staging-eng]
+    Pick from common choices above (e.g. 13) or specify your own (e.g. aosp_barbet-trunk_staging-eng): aosp_cf_x86_64_phone-trunk_staging-eng
+
+    ============================================
+
+    PLATFORM_VERSION_CODENAME=VanillaIceCream
+    PLATFORM_VERSION=VanillaIceCream
+    TARGET_PRODUCT=aosp_cf_x86_64_phone
+    TARGET_BUILD_VARIANT=eng
+    TARGET_ARCH=x86_64
+    TARGET_ARCH_VARIANT=silvermont
+    TARGET_2ND_ARCH=x86
+    TARGET_2ND_ARCH_VARIANT=silvermont
+    HOST_OS=linux
+    HOST_OS_EXTRA=Linux-6.11.10-x86_64-Ubuntu-24.04.1-LTS
+    HOST_CROSS_OS=windows
+    BUILD_ID=AP4A.241205.013.C1
+    OUT_DIR=out
+    ============================================
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Wondering whether to use user, userdebug or eng?
+
+      user        The builds that ship to users. Reduced debugability.
+      userdebug   High fidelity to user builds but with some debugging options
+                  enabled. Best suited for performance testing or day-to-day use
+                  with debugging enabled.
+      eng         More debugging options enabled and faster build times, but
+                  runtime performance tradeoffs. Best suited for day-to-day
+                  local development when not doing performance testing.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</code></pre>
+<p>Next thing, I did is backup (i.e., cloned the whole aosp folder) to aosp_bk in /opt directory. </p>
+<p>Source code tags and builds: <a href="https://source.android.com/docs/setup/reference/build-numbers#source-code-tags-and-builds">https://source.android.com/docs/setup/reference/build-numbers#source-code-tags-and-builds</a></p>
+<p>But above  linked page doesn&#39;t mention anything about branch or list branches. I found them here: <a href="https://cs.android.com/android/platform/superproject">https://cs.android.com/android/platform/superproject</a></p>
+<p>The cs.android.com site is like a bootlin for Linux Kernel.</p>
+<p>But above  linked page doesn&#39;t mention anything about branch or list branches. I found them here: <a href="https://cs.android.com/android/platform/superproject">https://cs.android.com/android/platform/superproject</a></p>
+<p>The cs.android.com site is like a bootlin for Linux Kernel.</p>
+<h2 id="setup-host-machine">Setup host machine</h2>
+<ol>
+<li><code>sudo apt-get install git-core gnupg flex bison build-essential zip curl zlib1g-dev libc6-dev-i386 x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig</code></li>
+<li>Install repo tool from here: <a href="https://gerrit.googlesource.com/git-repo">https://gerrit.googlesource.com/git-repo</a></li>
+</ol>
+<h2 id="setup-environment">Setup Environment</h2>
+<p><code>source build/envsetup.sh</code>
+This script imports several commands that let you work with the Android source code, including the commands used on this page.</p>
+<pre><code class="language-bash">upgautam@amd:/opt/aosp$ lunch
+
+You&#39;re building on Linux
+
+Warning: Cannot display lunch menu.
+
+Note: You can invoke lunch with an explicit target:
+
+  usage: lunch [target]
+
+Which would you like? [aosp_cf_x86_64_phone-trunk_staging-eng]
+Pick from common choices above (e.g. 13) or specify your own (e.g. aosp_cf_x86_64_phone-trunk_staging-eng):
+</code></pre>
+<p>Run: <code>lunch aosp_cf_x86_64_phone-trunk_staging-eng</code> and then <code>build_build_var_cache</code>. These two commands prepares system so that next time lunch will display various targets. </p>
+<pre><code class="language-bash">upgautam@amd:/opt/aosp$ lunch
+
+You&#39;re building on Linux
+
+Lunch menu .. Here are the common combinations:
+     1. aosp_akita-trunk_staging-userdebug
+     2. aosp_arm-trunk_staging-eng
+     3. aosp_arm64-trunk_staging-eng
+     4. aosp_bluejay-trunk_staging-userdebug
+     5. aosp_bluejay_car-trunk_staging-userdebug
+     6. aosp_caiman-trunk_staging-userdebug
+     7. aosp_cf_arm64_auto-trunk_staging-userdebug
+     8. aosp_cf_arm64_phone-trunk_staging-userdebug
+     9. aosp_cf_riscv64_phone-trunk_staging-userdebug
+     10. aosp_cf_x86_64_auto-trunk_staging-userdebug
+     11. aosp_cf_x86_64_auto_mdnd-trunk_staging-userdebug
+     12. aosp_cf_x86_64_foldable-trunk_staging-userdebug
+     13. aosp_cf_x86_64_only_phone_hsum-trunk_staging-userdebug
+     14. aosp_cf_x86_64_pc-trunk_staging-userdebug
+     15. aosp_cf_x86_64_phone-trunk_staging-userdebug
+     16. aosp_cf_x86_64_tv-trunk_staging-userdebug
+     17. aosp_cf_x86_tv-trunk_staging-userdebug
+     18. aosp_cheetah-trunk_staging-userdebug
+     19. aosp_cheetah_car-trunk_staging-userdebug
+     20. aosp_cheetah_hwasan-trunk_staging-userdebug
+     21. aosp_cloudripper-trunk_staging-userdebug
+     22. aosp_comet-trunk_staging-userdebug
+     23. aosp_felix-trunk_staging-userdebug
+     24. aosp_husky-trunk_staging-userdebug
+     25. aosp_husky_car-trunk_staging-userdebug
+     26. aosp_komodo-trunk_staging-userdebug
+     27. aosp_lynx-trunk_staging-userdebug
+     28. aosp_oriole-trunk_staging-userdebug
+     29. aosp_oriole_car-trunk_staging-userdebug
+     30. aosp_panther-trunk_staging-userdebug
+     31. aosp_panther_car-trunk_staging-userdebug
+     32. aosp_panther_hwasan-trunk_staging-userdebug
+     33. aosp_raven-trunk_staging-userdebug
+     34. aosp_raven_car-trunk_staging-userdebug
+     35. aosp_ravenclaw-trunk_staging-userdebug
+     36. aosp_redfin_car-trunk_staging-userdebug
+     37. aosp_ripcurrent-trunk_staging-userdebug
+     38. aosp_ripcurrent24-trunk_staging-userdebug
+     39. aosp_ripcurrentpro-trunk_staging-userdebug
+     40. aosp_shiba-trunk_staging-userdebug
+     41. aosp_slider-trunk_staging-userdebug
+     42. aosp_sunfish_car-trunk_staging-userdebug
+     43. aosp_tangorpro-trunk_staging-userdebug
+     44. aosp_tangorpro_car-trunk_staging-userdebug
+     45. aosp_tokay-trunk_staging-userdebug
+     46. aosp_trout_arm64-trunk_staging-userdebug
+     47. aosp_trout_x86_64-trunk_staging-userdebug
+     48. aosp_whitefin-trunk_staging-userdebug
+     49. aosp_x86-trunk_staging-eng
+     50. aosp_x86_64-trunk_staging-eng
+     51. arm_krait-trunk_staging-eng
+     52. arm_v7_v8-trunk_staging-eng
+     53. armv8-trunk_staging-eng
+     54. armv8_cortex_a55-trunk_staging-eng
+     55. armv8_kryo385-trunk_staging-eng
+     56. db845c-trunk_staging-userdebug
+     57. gsi_car_arm64-trunk_staging-userdebug
+     58. gsi_car_x86_64-trunk_staging-userdebug
+     59. hikey-trunk_staging-userdebug
+     60. hikey64_only-trunk_staging-userdebug
+     61. hikey960-trunk_staging-userdebug
+     62. hikey960_tv-trunk_staging-userdebug
+     63. hikey_tv-trunk_staging-userdebug
+     64. poplar-trunk_staging-eng
+     65. poplar-trunk_staging-user
+     66. poplar-trunk_staging-userdebug
+     67. qemu_trusty_arm64-trunk_staging-userdebug
+     68. riscv64-trunk_staging-eng
+     69. sdk_car_arm64-trunk_staging-userdebug
+     70. sdk_car_cw_x86_64-trunk_staging-userdebug
+     71. sdk_car_md_x86_64-trunk_staging-userdebug
+     72. sdk_car_x86_64-trunk_staging-userdebug
+     73. silvermont-trunk_staging-eng
+     74. yukawa-trunk_staging-userdebug
+     75. yukawa_sei510-trunk_staging-userdebug
+
+Which would you like? [aosp_cf_x86_64_phone-trunk_staging-eng]
+Pick from common choices above (e.g. 13) or specify your own (e.g. aosp_barbet-trunk_staging-eng):
+</code></pre>
+<p>Now, we will select <code>     15. aosp_cf_x86_64_phone-trunk_staging-userdebug</code></p>
+<pre><code class="language-bash">#Note: this is the one we lunch
+lunch  aosp_cf_x86_64_phone-trunk_staging-userdebug
+
+#Synopsis as below:
+  ============================================
+PLATFORM_VERSION_CODENAME=VanillaIceCream
+PLATFORM_VERSION=VanillaIceCream
+TARGET_PRODUCT=aosp_cf_x86_64_phone
+TARGET_BUILD_VARIANT=userdebug
+TARGET_ARCH=x86_64
+TARGET_ARCH_VARIANT=silvermont
+TARGET_2ND_ARCH=x86
+TARGET_2ND_ARCH_VARIANT=silvermont
+HOST_OS=linux
+HOST_OS_EXTRA=Linux-6.11.10-x86_64-Ubuntu-24.04.1-LTS
+HOST_CROSS_OS=windows
+BUILD_ID=AP4A.241205.013.C1
+OUT_DIR=out
+============================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Wondering whether to use user, userdebug or eng?
+
+  user        The builds that ship to users. Reduced debugability.
+  userdebug   High fidelity to user builds but with some debugging options
+              enabled. Best suited for performance testing or day-to-day use
+              with debugging enabled.
+  eng         More debugging options enabled and faster build times, but
+              runtime performance tradeoffs. Best suited for day-to-day
+              local development when not doing performance testing.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</code></pre>
+<p>You can always check</p>
+<pre><code class="language-bash">upgautam@amd:/opt/aosp$ echo &quot;$TARGET_PRODUCT-$TARGET_BUILD_VARIANT&quot;
+aosp_cf_x86_64_phone-userdebug
+</code></pre>
+<h2 id="build">Build</h2>
+<pre><code class="language-bash">m # builds
+
+    synopsis:
+    4 warnings generated.
+    [100% 200001/200001] Install: out/host/linux-x86/cvd-host_package.stamp (priority: 4)
+
+    #### build completed successfully (01:29:26 (hh:mm:ss)) ####
+</code></pre>
+<h2 id="prepare-for-emulator">Prepare For Emulator</h2>
+<p>Let&#39;s stick to Cuttlefish Emulator for now.
+Install host&#39;s debian packages for cuttlefish emulator </p>
+<pre><code class="language-bash">sudo apt install -y git devscripts equivs config-package-dev debhelper-compat golang curl
+git clone https://github.com/google/android-cuttlefish
+cd android-cuttlefish
+for dir in base frontend; do
+pushd $dir
+# Install build dependencies
+sudo mk-build-deps -i
+dpkg-buildpackage -uc -us
+popd
+done
+sudo dpkg -i ./cuttlefish-base_*_*64.deb || sudo apt-get install -f
+sudo dpkg -i ./cuttlefish-user_*_*64.deb || sudo apt-get install -f
+sudo usermod -aG kvm,cvdnetwork,render $USER
+sudo reboot
+</code></pre>
+<p>The reboot triggers installing additional kernel modules and applies udev rules.</p>
+<p>The above cloned repo is in my <code>/opt/cuttlefish/android-cuttlefish</code> directory.</p>
+<p>Cuttlefish is part of the Android Open-Source Platform (AOSP). Builds of the virtual device are found at the Android Continuous Integration site. To find an index of all Android builds, navigate to the Android Continuous Integration site at <a href="http://ci.android.com/">http://ci.android.com/</a>.</p>
+<p>Enter a branch name. Use the default aosp-main branch. Navigate to the aosp_cf_x86_64_phone build target and click userdebug for the latest build. Click the green box below userdebug to select this build. A Details panel appears with more information specific to this build. In this panel, click Artifacts to see a list of all the artifacts attached to this build. Download the artifacts for Cuttlefish.</p>
+<pre><code class="language-bash">upgautam@amd:/opt/cuttlefish/cuttlefish-tar$ ls
+aosp_cf_x86_64_phone-img-12798531.zip  cvd-host_package.tar.gz
+</code></pre>
+<p>Now, extract both tar into the same folder. I put these in combined folder. </p>
+<pre><code class="language-bash">upgautam@amd:/opt/cuttlefish/cuttlefish-run$ cd combined/
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined$ ls
+android-info.txt  etc                nativetest64  vbmeta_system_dlkm.img
+bin               fastboot-info.txt  super.img     vbmeta_system.img
+boot.img          framework          userdata.img  vbmeta_vendor_dlkm.img
+bootloader        init_boot.img      usr           vendor_boot.img
+com.android.i18n  lib64              vbmeta.img
+</code></pre>
+<p>Now, we can run cuttlefish emulator as </p>
+<pre><code class="language-bash"># You can launch emulator
+HOME=$PWD ./bin/launch_cvd
+# HOME=$PWD ./bin/launch_cvd --daemon
+# now you can see emulator running on https://localhost:8443
+</code></pre>
+<p><strong>Note</strong>: You can further configure emulator with different hardware and other configurations. </p>
+<h3 id="the-launch-out-of-cuttlefish-emulator">The launch out of cuttlefish emulator</h3>
+<pre><code class="language-bash">upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined$ HOME=$PWD ./bin/launch_cvd
+12-14 20:29:59.133 1979805 1979805 I launch_cvd: main.cc:179 Using system_image_dir of:
+===================================================================
+NOTICE:
+
+By using this Android Virtual Device, you agree to
+Google Terms of Service (https://policies.google.com/terms).
+The Google Privacy Policy (https://policies.google.com/privacy)
+describes how Google handles information generated as you use
+Google Services. You can adjust the permission for sending
+diagnostic information to Google, such as crash reports and usage
+data from this Android Virtual Device, at any time by running
+&quot;launch_cvd -report_anonymous_usage_stats=n&quot;
+===================================================================
+
+Reading --config option from: /opt/aosp/out/target/product/vsoc_x86_64/android-info.txt
+Launching CVD using --config=&#39;phone&#39;.
+GPU auto mode: did not detect prerequisites for accelerated rendering support, enabling --gpu_mode=guest_swiftshader.
+GPU vhost user auto mode: not needed for --gpu_mode=guest_swiftshader. Not enabling vhost user gpu.
+Path for instance UDS: /tmp/cf_avd_1000
+Could not send message: Permission denied
+The following lines contain useful debugging information:
+  Point your browser to https://localhost:8443 to interact with the device.
+  Serial console is disabled; use -console=true to enable it.
+  Logcat output: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/logs/logcat
+  Kernel log: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/kernel.log
+  Launcher log: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/logs/launcher.log
+  Instance configuration: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/cuttlefish_config.json
+  Launcher Build ID: 12792240
+/opt/aosp/out/host/linux-x86/bin/modem_simulator
+/opt/aosp/out/host/linux-x86/bin/tombstone_receiver
+/opt/aosp/out/host/linux-x86/bin/log_tee
+/opt/aosp/out/host/linux-x86/bin/wmediumd
+/opt/aosp/out/host/linux-x86/bin/operator_proxy
+/opt/aosp/out/host/linux-x86/bin/webRTC
+/opt/aosp/out/host/linux-x86/bin/casimir_control_server
+/opt/aosp/out/host/linux-x86/bin/screen_recording_server
+/opt/aosp/out/host/linux-x86/bin/adb_connector
+/opt/aosp/out/host/linux-x86/bin/socket_vsock_proxy
+/opt/aosp/out/host/linux-x86/bin/socket_vsock_proxy
+/opt/aosp/out/host/linux-x86/bin/tcp_connector
+/opt/aosp/out/host/linux-x86/bin/control_env_proxy_server
+/opt/aosp/out/host/linux-x86/bin/echo_server
+/opt/aosp/out/host/linux-x86/bin/gnss_grpc_proxy
+/opt/aosp/out/host/linux-x86/bin/logcat_receiver
+/opt/aosp/out/host/linux-x86/bin/kernel_log_monitor
+/opt/aosp/out/host/linux-x86/bin/metrics
+/opt/aosp/out/host/linux-x86/bin/openwrt_control_server
+/opt/aosp/out/host/linux-x86/bin/log_tee
+/opt/aosp/out/host/linux-x86/bin/process_restarter
+/opt/aosp/out/host/linux-x86/bin/netsimd
+/opt/aosp/out/host/linux-x86/bin/socket_vsock_proxy
+/opt/aosp/out/host/linux-x86/bin/socket_vsock_proxy
+/opt/aosp/out/host/linux-x86/bin/secure_env
+ERROR: unknown command line flag &#39;data_path&#39;
+/opt/aosp/out/host/linux-x86/bin/log_tee
+/opt/aosp/out/host/linux-x86/bin/process_restarter
+Start modem simulator, server_fds: 80, Sim type: normal
+Metrics started
+receive: failed to receive any messages. Error: Permission denied
+receive: failed to receive any messages
+ERROR: unknown command line flag &#39;casimir_rf_path&#39;
+/opt/aosp/out/host/linux-x86/bin/log_tee
+/opt/aosp/out/host/linux-x86/bin/process_restarter
+Detected unexpected exit of monitored subprocess /opt/aosp/out/host/linux-x86/bin/casimir_control_server
+Subprocess /opt/aosp/out/host/linux-x86/bin/casimir_control_server (1980229) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /opt/aosp/out/host/linux-x86/bin/tcp_connector
+Subprocess /opt/aosp/out/host/linux-x86/bin/tcp_connector (1980234) has exited with exit code 1
+Server listening on unix:/tmp/cf_avd_1000/cvd-1/grpc_socket/EchoServer.sock
+Server listening on unix:/tmp/cf_avd_1000/cvd-1/grpc_socket/OpenwrtControlServer.sock
+WaylandServer running on socket 17
+[2024/12/14 20:30:01:5155] N: lws_create_context: LWS: 4.3.0, NET CLI SRV H1 H2 WS ConMon IPv6-absent
+[2024/12/14 20:30:01:5155] N: __lws_lc_tag:  ++ [wsi|0|pipe] (1)
+[2024/12/14 20:30:01:5157] N: __lws_lc_tag:  ++ [vh|0|default|127.0.0.1|127.0.0.1|0] (1)
+[2024/12/14 20:30:01:5167] N: [vh|0|default|127.0.0.1|127.0.0.1|0]: lws_socket_bind: source ads 127.0.0.1
+[2024/12/14 20:30:01:5167] N: __lws_lc_tag:  ++ [wsi|1|listen|default|127.0.0.1|40919] (2)
+Connection thread running
+Failed to connect:No such device
+Server listening on unix:/tmp/cf_avd_1000/cvd-1/grpc_socket/ControlEnvProxyServer.sock
+root-canal I 12-14 20:30:01.519 device_boutique.cc:37                    Registering beacon
+root-canal I 12-14 20:30:01.519 device_boutique.cc:37                    Registering beacon_swarm
+root-canal I 12-14 20:30:01.519 device_boutique.cc:37                    Registering scripted_beacon
+root-canal I 12-14 20:30:01.519 device_boutique.cc:37                    Registering sniffer
+(adm_helpers.cc:48): Unable to access speaker.
+netsimd I 12-15 01:30:01.522 rust_main.rs:98 - netsim artifacts path: &quot;/tmp/android-upgautam/netsimd&quot;
+netsimd I 12-15 01:30:01.522 rust_main.rs:101 - NetsimdArgs {
+    fd_startup_str: Some(
+        &quot;{\&quot;devices\&quot;:[{\&quot;name\&quot;:\&quot;0.0.0.0:6520\&quot;,\&quot;chips\&quot;:[{\&quot;kind\&quot;:\&quot;BLUETOOTH\&quot;,\&quot;fdIn\&quot;:107,\&quot;fdOut\&quot;:108},{\&quot;kind\&quot;:\&quot;UWB\&quot;,\&quot;fdIn\&quot;:109,\&quot;fdOut\&quot;:110}],\&quot;device_info\&quot;:{\&quot;name\&quot;:\&quot;0.0.0.0:6520\&quot;, \&quot;kind\&quot;:\&quot;CUTTLEFISH\&quot;}}]}&quot;,
+    ),
+    no_cli_ui: false,
+    no_web_ui: false,
+    pcap: false,
+    disable_address_reuse: false,
+    hci_port: Some(
+        7300,
+    ),
+    connector_instance: None,
+    instance: Some(
+        1,
+    ),
+    logtostderr: false,
+    dev: false,
+    rust_grpc: false,
+    rust_hostapd: false,
+    rust_slirp: false,
+    forward_host_mdns: false,
+    vsock: None,
+    config: None,
+    host_dns: None,
+    http_proxy: None,
+    wifi_tap: None,
+    test_beacons: false,
+    no_test_beacons: false,
+    no_shutdown: false,
+    verbose: false,
+    version: false,
+}
+Size of OBJECT = 1204
+Size of components in TPMT_SENSITIVE = 744
+    TPMI_ALG_PUBLIC                 2
+    TPM2B_AUTH                      50
+    TPM2B_DIGEST                    50
+    TPMU_SENSITIVE_COMPOSITE        642
+MAX_CONTEXT_SIZE can be reduced to 1264 (1344)
+size : 360
+starting Rust KeyMint TA implementation in a thread
+starting C++ KeyMint implementation in a thread with FDs in=30, out=29
+KeyMint Rust TA running with infile=36, outfile=35, security_level=Software
+No secure deletion data file found. Creating one.
+[2024-12-15T01:30:01.535780273+00:00 INFO  crosvm::crosvm::sys::linux] crosvm entering multiprocess mode
+[2024-12-15T01:30:01.535781014+00:00 INFO  crosvm::crosvm::sys::linux] crosvm entering multiprocess mode
+[2024-12-15T01:30:01.536933726+00:00 INFO  crosvm::crosvm::sys::linux::device_helpers] Trying to attach block device: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/ap_overlay.img
+[2024-12-15T01:30:01.538465468+00:00 INFO  crosvm::crosvm::sys::linux::device_helpers] Trying to attach block device: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/overlay.img
+[2024-12-15T01:30:01.553763447+00:00 INFO  crosvm::crosvm::sys::linux::device_helpers] Trying to attach block device: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/persistent_composite.img
+[2024-12-15T01:30:01.553922375+00:00 INFO  crosvm::crosvm::sys::linux::device_helpers] Trying to attach block device: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/sdcard.img
+[2024-12-15T01:30:01.591264272+00:00 INFO  devices::sys::linux::acpi] Listening on acpi_mc_group of acpi_event family
+[2024-12-15T01:30:01.596912144+00:00 INFO  x86_64] Loaded bzImage kernel
+[2024-12-15T01:30:01.731042800+00:00 INFO  devices::sys::linux::acpi] Listening on acpi_mc_group of acpi_event family
+GUEST_UBOOT_VERSION: 2024.01-g1ed8f8bde33e-ab12091206 (Jul 10 2024 - 23:47:38 +0000)
+U-Boot 20
+starting Rust KeyMint TA implementation in a thread
+starting C++ KeyMint implementation in a thread with FDs in=30, out=29
+KeyMint Rust TA running with infile=36, outfile=35, security_level=Software
+Secure deletion data file found. Parsing.
+GUEST_KERNEL_VERSION: 6.6.30-android15-8-g02f25b80c91c-ab12341571 (kleaf@build-host) (Android (11368308, +pgo, +bolt, +lto, +mlgo, based on r510928) clang version 18.0.0 (https://android.googlesource.com/toolchain/llvm-project 477610d4d0d988e69dbc3fae4fe86bff3f07f2b5), LLD 18.0.0) #1 SMP PREEMPT Mon Sep  9 17:38:49 UTC 2024
+] Linux version
+Failed to connect:No such device
+Detected unexpected exit of monitored subprocess /opt/aosp/out/host/linux-x86/bin/metrics
+Subprocess /opt/aosp/out/host/linux-x86/bin/metrics (1980240) was interrupted by a signal &#39;Aborted&#39; (6)
+Failed to connect:No such device
+Failed to connect:Connection reset by peer
+[2024-12-15T01:30:04.814567467+00:00 WARN  devices::virtio::snd::vios_backend::streams] Failed to set audio stream thread to real time: Operation not permitted (os error 1)
+[2024-12-15T01:30:04.814621328+00:00 WARN  devices::virtio::snd::vios_backend::streams] Failed to set audio stream thread to real time: Operation not permitted (os error 1)
+[2024-12-15T01:30:04.814641786+00:00 WARN  devices::virtio::snd::vios_backend::streams] Failed to set audio stream thread to real time: Operation not permitted (os error 1)
+GUEST_BUILD_FINGERPRINT: generic/aosp_cf_x86_64_phone/vsoc_x86_64:VanillaIceCream/AP4A.241205.013.C1.e7838caf/eng.upgaut:userdebug/test-keys
+Failed to connect:Connection reset by peer
+Failed to connect:Connection reset by peer
+Failed to connect:Connection reset by peer
+init: starting service &#39;adbd&#39;...
+proxy_adb] Start event (5) received. Starting proxy
+proxy_fastboot] Stop event (11) received. Stopping proxy
+proxy_adb] From: tcp: 6520
+proxy_adb] To: vsock: 3:5555 vhost_user: false
+VIRTUAL_DEVICE_DISPLAY_POWER_MODE_CHANGED
+VIRTUAL_DEVICE_DISPLAY_POWER_MODE_CHANGED
+[2024-12-15T01:30:08.988036392+00:00 INFO  devices::cmos] Ignoring unsupported bits: 80
+[2024-12-15T01:30:11.994391944+00:00 INFO  crosvm::crosvm::sys::linux] vcpu requested reset
+[2024-12-15T01:30:12.119459674+00:00 INFO  crosvm] exiting with reset
+[2024-12-15T01:30:12.146023569+00:00 INFO  crosvm::crosvm::sys::linux] crosvm entering multiprocess mode
+[2024-12-15T01:30:12.146418470+00:00 INFO  crosvm::crosvm::sys::linux::device_helpers] Trying to attach block device: /opt/cuttlefish/cuttlefish-run/combined/cuttlefish/instances/cvd-1/ap_overlay.img
+[2024-12-15T01:30:12.196817143+00:00 INFO  devices::sys::linux::acpi] Listening on acpi_mc_group of acpi_event family
+[2024-12-15T01:30:12.200934865+00:00 INFO  x86_64] Loaded bzImage kernel
+[2024-12-15T01:30:22.235115949+00:00 INFO  devices::cmos] Ignoring unsupported bits: 80
+VIRTUAL_DEVICE_BOOT_STARTED
+VIRTUAL_DEVICE_BOOT_COMPLETED
+Virtual device booted successfully
+[2024-12-15T01:30:25.193380185+00:00 INFO  devices::cmos] Ignoring unsupported bits: 80
+VIRTUAL_DEVICE_NETWORK_MOBILE_CONNECTED
+c2t: Error reading: Connection reset by peer
+c2t: Error reading: Connection reset by peer
+[2024/12/14 20:32:27:3100] N: __lws_lc_tag:  ++ [wsisrv|0|adopted] (1)
+[2024/12/14 20:32:27:3198] N: __lws_lc_tag:  ++ [wsisrv|1|adopted] (2)
+[2024/12/14 20:32:27:3198] N: __lws_lc_tag:  ++ [wsisrv|2|adopted] (3)
+[2024/12/14 20:32:27:3204] N: __lws_lc_untag:  -- [wsisrv|2|adopted] (2) 562μs
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000001] Operation not permitted
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000001] Operation not permitted
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000001] Operation not permitted
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000001] Operation not permitted
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000001] Operation not permitted
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000001] Operation not permitted
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+[2024/12/14 20:32:32:3200] N: __lws_lc_untag:  -- [wsisrv|0|adopted] (1) 5.010s
+[2024/12/14 20:32:32:3203] N: __lws_lc_untag:  -- [wsisrv|1|adopted] (0) 5.000s
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:632): UDP send of 20 bytes to host stun.l.google.com:19302 (74.125.250.x:19302) failed with error 0 : [0x00000016] Invalid argument
+(stun_port.cc:119): Binding request timed out from [0:0:0:x:x:x:x:x]:15550 (lo)
+(stun_port.cc:119): Binding request timed out from 127.0.0.x:15550 (lo)
+</code></pre>
+<p>If you search in above output text, you will find it knows /opt/aosp/.... How does it know that root folder of aosp and then it just then goes to out/product/...? But at the first place how does it know that is where AOSP source code is built, and I should start my emulator off of that built things? </p>
+<p>** This is done by <code>source build/envsetup.sh</code> **</p>
+<h3 id="troubleshooting-emulator">Troubleshooting emulator</h3>
+<pre><code class="language-bash">upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined$ sudo pkill run_cvd
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined$ sudo pkill crossvm
+upgautam@amd:/opt/cuttlefish/cuttlefish-run/combined$ sudo cvd reset
+Are you sure to reset all the devices, runtime files, and the cvd server if any [y/n]? y
+Stopped all known instances
+12-14 20:29:02.586 1979748 1979748 E cvd     : reset_client_utils.cpp:207 cvd server is not running.
+</code></pre>
+<h2 id="android-build-id">Android Build ID</h2>
+<p>In Android 8.0.0 (Oreo) and higher builds are identified with the build ID format PVBB.YYMMDD.bbb[.Cn], where:</p>
+<ul>
+<li>P represents the first letter of the codename of the platform release, for example, O is Oreo. For Android 10 and later codenames, the letter equivalent is used, such as Q for Android 10 and R for Android 11.</li>
+<li>V represents a supported vertical. By convention, P represents the primary platform branch.</li>
+<li>BB is an alphanumeric code that allows Google to identify the exact code branch the build was made from.</li>
+<li>YYMMDD identifies the date when the release is branched from or synced with the development branch. It&#39;s not always the exact date at which a build was made as it&#39;s common for minor variations added to an existing build to re-use the same date code as the existing build.</li>
+<li>bbb identifies individual versions related to the same date code, sequentially starting with 001.</li>
+<li>Cn is an optional, alphanumeric that identifies a hotfix on top of an existing PVBB.YYMMDD.bbb build, starting from A1.</li>
+</ul>
+<p>What is for AP4A.241205.013.C1?
+A is Vanilla Ice Cream although Vanilla Ice Cream don&#39;t starts with A. This is just to make it unique. </p>
+<h2 id="android-code-names">Android Code Names</h2>
+<p>Pixel 8 Pro (husky)
+Pixel 8a (akita)
+See more here:  <a href="https://source.android.com/docs/setup/reference/build-numbers#source-code-tags-and-builds">https://source.android.com/docs/setup/reference/build-numbers#source-code-tags-and-builds</a></p>
+
+<h2 id="some-useful-aosp-commands">Some useful AOSP commands</h2>
+<ol>
+<li>mm: just build the package (e.g., Dialer) (builds apk then you can install using adb install <name>.apk)</li>
+<li>gettop: top (root) directory of AOSP</li>
+<li>cgrep (for c/c++), jgrep (for java/kotlin), resgrep (for resources)</li>
+</ol>

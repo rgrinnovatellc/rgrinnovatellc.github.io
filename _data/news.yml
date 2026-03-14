@@ -1,0 +1,11 @@
+- date: 10 February, 2026
+  headline: "Submitted manuscript: ZeroDown, a zero-downtime IoT policy enforcement framework for MCU-class devices"
+
+- date: 18 October, 2025
+  headline: "Manuscript update: BlueSentry, a runtime eBPF policy framework for BLE security on embedded devices"
+
+- date: 04 August, 2024
+  headline: "<a href='https://dl.acm.org/doi/10.1145/3672197.3673431' target='_blank'>Paper published:</a> Eliminating eBPF Tracing Overhead on Untraced Processes"
+
+- date: 15 November, 2022
+  headline: "<a href='https://ieeexplore.ieee.org/document/9951382' target='_blank'>Paper published:</a> HELOT: Hunting Evil Life in Operational Technology"

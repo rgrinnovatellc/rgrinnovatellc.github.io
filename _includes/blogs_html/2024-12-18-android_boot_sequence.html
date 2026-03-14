@@ -1,0 +1,14 @@
+<h2 id="android-boot-sequence">Android Boot Sequence</h2>
+<p><code>Power On -&gt; Bootloader -&gt; Linux Kernel -&gt; Init -&gt; Zygote -&gt; System Server -&gt; System UI -&gt; Launcher</code></p>
+<h3 id="init-aospsystemcoreinit">Init: aosp/system/core/init</h3>
+<ul>
+<li>Execute init.rc script (this is executed by the init process, which is the very first user-space process). The information from init.rc is used to do all other subsequent steps such as mounting FS, starting zygote etc.</li>
+<li>Mounts file system</li>
+<li>Starts Zygote process for ART (it holds common state (e.g., loaded system libraries) for all android apps and reduces the overhead of starting new apps. (similar to fork in Linux)</li>
+<li>Starts system server, which is responsible for ActivityManager, WindowManager etc. </li>
+<li>Sets System Properties (you can see using <code>adb shell getprop</code>)</li>
+<li>Starts services (e.g., MediaServer, SurfaceFlinger, TimeService) </li>
+<li>Runs any other custom scripts and config. files</li>
+<li>Handles runtime responses (e.g., setup callbacks)</li>
+<li>Transition to user-space</li>
+</ul>

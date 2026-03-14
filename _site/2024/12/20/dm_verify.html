@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    
+    
+    
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>dm-verify - Uddhav P. Gautam | Systems Research and Software</title>
+    <meta name="description" content="dm-verify Block devices' integrity is important because it holds bootloader, system files, etc., and heavily used in Android and Linux kernel. Let's play wit...">
+    <meta name="author" content="Uddhav P. Gautam">
+    <meta name="keywords" content="Uddhav P. Gautam, Uddhav Gautam, Uddhav P Gautam, Uddhav Gautam Virginia Tech, Virginia Tech Computer Engineering, PhD Candidate Virginia Tech, Linux kernel, eBPF, observability, Android security, IoT security, software engineering, systems research, official website">
+    <meta name="theme-color" content="#126554">
+    <meta name="color-scheme" content="light dark">
+    <meta name="format-detection" content="telephone=no">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="googlebot" content="index,follow,max-image-preview:large">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="dm-verify">
+    <meta property="og:description" content="dm-verify Block devices' integrity is important because it holds bootloader, system files, etc., and heavily used in Android and Linux kernel. Let's play wit...">
+    <meta property="og:url" content="https://uddhavpgautam.github.io/2024/12/20/dm_verify.html">
+    <meta property="og:site_name" content="Uddhav P. Gautam | Systems Research and Software">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://uddhavpgautam.github.io/images/Uddhav.jpg">
+  <meta property="og:image:alt" content="Portrait of Uddhav P. Gautam">
+    
+    <meta property="article:published_time" content="2024-12-20T00:00:00-05:00">
+    <meta property="article:modified_time" content="2024-12-20T00:00:00-05:00">
+    <meta property="article:author" content="Uddhav P. Gautam">
+    
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="dm-verify">
+    <meta name="twitter:description" content="dm-verify Block devices' integrity is important because it holds bootloader, system files, etc., and heavily used in Android and Linux kernel. Let's play wit...">
+    <meta name="twitter:image" content="https://uddhavpgautam.github.io/images/Uddhav.jpg">
+    <meta name="twitter:url" content="https://uddhavpgautam.github.io/2024/12/20/dm_verify.html">
+
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="https://uddhavpgautam.github.io/2024/12/20/dm_verify.html">
+    <link rel="me" href="https://www.linkedin.com/in/uddhavpgautam/">
+    <link rel="me" href="https://github.com/uddhavgautam3">
+    <link rel="me" href="https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ">
+    <link rel="me" href="https://ece.vt.edu/">
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollegeOrUniversity",
+        "@id": "https://uddhavpgautam.github.io#organization",
+        "name": "Virginia Tech",
+        "url": "https://www.vt.edu/",
+        "sameAs": [
+          "https://www.vt.edu/"
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://uddhavpgautam.github.io#person",
+        "name": "Uddhav P. Gautam",
+        "alternateName": [
+          "Uddhav P Gautam",
+          
+          
+          "Uddhav Gautam",
+          
+          "Uddhav P Gautam"
+          
+          
+        ],
+        "givenName": "Uddhav",
+        "familyName": "Gautam",
+        "url": "https://uddhavpgautam.github.io/about/",
+        "mainEntityOfPage": "https://uddhavpgautam.github.io/2024/12/20/dm_verify.html",
+        "image": "https://uddhavpgautam.github.io/images/Uddhav.jpg",
+        "description": "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software.",
+        "email": "mailto:upgautam@vt.edu",
+        "jobTitle": "PhD Candidate",
+        "affiliation": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        },
+        "worksFor": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        },
+        "alumniOf": [
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Virginia Tech"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arkansas at Little Rock"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arkansas at Little Rock"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Tribhuvan University"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Trichandra Campus"
+          }
+          
+        ],
+        "knowsAbout": [
+          
+          "Computer Security",
+          
+          "eBPF and Linux Kernel",
+          
+          "Embedded and IoT Security",
+          
+          "Bluetooth Low Energy Security",
+          
+          "System Performance",
+          
+          "Network Security"
+          
+        ],
+        "sameAs": [
+          
+          "https://github.com/uddhavgautam3"
+          ,"https://www.linkedin.com/in/uddhavpgautam/"
+          ,"https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
+          ,"https://www.researchgate.net/profile/Uddhav-Gautam-2"
+          ,"https://ece.vt.edu/"
+        ]
+      }
+    </script>
+
+    
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Uddhav P. Gautam | Systems Research and Software",
+        "url": "https://uddhavpgautam.github.io",
+        "description": "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software.",
+        "about": {
+          "@id": "https://uddhavpgautam.github.io#person"
+        },
+        "publisher": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        }
+      }
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+</head>
+
+
+  <body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm" aria-label="Primary site navigation">
+    <div class="navbar-inner">
+        <div class="navbar-brand">
+            <a href="/" class="brand-link" aria-label="Go to homepage">
+                <span class="brand-kicker">Research and Software</span>
+                <span class="brand-text">Uddhav P. Gautam</span>
+            </a>
+        </div>
+
+        <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse site-nav-collapse" id="navbarColor02">
+            <div class="navbar-nav site-nav-links me-auto">
+                <a class="nav-item nav-link" href="/">Home</a>
+                
+                    
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/research">Research</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/publications">Publications</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/software">Software</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/blogs">Writing</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/about">About</a>
+                        
+                    
+                
+            </div>
+
+            <div class="navbar-nav site-nav-actions ms-auto">
+                
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light theme">
+                    <i id="theme-icon" class="fa fa-moon-o"></i>
+                </button>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <main class="content-wrapper" id="main-content">
+        <h1 id="dm-verify">dm-verify</h1>
+<p>Block devices' integrity is important because it holds bootloader, system files, etc., and heavily used in Android and Linux kernel.</p>
+<p>Let's play with it.</p>
+
+<h2 id="create-virtual-block-device">Create a virtual block device</h2>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ dd if=/dev/zero of=~/Desktop/verity_test.img bs=1M count=100
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB, 100 MiB) copied, 0.00858481 s, 12.2 GB/s
+upgautam@amd:~/Desktop$ ls
+ DummyApp   filtering   pack.txt  &#39;QEMU modification&#39;   verity_test.img
+
+Explanation:
+    of: output file
+    if: input file
+    /dev/zero is sepcial input file that has 0x00 (all zero bytes)
+    bs: block size
+</code></pre>
+<h2 id="create-loopback-device">Create a loopback device</h2>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo losetup /dev/loop133 ~/Desktop/verity_test.img
+You can find all used loopback devices using losetup -a command, and don&#39;t use those. For example, in my case loop133 is not being used.
+</code></pre>
+<h2 id="create-filesystem">Create a filesystem for the device</h2>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo mkfs.ext4 /dev/loop133
+mke2fs 1.47.0 (5-Feb-2023)
+Discarding device blocks: done
+Creating filesystem with 25600 4k blocks and 25600 inodes
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (1024 blocks): done
+Writing superblocks and filesystem accounting information: done
+</code></pre>
+<h2 id="mount-device">Mount the device</h2>
+<pre><code class="language-bash">sudo mount /dev/loop133 ~/Desktop/mount_point_loop_dm_verity
+</code></pre>
+<p>Now, we repeat most of the steps above to create and store hash tree.</p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ dd if=/dev/zero of=~/Desktop/verity_hash.img bs=1M count=10
+10+0 records in
+10+0 records out
+10485760 bytes (10 MB, 10 MiB) copied, 0.00141643 s, 7.4 GB/s
+upgautam@amd:~/Desktop$ sudo losetup /dev/loop135 ~/Desktop/verity_hash.img
+</code></pre>
+<p>If not already installed, install the required tools.</p>
+<pre><code class="language-bash">sudo apt install cryptsetup-bin
+</code></pre>
+<p>Kernel config,</p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ grep DM_VERITY /boot/config-$(uname -r)
+CONFIG_DM_VERITY=m
+CONFIG_DM_VERITY_VERIFY_ROOTHASH_SIG=y
+CONFIG_DM_VERITY_VERIFY_ROOTHASH_SIG_SECONDARY_KEYRING=y
+# CONFIG_DM_VERITY_FEC is not set
+
+sudo modprobe dm-verity
+</code></pre>
+<p>Now, we can format those devices and then create vroot using the same hash value that we got during format.</p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo veritysetup format /dev/loop133 /dev/loop135
+VERITY header information for /dev/loop135
+UUID:            	7a5d78ac-caad-4ce7-b0a4-ca1b2c9b77d4
+Hash type:       	1
+Data blocks:     	25600
+Data block size: 	4096
+Hash blocks:     	203
+Hash block size: 	4096
+Hash algorithm:  	sha256
+Salt:            	bd25e6c7da025b83ae5e1cf9750228a7e3f01649e8454adedd9e32d9fac7cadd
+Root hash:      	3de39aa81b1c32508dd559ae7e3d1fab35d86f2daa03854ffcdf644ba3fd438a
+Hash device size: 	835584 [bytes]
+upgautam@amd:~/Desktop$ sudo veritysetup create vroot /dev/loop133 /dev/loop135 3de39aa81b1c32508dd559ae7e3d1fab35d86f2daa03854ffcdf644ba3fd438a
+upgautam@amd:~/Desktop$ sudo dmsetup status
+vroot: 0 204800 verity V
+</code></pre>
+<p>The command <code>sudo veritysetup create vroot /dev/loop133 /dev/loop135</code> creates a <code>vroot</code> block device that maps the data device (<code>/dev/loop133</code>) and its hash device (<code>/dev/loop135</code>). You can then mount it with <code>sudo mount /dev/mapper/vroot /mnt</code>. Because dm-verity exposes a read-only verified device, writes to <code>/dev/mapper/vroot</code> are rejected. The goal is to ensure that only valid data (data matching the hash tree) is readable. Any corruption or tampering is detected when blocks are read. In other words, <code>vroot</code> is a read-only verified view of <code>/dev/loop133</code>. You can mount <code>loop135</code> to inspect hashes and write test data to <code>loop133</code>; when that data is later read from <code>/mnt</code> through <code>vroot</code>, dm-verity checks the hashes on demand.</p>
+<p>When a block is accessed from /dev/mapper/vroot (which is the verity device created using veritysetup), the kernel performs a hash check on the corresponding block in the data device (e.g., /dev/loop133). This is all on-demand. </p>
+<h2 id="some-troubleshootings">Some troubleshootings</h2>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ sudo umount /dev/loop133
+upgautam@amd:~/Desktop$ sudo veritysetup close vroot
+upgautam@amd:~/Desktop$ sudo fsck /dev/loop135
+fsck from util-linux 2.39.3
+upgautam@amd:~/Desktop$ sudo fsck /dev/loop133
+fsck from util-linux 2.39.3
+e2fsck 1.47.0 (5-Feb-2023)
+/dev/loop133: clean, 16/25600 files, 2653/25600 blocks
+
+upgautam@amd:~/Desktop$ sudo umount /dev/mapper/vroot
+umount: /mnt: target is busy.
+upgautam@amd:~/Desktop$ sudo veritysetup close vroot
+Device vroot is still in use.
+upgautam@amd:~/Desktop$ sudo lsof /dev/mapper/vroot
+lsof: WARNING: can&#39;t stat() fuse.portal file system /run/user/1000/doc
+      Output information may be incomplete.
+lsof: WARNING: can&#39;t stat() fuse.gvfsd-fuse file system /run/user/1000/gvfs
+      Output information may be incomplete.
+COMMAND    PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+nautilus 33410 upgautam   46r   DIR  252,0     4096    2 /mnt
+upgautam@amd:~/Desktop$ sudo lsof /mnt
+lsof: WARNING: can&#39;t stat() fuse.portal file system /run/user/1000/doc
+      Output information may be incomplete.
+lsof: WARNING: can&#39;t stat() fuse.gvfsd-fuse file system /run/user/1000/gvfs
+      Output information may be incomplete.
+COMMAND    PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+nautilus 33410 upgautam   46r   DIR  252,0     4096    2 /mnt
+upgautam@amd:~/Desktop$ sudo kill -9 33410
+upgautam@amd:~/Desktop$ sudo veritysetup close vroot
+Device vroot is still in use.
+upgautam@amd:~/Desktop$ sudo umount /dev/mapper/vroot
+upgautam@amd:~/Desktop$ sudo veritysetup close vroot
+</code></pre>
+<h2 id="reflection">Reflection</h2>
+<p>Any two .img files (e.g., boot.img, userdata.img etc.) can be verified for their data integrity via dm-verify. In Android system, it is implemented by many vendors including Samsung. You will see dm-verify options in Recovery mode.</p>
+
+
+    </main>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto">
+    <div class="footer-shell">
+        <section class="footer-utility" aria-label="Footer utilities">
+            <div class="footer-inline" role="list">
+                <span class="footer-label" role="listitem">CONNECT:</span>
+                <a role="listitem" href="mailto:rgrinnovatellc@gmail.com">rgrinnovatellc@gmail.com</a>
+                <a role="listitem" href="https://github.com/uddhavpgautam" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a role="listitem" href="https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+                <a role="listitem" href="https://www.linkedin.com/in/uddhavpgautam/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <span class="footer-separator" aria-hidden="true" role="listitem"></span>
+                <span class="footer-text" role="listitem">© 2026 Uddhav P. Gautam.</span>
+                <a role="listitem" href="/sitemap/">Sitemap</a>
+                <a role="listitem" href="/privacy/">Privacy</a>
+            </div>
+        </section>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

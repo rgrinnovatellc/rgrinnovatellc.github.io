@@ -1,0 +1,248 @@
+
+\documentclass[10pt]{article}
+\usepackage[margin=0.6in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{multicol}
+
+% Academic CV color scheme
+\definecolor{sectioncolor}{RGB}{0,102,153}
+\definecolor{linkcolor}{RGB}{0,51,102}
+\definecolor{subtextcolor}{RGB}{100,100,100}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkcolor,
+    urlcolor=linkcolor,
+  pdftitle={Uddhav P. Gautam - Curriculum Vitae},
+  pdfsubject={Academic CV: Systems Research, eBPF, Linux Kernel, Embedded Security, BLE Security},
+    pdfauthor={Uddhav P. Gautam},
+  pdfkeywords={eBPF, Linux kernel, embedded security, IoT security, Bluetooth Low Energy, systems research, runtime enforcement},
+    pdfcreator={LaTeX with hyperref},
+    pdfproducer={pdflatex},
+    pdfborderstyle={/S/U/W 0}
+}
+
+% Formatting helpers
+\setlist[itemize]{leftmargin=*, itemsep=2pt, topsep=2pt, parsep=0pt}
+\titlespacing*{\section}{0pt}{10pt}{4pt}
+\titleformat{\section}{\large\bfseries\color{sectioncolor}}{}{0em}{}[\titlerule]
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+
+% Custom commands
+\newcommand{\header}[1]{%
+  \begin{center}
+    \textbf{\LARGE #1}
+  \end{center}
+  \vspace{-8pt}
+}
+\newcommand{\subheader}[1]{%
+  \vspace{-3pt}
+  \begin{center}
+    \small #1
+  \end{center}
+  \vspace{-3pt}
+}
+\newcommand{\positionsimple}[2]{%
+  \vspace{1pt}
+  \noindent\textbf{#1}\hfill{\small\textit{#2}}\\[-1pt]
+}
+\newcommand{\project}[1]{%
+  \vspace{2pt}
+  \noindent\textbf{#1}
+}
+
+\begin{document}
+% ==================== HEADER ====================
+\header{Uddhav P. Gautam}
+\subheader{Ph.D. Candidate in Computer Engineering, Virginia Tech}
+\begin{center}
+{\small
+  Raleigh-Durham-Chapel Hill, NC \;|\; +1 (919) 729-4141 \;|\; \href{mailto:upgautam@vt.edu}{upgautam@vt.edu}\\[1pt]
+  \href{https://rgrinnovatellc.github.io}{rgrinnovatellc.github.io} \;|\; \href{https://github.com/rgrinnovatellc}{github.com/rgrinnovatellc} \;|\; \href{https://www.linkedin.com/in/uddhavpgautam/}{linkedin.com/in/uddhavpgautam}
+}
+\end{center}
+\vspace{4pt}
+\noindent
+{\small\textcolor{subtextcolor}{%
+Systems researcher specializing in eBPF systems, Linux kernel extensibility, Bluetooth Low Energy security,
+and secure runtime policy enforcement for resource-constrained embedded devices.}}
+
+% ==================== RESEARCH INTERESTS ====================
+\section*{Research Interests}
+eBPF and Linux kernel systems; embedded and IoT security; Bluetooth Low Energy security; secure over-the-air policy
+enforcement; runtime monitoring for resource-constrained systems.
+
+% ==================== EDUCATION ====================
+\section*{Education}
+\positionsimple{Ph.D. Computer Engineering (GPA: 4.0/4.0), Virginia Tech}{2024 -- Present}
+{\small Advisors: \href{https://ece.vt.edu/people/profile/wangh.html}{Prof. Haining Wang}, \href{https://security.vt.edu/about/staff/randy-marchany/}{Prof. Randy Marchany}}
+
+\vspace{3pt}
+
+\positionsimple{Ph.D. Computer Science (GPA: 4.0/4.0), UA Little Rock}{2018 -- 2020}
+{\small Transferred to Virginia Tech}
+
+\positionsimple{M.S. Computer Science (GPA: 3.58/4.0), UA Little Rock}{2015 -- 2017}
+
+\positionsimple{B.S. Computer Science (GPA: 3.91/4.0), Tribhuvan University, Nepal}{2009 -- 2013}
+
+% ==================== PUBLICATIONS ====================
+\section*{Publications}
+\textbf{Submitted / Under Review}
+\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep]
+  \item \hangindent=1em \textbf{Uddhav P. Gautam}. ``ZeroDown: A Zero-Downtime IoT Policy Enforcement Framework.'' Submitted to \textit{ACM WiSec}, 2026.
+
+  \item \hangindent=1em \textbf{Uddhav P. Gautam}. ``BlueSentry: Dynamic Runtime eBPF Policies for Comprehensive BLE Security on Embedded Devices.'' Under review, 2025.
+
+\end{itemize}
+
+\vspace{2pt}
+\textbf{Peer-Reviewed Publications}
+\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep]
+
+  \item \hangindent=1em \textbf{Uddhav P. Gautam}. ``Eliminating eBPF Tracing Over Untraced
+  Processes.'' \textit{Proc. ACM SIGCOMM Workshop on eBPF \& Kernel Ext.}, 2024.
+  DOI: \href{https://doi.org/10.1145/3672197.3673431}{10.1145/3672197.3673431}
+
+  \item \hangindent=1em \textbf{Uddhav P. Gautam}. ``HELOT---Hunting Evil Life in Operational Technology.''
+  \textit{IEEE Trans. Smart Grid}, vol. 14, no. 4, pp. 3058--3071, Jul. 2023.
+  DOI: \href{https://doi.org/10.1109/TSG.2022.3222261}{10.1109/TSG.2022.3222261}
+\end{itemize}
+
+% ==================== RESEARCH EXPERIENCE ====================
+\section*{Research Experience}
+
+\positionsimple{Graduate Research Assistant, Virginia Tech}{Sep 2023 -- Present}
+
+\vspace{3pt}
+\textbf{Zero-Downtime IoT Policy Enforcement (ZeroDown Project)}
+\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
+  \item Designed \textbf{ZeroDown}, a zero-downtime post-commissioning policy enforcement framework for MCU-class IoT devices built on a hook-agnostic event-context ABI and an embedded uBPF runtime
+  \item Implemented a secure OTA policy lifecycle with integrity checks, HMAC-based origin authentication, replay protection, crash-consistent A/B slots, and an operator-controlled fail-safe master switch
+  \item Evaluated the framework on Zephyr RTOS and nRF52840, demonstrating a 257KB flash footprint, 128KB RAM usage, 2.25s median BLE GATT update latency (3.1s p99), 0.7ms boot overhead, and 342.3\textmu s per-event runtime overhead
+  \item Demonstrated deterministic runtime policy toggling for BLE pairing enforcement without rebooting or reflashing the device
+\end{itemize}
+
+\vspace{3pt}
+\textbf{Bluetooth System/Security Research (BlueSentry Project)}
+\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
+  \item Designed \textbf{BlueSentry}, an application-layer BLE security framework that combines FSM-based enforcement of core invariants with sandboxed eBPF policies for pattern-based D1--D4 threat detection, without kernel or controller changes
+  \item Built a hybrid policy architecture with per-device MAC exceptions, device-class policies, zero-trust defaults, and runtime-tunable timing profiles
+  \item Implemented integrity-verified OTA policy updates carrying runtime flags, thresholds, and eBPF bytecode, enabling security policy evolution without firmware reflashing or service interruption
+  \item Validated host-visible detection of pairing and key-size downgrades, pairing and authentication anomalies, reconnection spoofing, and CTKD weakening on Zephyr RTOS
+  \item Demonstrated deployability on nRF52840 DK with a 291KB flash footprint, 81KB peak RAM usage, and 11,280-byte OTA policy updates completing in 4.4s median
+\end{itemize}
+
+\vspace{3pt}
+\textbf{eBPF \& Linux Kernel Research}
+\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
+  \item Published research on reducing eBPF tracing overhead for untraced processes at the ACM SIGCOMM Workshop on eBPF \& Kernel Extensions
+  \item Developed kernel-level protobuf parsing by porting the user-space pbtools library into a kernel module and implementing a custom kfunc for in-kernel message processing
+  \item Prototyped a high-performance application-layer firewall using TC clsact qdisc and protobuf payload filtering at kernel speeds
+  \item Built automated KVM-based development infrastructure with Terraform for a multi-researcher systems environment
+\end{itemize}
+
+\vspace{3pt}
+\textbf{Critical Infrastructure Security (HELOT Project)}
+\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
+  \item Published research on operational technology security monitoring in \textit{IEEE Transactions on Smart Grid}
+  \item Designed an end-to-end SCADA monitoring pipeline using GRR, Filebeat, Logstash, and Elasticsearch for continuous event capture and real-time mobile alerting
+  \item Conducted research on runtime security monitoring for DNP3, Modbus, and IEC 61850 environments in power grid infrastructure
+\end{itemize}
+
+% ==================== SELECTED SYSTEMS PROJECTS ====================
+\section*{Selected Systems Projects}
+
+\project{Protobuf-Driven Kernel Firewall}
+\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep]
+  \item Ported the user-space protobuf parser \textit{pbtools} into a kernel module with a custom kfunc for BPF integration
+  \item Prototyped a TC clsact-based firewall for application-layer inspection at kernel speeds
+  \item Demonstrated the viability of complex protocol parsing in eBPF programs through kernel-module augmentation
+\end{itemize}
+
+% ==================== PROFESSIONAL EXPERIENCE ====================
+\section*{Professional Experience}
+
+\positionsimple{Android Technical Lead \& Architect, Perficient (Client: TD Ameritrade/Charles Schwab)}{Jun 2021 -- May 2023}
+\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
+  \item Architected migration infrastructure supporting the transition of 30M+ TD Ameritrade users across Android, iOS, and web platforms to Charles Schwab systems after acquisition
+  \item Led an 8-engineer Android team, established engineering standards, and maintained architecture and delivery documentation for a large regulated codebase
+  \item Modernized the build and release workflow through Kotlin DSL migration, static analysis integration, and CI/CD improvements for multi-flavor production delivery
+  \item Optimized a shared C++ core and the surrounding mobile performance pipeline, contributing to a measured 40\% reduction in crash rate through production telemetry
+\end{itemize}
+
+\vspace{4pt}
+\positionsimple{Sr. Android Developer, Viper Design LLC}{Mar 2020 -- Feb 2021}
+\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
+  \item Built an end-to-end IoT software stack for Shark robot-vacuum products spanning embedded firmware and cross-platform mobile applications
+  \item Applied modular Android architecture, dependency injection, and modern serialization patterns to improve maintainability and testability
+  \item Improved application robustness through performance tuning, code shrinking, crash analytics, and automated testing
+\end{itemize}
+
+\vspace{4pt}
+\positionsimple{U.S. Army}{Apr 2019 -- Apr 2023}
+\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
+  \item Served for four years, developing leadership and operational discipline, and achieved the 96th percentile on the Armed Forces Classification Test
+\end{itemize}
+
+\vspace{2pt}
+\noindent
+{\small\textit{Prior roles: Android Developer, Pontos Solution, Nepal (2012--2015); System Administrator, iDream Pvt. Ltd., Nepal (2008--2012).}}
+
+% ==================== TECHNICAL EXPERTISE ====================
+\section*{Technical Expertise}
+\begin{multicols}{2}
+\noindent\textbf{Systems \& Kernel}
+\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep,leftmargin=*]
+  \item eBPF (TC, XDP, tracing)
+  \item Linux kernel development
+  \item C/C++, Rust
+  \item Performance profiling
+\end{itemize}
+
+\noindent\textbf{Embedded \& Security}
+\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep,leftmargin=*]
+  \item BLE protocol security
+  \item Zephyr RTOS
+  \item OTA update systems
+  \item SCADA protocols (DNP3, Modbus, IEC 61850)
+\end{itemize}
+
+\columnbreak
+
+\noindent\textbf{Software Platforms}
+\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep,leftmargin=*]
+  \item Kotlin, Java, Android AOSP
+  \item Clean Architecture
+  \item Coroutines, CI/CD workflows
+  \item Security tooling (ProGuard, MobSF)
+\end{itemize}
+
+\noindent\textbf{Infrastructure}
+\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep,leftmargin=*]
+  \item Terraform, Docker, Kubernetes
+  \item AWS, GCP, Firebase
+  \item Elasticsearch, Logstash, Filebeat
+  \item Infrastructure as Code
+\end{itemize}
+\end{multicols}
+
+% ==================== HONORS & AWARDS ====================
+\section*{Honors \& Awards}
+\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep]
+  \item First Place, Complete Societal Award; Societal Impact Award; and Best Graduate Project Award, UA Little Rock
+  \item 2nd Place, TechLaunch Entrepreneurial Competition
+  \item Top-5 Final Year Project, Tribhuvan University
+\end{itemize}
+
+\end{document}

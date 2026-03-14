@@ -1,0 +1,42 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {% assign sitemap_pages = site.pages | where_exp: "p", "p.sitemap != false and p.url != nil and p.url != '' and p.url != '/sitemap.xml' and p.path contains '_pages/'" %}
+  {% assign sorted_pages = sitemap_pages | sort: "url" %}
+  {% for page in sorted_pages %}
+  {% assign canonical_path = page.url | replace:'index.html','' %}
+  {% if canonical_path == '' %}{% assign canonical_path = '/' %}{% endif %}
+  {% assign page_priority = '0.6' %}
+  {% assign page_changefreq = 'monthly' %}
+  {% if canonical_path == '/' %}
+    {% assign page_priority = '1.0' %}
+    {% assign page_changefreq = 'weekly' %}
+  {% elsif canonical_path == '/research/' or canonical_path == '/publications/' or canonical_path == '/blogs/' %}
+    {% assign page_priority = '0.8' %}
+    {% assign page_changefreq = 'weekly' %}
+  {% elsif canonical_path == '/about/' or canonical_path == '/software/' %}
+    {% assign page_priority = '0.7' %}
+  {% elsif canonical_path == '/privacy/' %}
+    {% assign page_priority = '0.3' %}
+    {% assign page_changefreq = 'yearly' %}
+  {% endif %}
+  <url>
+    <loc>{{ canonical_path | absolute_url }}</loc>
+    <lastmod>{{ page.last_modified_at | default: site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>{{ page_changefreq }}</changefreq>
+    <priority>{{ page_priority }}</priority>
+  </url>
+  {% endfor %}
+
+  {% assign sitemap_posts = site.posts | where_exp: "post", "post.sitemap != false" %}
+  {% for post in sitemap_posts %}
+  <url>
+    <loc>{{ post.url | replace:'index.html','' | absolute_url }}</loc>
+    <lastmod>{{ post.last_modified_at | default: post.date | date_to_xmlschema }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {% endfor %}
+</urlset> 

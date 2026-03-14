@@ -1,0 +1,111 @@
+---
+title: "About"
+layout: gridlay
+sitemap: true
+permalink: /about/
+description: "Uddhav P. Gautam. Education, research, industry experience, and awards."
+keywords: "About Uddhav Gautam, Uddhav Gautam Virginia Tech, Uddhav P. Gautam bio, Uddhav Gautam researcher"
+image: /images/Uddhav.jpg
+---
+
+{% include utils.html %}
+
+<section class="page-hero surface-panel hero-panel-premium">
+    <div class="page-hero-grid">
+        <div class="hero-copy">
+            <h1>{{ pi_data.name }}</h1>
+            <p class="hero-lead">Systems security researcher and platform engineer focused on Linux systems, eBPF observability, Android, IoT, and software quality.</p>
+            <p class="hero-support">PhD Candidate in Computer Engineering at Virginia Tech and founder of RGR Innovate LLC.</p>
+            <p class="section-copy">This page summarizes education, research, publications, and industry experience, from kernel observability and performance-aware instrumentation to production software architecture and delivery.</p>
+
+            <div class="cta-row">
+                {% if contact_email %}<a href="mailto:{{ contact_email }}" class="btn btn-primary">Email</a>{% endif %}
+                {% if linkedin_link %}<a href="{{ linkedin_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">LinkedIn</a>{% endif %}
+                {% if scholar_link %}<a href="{{ scholar_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-info">Scholar</a>{% endif %}
+                {% if github_link %}<a href="{{ github_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark">GitHub</a>{% endif %}
+                {% if cv_link %}<a href="{{ cv_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary">CV</a>{% endif %}
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-portrait premium-frame">
+                {% if profile_photo %}
+                <img src="{{ profile_photo }}" class="profile-image hero-image" alt="Portrait of {{ pi_data.name }}"/>
+                {% endif %}
+                <div class="hero-signal-card signal-card-primary">
+                    <span class="signal-label">Current role</span>
+                    <strong>{{ academic_position }} at {{ academic_university }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="split-grid page-section">
+    <div class="surface-panel">
+        <p class="eyebrow">Education</p>
+        <h2 class="section-heading">Academic background</h2>
+        <ul class="timeline-list">
+            {% for item in pi_data.education %}
+            <li>
+                <div class="timeline-title-row">
+                    <h3>{{ item.degree }}</h3>
+                    <span class="timeline-period">{{ item.period }}</span>
+                </div>
+                <p class="timeline-subtitle">{{ item.institution }}{% if item.location %}, {{ item.location }}{% endif %}</p>
+                {% if item.advisors %}
+                <p class="timeline-detail">Advisors:
+                    {% for advisor in item.advisors %}
+                    <a href="{{ advisor.link }}" target="_blank" rel="noopener noreferrer">{{ advisor.name }}</a>{% unless forloop.last %}, {% endunless %}
+                    {% endfor %}
+                </p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="surface-panel">
+        <p class="eyebrow">Experience</p>
+        <h2 class="section-heading">Research and industry experience</h2>
+        <ul class="timeline-list">
+            {% for item in pi_data.experience %}
+            <li>
+                <div class="timeline-title-row">
+                    <h3>{{ item.title }}</h3>
+                    <span class="timeline-period">{{ item.period }}</span>
+                </div>
+                <p class="timeline-subtitle"><a href="{{ item.organization_url }}" target="_blank" rel="noopener noreferrer">{{ item.organization }}</a></p>
+                <p>{{ item.description }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+<section class="page-section split-grid">
+    <div class="surface-panel">
+        <p class="eyebrow">Projects</p>
+        <h2 class="section-heading">Active work</h2>
+        <div class="resource-stack">
+            {% for project in pi_data.current_projects %}
+            <article class="resource-card">
+                <h3>{{ project.name }}</h3>
+                <p>{{ project.description }}</p>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="surface-panel">
+        <p class="eyebrow">Recognition</p>
+        <h2 class="section-heading">Awards and distinctions</h2>
+        <ul class="award-list">
+            {% for award in site.data.awards %}
+            <li>{{ award.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+{% include pdf-viewer.html %} 

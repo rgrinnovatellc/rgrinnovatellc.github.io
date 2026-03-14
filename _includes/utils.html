@@ -1,0 +1,48 @@
+{% comment %}
+  =============================================================================
+  UTILITY FUNCTIONS AND DATA ACCESS - OPTIMIZED
+  =============================================================================
+{% endcomment %}
+
+{% comment %} Site Data Access {% endcomment %}
+{% assign site_data = site.data.site %}
+{% assign pi_data = site.data.pi %}
+
+{% comment %} Contact Information {% endcomment %}
+{% assign contact_email = site_data.contact.email | default: site.email %}
+{% assign contact_phone = site_data.contact.phone | default: site.phone %}
+{% assign github_username = site_data.contact.github | default: site.github_username %}
+
+{% comment %} Academic Information {% endcomment %}
+{% assign academic_position = site_data.academic.position %}
+{% assign academic_department = site_data.academic.department %}
+{% assign academic_university = site_data.academic.university %}
+{% assign academic_affiliation = site_data.academic.affiliation %}
+
+{% comment %} Social Links {% endcomment %}
+{% assign github_link = site_data.social.github %}
+{% assign scholar_link = site_data.social.scholar %}
+{% assign researchgate_link = site_data.social.researchgate %}
+{% assign linkedin_link = site_data.social.linkedin %}
+
+{% comment %} Profile Information {% endcomment %}
+{% assign profile_photo = pi_data.photo | prepend: site.baseurl | prepend: "/images/" %}
+{% assign cv_link = pi_data.documents.cv | prepend: "/" | prepend: site.baseurl %}
+
+{% comment %} Navigation {% endcomment %}
+{% assign nav_items = site_data.navigation.main_menu %}
+
+{% comment %} Utility Functions {% endcomment %}
+{% assign current_year = "now" | date: "%Y" %}
+
+{% comment %} Active Page Checker {% endcomment %}
+{% capture is_active_page %}
+  {% assign current_path = page.url %}
+  {% assign is_active = false %}
+  {% for item in nav_items %}
+    {% if item.url == current_path %}
+      {% assign is_active = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endcapture %} 

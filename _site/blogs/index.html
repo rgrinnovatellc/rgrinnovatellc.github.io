@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    
+    
+    
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Writing - Uddhav P. Gautam | Systems Research and Software</title>
+    <meta name="description" content="Technical articles and implementation notes covering Linux, Android, kernel work, performance, systems programming, and software quality.">
+    <meta name="author" content="Uddhav P. Gautam">
+    <meta name="keywords" content="Uddhav P. Gautam, Uddhav Gautam, Uddhav P Gautam, Uddhav Gautam Virginia Tech, Virginia Tech Computer Engineering, PhD Candidate Virginia Tech, Linux kernel, eBPF, observability, Android security, IoT security, software engineering, systems research, official website">
+    <meta name="theme-color" content="#126554">
+    <meta name="color-scheme" content="light dark">
+    <meta name="format-detection" content="telephone=no">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="googlebot" content="index,follow,max-image-preview:large">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Writing">
+    <meta property="og:description" content="Technical articles and implementation notes covering Linux, Android, kernel work, performance, systems programming, and software quality.">
+    <meta property="og:url" content="https://uddhavpgautam.github.io/blogs/">
+    <meta property="og:site_name" content="Uddhav P. Gautam | Systems Research and Software">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://uddhavpgautam.github.io/images/Uddhav.jpg">
+  <meta property="og:image:alt" content="Portrait of Uddhav P. Gautam">
+    
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Writing">
+    <meta name="twitter:description" content="Technical articles and implementation notes covering Linux, Android, kernel work, performance, systems programming, and software quality.">
+    <meta name="twitter:image" content="https://uddhavpgautam.github.io/images/Uddhav.jpg">
+    <meta name="twitter:url" content="https://uddhavpgautam.github.io/blogs/">
+
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="https://uddhavpgautam.github.io/blogs/">
+    <link rel="me" href="https://www.linkedin.com/in/uddhavpgautam/">
+    <link rel="me" href="https://github.com/uddhavgautam3">
+    <link rel="me" href="https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ">
+    <link rel="me" href="https://ece.vt.edu/">
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollegeOrUniversity",
+        "@id": "https://uddhavpgautam.github.io#organization",
+        "name": "Virginia Tech",
+        "url": "https://www.vt.edu/",
+        "sameAs": [
+          "https://www.vt.edu/"
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://uddhavpgautam.github.io#person",
+        "name": "Uddhav P. Gautam",
+        "alternateName": [
+          "Uddhav P Gautam",
+          
+          
+          "Uddhav Gautam",
+          
+          "Uddhav P Gautam"
+          
+          
+        ],
+        "givenName": "Uddhav",
+        "familyName": "Gautam",
+        "url": "https://uddhavpgautam.github.io/about/",
+        "mainEntityOfPage": "https://uddhavpgautam.github.io/blogs/",
+        "image": "https://uddhavpgautam.github.io/images/Uddhav.jpg",
+        "description": "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software.",
+        "email": "mailto:upgautam@vt.edu",
+        "jobTitle": "PhD Candidate",
+        "affiliation": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        },
+        "worksFor": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        },
+        "alumniOf": [
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Virginia Tech"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arkansas at Little Rock"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arkansas at Little Rock"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Tribhuvan University"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Trichandra Campus"
+          }
+          
+        ],
+        "knowsAbout": [
+          
+          "Computer Security",
+          
+          "eBPF and Linux Kernel",
+          
+          "Embedded and IoT Security",
+          
+          "Bluetooth Low Energy Security",
+          
+          "System Performance",
+          
+          "Network Security"
+          
+        ],
+        "sameAs": [
+          
+          "https://github.com/uddhavgautam3"
+          ,"https://www.linkedin.com/in/uddhavpgautam/"
+          ,"https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
+          ,"https://www.researchgate.net/profile/Uddhav-Gautam-2"
+          ,"https://ece.vt.edu/"
+        ]
+      }
+    </script>
+
+    
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Uddhav P. Gautam | Systems Research and Software",
+        "url": "https://uddhavpgautam.github.io",
+        "description": "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software.",
+        "about": {
+          "@id": "https://uddhavpgautam.github.io#person"
+        },
+        "publisher": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        }
+      }
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+</head>
+
+
+  <body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm" aria-label="Primary site navigation">
+    <div class="navbar-inner">
+        <div class="navbar-brand">
+            <a href="/" class="brand-link" aria-label="Go to homepage">
+                <span class="brand-kicker">Research and Software</span>
+                <span class="brand-text">Uddhav P. Gautam</span>
+            </a>
+        </div>
+
+        <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse site-nav-collapse" id="navbarColor02">
+            <div class="navbar-nav site-nav-links me-auto">
+                <a class="nav-item nav-link" href="/">Home</a>
+                
+                    
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/research">Research</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/publications">Publications</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/software">Software</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/blogs">Writing</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/about">About</a>
+                        
+                    
+                
+            </div>
+
+            <div class="navbar-nav site-nav-actions ms-auto">
+                
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light theme">
+                    <i id="theme-icon" class="fa fa-moon-o"></i>
+                </button>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <main class="content-wrapper" id="main-content">
+        <div class="layout-shell layout-grid-shell" id="gridid">
+  <section class="page-hero surface-panel">
+    <p class="eyebrow">Writing</p>
+    <h1>Technical writing on systems, software, and implementation details</h1>
+    <p class="hero-lead">These posts document practical systems work: Linux internals, Android internals, networking, observability, tooling, and software engineering. The aim is to make them useful when you need to build, debug, or measure something.</p>
+</section>
+
+<section class="page-section">
+    <div class="section-heading-row">
+        <div>
+            <p class="eyebrow">Featured posts</p>
+            <h2 class="section-heading">Start here</h2>
+        </div>
+    </div>
+
+    <div class="post-preview-grid">
+        
+        <article class="post-preview-card surface-panel">
+            <p class="post-kicker">September 05, 2025</p>
+            <h3><a href="/2025/09/05/software_design_and_quality.html">Software Design & Quality</a></h3>
+            <p>Software Design and Quality Software Design and Quality Assignments Software Quality Attributes Robert Glass does not include all of the quality attributes that are in McCall’s ...</p>
+            <a class="text-link" href="/2025/09/05/software_design_and_quality.html">Read article</a>
+        </article>
+        
+        <article class="post-preview-card surface-panel">
+            <p class="post-kicker">February 12, 2025</p>
+            <h3><a href="/2025/02/12/pidfd.html">PID Reuse Can Cause Supervisor Confusion</a></h3>
+            <p>The power of pidfd PID Reuse Can Cause Supervisor Confusion In a traditional PID-based system, the supervisor tracks processes by their PID, leading to potential race conditions...</p>
+            <a class="text-link" href="/2025/02/12/pidfd.html">Read article</a>
+        </article>
+        
+        <article class="post-preview-card surface-panel">
+            <p class="post-kicker">February 09, 2025</p>
+            <h3><a href="/2025/02/09/list_all_tracepoints.html">List All Tracepoints of Your System</a></h3>
+            <p>List all tracepoints of your system From inside qemu, start a python based webserver, go to qemu, make qemu-run root@q:/linux-dev-env# python3 -m http.server 52223 --directory ....</p>
+            <a class="text-link" href="/2025/02/09/list_all_tracepoints.html">Read article</a>
+        </article>
+        
+    </div>
+</section>
+
+<section class="page-section surface-panel">
+    <p class="eyebrow">Archive</p>
+    <h2 class="section-heading">All posts</h2>
+
+    <div class="writing-controls" data-writing-index>
+        <div class="writing-control-field">
+            <label for="writing-search">Search posts</label>
+            <input id="writing-search" class="form-control" type="search" placeholder="Search by title or topic" autocomplete="off">
+        </div>
+
+        <div class="writing-control-field">
+            <label for="writing-year-filter">Filter by year</label>
+            <select id="writing-year-filter" class="form-select">
+                <option value="all">All years</option>
+                
+                
+                
+                
+                    
+                <option value="2025">2025</option>
+                    
+                
+                    
+                <option value="2024">2024</option>
+                    
+                
+                    
+                <option value="2023">2023</option>
+                    
+                
+            </select>
+        </div>
+    </div>
+
+    <p class="writing-results" id="writing-results" aria-live="polite"></p>
+
+    <div class="writing-applied" id="writing-applied" hidden>
+        <span class="writing-applied-label">Applied</span>
+        <div class="writing-applied-list" id="writing-applied-list"></div>
+        <button class="writing-clear" type="button" id="writing-clear-filters">Clear all</button>
+    </div>
+
+    <div class="archive-list" id="writing-archive-list">
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="software design &amp; quality software design and quality software design and quality assignments software quality attributes robert glass does not include all of the...">
+            <div>
+                <p class="post-kicker">Sep 05, 2025</p>
+                <h3><a href="/2025/09/05/software_design_and_quality.html">Software Design & Quality</a></h3>
+                <p>Software Design and Quality Software Design and Quality Assignments Software Quality Attributes Robert Glass does not include all of the quality at...</p>
+            </div>
+            <a class="archive-link" href="/2025/09/05/software_design_and_quality.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="pid reuse can cause supervisor confusion the power of pidfd pid reuse can cause supervisor confusion in a traditional pid-based system, the supervisor tracks...">
+            <div>
+                <p class="post-kicker">Feb 12, 2025</p>
+                <h3><a href="/2025/02/12/pidfd.html">PID Reuse Can Cause Supervisor Confusion</a></h3>
+                <p>The power of pidfd PID Reuse Can Cause Supervisor Confusion In a traditional PID-based system, the supervisor tracks processes by their PID, leadin...</p>
+            </div>
+            <a class="archive-link" href="/2025/02/12/pidfd.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="list all tracepoints of your system list all tracepoints of your system from inside qemu, start a python based webserver, go to qemu, make...">
+            <div>
+                <p class="post-kicker">Feb 09, 2025</p>
+                <h3><a href="/2025/02/09/list_all_tracepoints.html">List All Tracepoints of Your System</a></h3>
+                <p>List all tracepoints of your system From inside qemu, start a python based webserver, go to qemu, make qemu-run root@q:/linux-dev-env# python3 -m h...</p>
+            </div>
+            <a class="archive-link" href="/2025/02/09/list_all_tracepoints.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="runtime tuning for linux systems leveraging ebpf as a feedback loop for runtime system tuning problem motivation when building large projects like android aosp,...">
+            <div>
+                <p class="post-kicker">Feb 05, 2025</p>
+                <h3><a href="/2025/02/05/On_demand_Runtime_Tuning_of_Build_Jobs_in_Linux.html">Runtime Tuning for Linux Systems</a></h3>
+                <p>Leveraging eBPF as a feedback loop for runtime system tuning Problem Motivation When building large projects like Android AOSP, system resource lim...</p>
+            </div>
+            <a class="archive-link" href="/2025/02/05/On_demand_Runtime_Tuning_of_Build_Jobs_in_Linux.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="selinux selinux planned follow-up topics: apparmor, ufw, seccomp, namespace and cgroup-based isolation, linux capabilities, and linux perf vs. android simpleperf. by default, ubuntu also...">
+            <div>
+                <p class="post-kicker">Jan 30, 2025</p>
+                <h3><a href="/2025/01/30/selinux.html">SELinux</a></h3>
+                <p>SELinux Planned follow-up topics: AppArmor, UFW, Seccomp, namespace and cgroup-based isolation, Linux capabilities, and Linux perf vs. Android simp...</p>
+            </div>
+            <a class="archive-link" href="/2025/01/30/selinux.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="linux memory management linux memory management what is memory? fundamentally, memory is just a form of storage. computers have many layers of storage —...">
+            <div>
+                <p class="post-kicker">Jan 12, 2025</p>
+                <h3><a href="/2025/01/12/linux_memory_management.html">Linux Memory Management</a></h3>
+                <p>Linux Memory Management What is memory? Fundamentally, memory is just a form of storage. Computers have many layers of storage — CPU Registers, CPU...</p>
+            </div>
+            <a class="archive-link" href="/2025/01/12/linux_memory_management.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="zotero library organizer zotero library organizer download from here https://www.zotero.org/download/ extract it to some folder /opt/zotero/ such that you will have zotero binary here:...">
+            <div>
+                <p class="post-kicker">Jan 09, 2025</p>
+                <h3><a href="/2025/01/09/zotero_library_organizer.html">Zotero Library Organizer</a></h3>
+                <p>Zotero Library Organizer download from here https://www.zotero.org/download/ Extract it to some folder /opt/zotero/ such that you will have zotero ...</p>
+            </div>
+            <a class="archive-link" href="/2025/01/09/zotero_library_organizer.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="add your binary to the ubuntu launcher and pin it to the dashboard add your binary to ubuntu launcher and pin to dashboard for...">
+            <div>
+                <p class="post-kicker">Jan 09, 2025</p>
+                <h3><a href="/2025/01/09/offline-docs-kiwix.html">Add Your Binary to the Ubuntu Launcher and Pin It to the Dashboard</a></h3>
+                <p>Add your binary to Ubuntu Launcher and Pin to Dashboard For any application you can create a symbolic link into your /usr/share/bin sudo ln -s /mnt...</p>
+            </div>
+            <a class="archive-link" href="/2025/01/09/offline-docs-kiwix.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="linux troubleshooting tools linux troubleshooting tools uptime upgautam@amd:~$ uptime 20:09:14 up 1 day, 9:38, 1 user, load average: 0.18, 0.33, 0.31 it tells the...">
+            <div>
+                <p class="post-kicker">Jan 08, 2025</p>
+                <h3><a href="/2025/01/08/linux_troubleshooting_tools.html">Linux Troubleshooting Tools</a></h3>
+                <p>Linux troubleshooting tools uptime upgautam@amd:~$ uptime 20:09:14 up 1 day, 9:38, 1 user, load average: 0.18, 0.33, 0.31 It tells the load average...</p>
+            </div>
+            <a class="archive-link" href="/2025/01/08/linux_troubleshooting_tools.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="linux perf performance analysis tool linux perf perf is powerful: it can instrument cpu performance counters, tracepoints, kprobes, and uprobes (dynamic tracing). it is...">
+            <div>
+                <p class="post-kicker">Jan 05, 2025</p>
+                <h3><a href="/2025/01/05/linux_perf.html">Linux Perf Performance Analysis Tool</a></h3>
+                <p>Linux Perf Perf is powerful: it can instrument CPU performance counters, tracepoints, kprobes, and uprobes (dynamic tracing). It is capable of ligh...</p>
+            </div>
+            <a class="archive-link" href="/2025/01/05/linux_perf.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2025" data-search="research paper venues conference venues sigops hotos: hot topics in operating systems – happens every two years sosp: symposium on operating systems principles –...">
+            <div>
+                <p class="post-kicker">Jan 04, 2025</p>
+                <h3><a href="/2025/01/04/research_paper_venues.html">Research Paper Venues</a></h3>
+                <p>Conference Venues SIGOPS HotOS: Hot Topics in Operating Systems – Happens every two years SOSP: Symposium on Operating Systems Principles – Happens...</p>
+            </div>
+            <a class="archive-link" href="/2025/01/04/research_paper_venues.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="dm-verify dm-verify block devices&#39; integrity is important because it holds bootloader, system files, etc., and heavily used in android and linux kernel. let&#39;s play...">
+            <div>
+                <p class="post-kicker">Dec 20, 2024</p>
+                <h3><a href="/2024/12/20/dm_verify.html">dm-verify</a></h3>
+                <p>dm-verify Block devices' integrity is important because it holds bootloader, system files, etc., and heavily used in Android and Linux kernel. Let'...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/20/dm_verify.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="android dumpsys dumpsys adb shell dumpsys [service] [options] adb shell dumpsys battery synopsis would be like battery service: status: 2 health: 2 present: true...">
+            <div>
+                <p class="post-kicker">Dec 18, 2024</p>
+                <h3><a href="/2024/12/18/android_dumpsys.html">Android Dumpsys</a></h3>
+                <p>Dumpsys adb shell dumpsys [service] [options] adb shell dumpsys battery Synopsis would be like Battery Service: status: 2 health: 2 present: true l...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/18/android_dumpsys.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="android dummy system app dummy android system app i ran the commands below from two locations: (1) the aosp root folder and (2) the...">
+            <div>
+                <p class="post-kicker">Dec 18, 2024</p>
+                <h3><a href="/2024/12/18/android_dummy_system_app.html">Android Dummy System App</a></h3>
+                <p>Dummy Android System App I ran the commands below from two locations: (1) the AOSP root folder and (2) the directory where the Cuttlefish Android e...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/18/android_dummy_system_app.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="android boot sequence android boot sequence power on -&amp;gt; bootloader -&amp;gt; linux kernel -&amp;gt; init -&amp;gt; zygote -&amp;gt; system server -&amp;gt; system ui -&amp;gt;...">
+            <div>
+                <p class="post-kicker">Dec 18, 2024</p>
+                <h3><a href="/2024/12/18/android_boot_sequence.html">Android Boot Sequence</a></h3>
+                <p>Android Boot Sequence Power On -&gt; Bootloader -&gt; Linux Kernel -&gt; Init -&gt; Zygote -&gt; System Server -&gt; System UI -&gt; Launcher Init:...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/18/android_boot_sequence.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="build aosp aosp download aosp source # takes hours depending on your internet speed cd aosp # note that we are init-ing based on...">
+            <div>
+                <p class="post-kicker">Dec 14, 2024</p>
+                <h3><a href="/2024/12/14/aosp_source_code_build.html">Build AOSP</a></h3>
+                <p>AOSP Download AOSP Source # takes hours depending on your internet speed cd aosp # Note that we are init-ing based on platform&#39;s manifest repo ...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/14/aosp_source_code_build.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="aosp make a change aosp–make a change and push code for code review 1. cd frameworks/native 2. upgautam@amd:/opt/aosp/frameworks/native$ repo start make_a_change . starting make_a_change:...">
+            <div>
+                <p class="post-kicker">Dec 14, 2024</p>
+                <h3><a href="/2024/12/14/aosp_make_a_change.html">AOSP Make a Change</a></h3>
+                <p>AOSP–Make a Change and Push Code for Code Review 1. cd frameworks/native 2. upgautam@amd:/opt/aosp/frameworks/native$ repo start make_a_change . St...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/14/aosp_make_a_change.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="kati kati it is used to accelerate incremental build of android aosp. clone of make but modified make null buld: where just one file...">
+            <div>
+                <p class="post-kicker">Dec 13, 2024</p>
+                <h3><a href="/2024/12/13/kati.html">Kati</a></h3>
+                <p>Kati It is used to accelerate incremental build of Android AOSP. Clone of make but modified make null buld: where just one file changed Vs. full bu...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/13/kati.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="custom kfunc kfunc https://docs.kernel.org/bpf/kfuncs.htmlhttps://eunomia.dev/en/tutorials/43-kfuncs/ bpf kernel functions (kfuncs) are kernel functions exposed for use by bpf programs. unlike stable bpf helper functions added by...">
+            <div>
+                <p class="post-kicker">Dec 09, 2024</p>
+                <h3><a href="/2024/12/09/Kfunc.html">Custom Kfunc</a></h3>
+                <p>Kfunc https://docs.kernel.org/bpf/kfuncs.htmlhttps://eunomia.dev/en/tutorials/43-kfuncs/ BPF Kernel Functions (kfuncs) are kernel functions exposed...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/09/Kfunc.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="basic tcp/udp communication in linux basic client-server communication using both tcp and udp. here we provide a basic client server communication using both tpc...">
+            <div>
+                <p class="post-kicker">Dec 04, 2024</p>
+                <h3><a href="/2024/12/04/linux_network_programming_basic.html">Basic TCP/UDP Communication in Linux</a></h3>
+                <p>Basic client-server communication using both TCP and UDP. Here we provide a basic client server communication using both TPC and UDP. UDP User Data...</p>
+            </div>
+            <a class="archive-link" href="/2024/12/04/linux_network_programming_basic.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="compiler optimization: inline functions here, we perform dead code elimination (dce), constant propagation (cp), and constant folding(cf) compiler optimizations that are achievable because of...">
+            <div>
+                <p class="post-kicker">Sep 21, 2024</p>
+                <h3><a href="/2024/09/21/compiler_optimization.html">Compiler Optimization: Inline Functions</a></h3>
+                <p>Here, we perform Dead Code Elimination (DCE), Constant Propagation (CP), and Constant Folding(CF) compiler optimizations that are achievable becaus...</p>
+            </div>
+            <a class="archive-link" href="/2024/09/21/compiler_optimization.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="iptables router we create a ubuntu server a iptables based router router ubuntu sudo gedit /etc/sysctl.conf net.ipv4.ip_forward = 1 sudo sysctl -p sudo iptables...">
+            <div>
+                <p class="post-kicker">Aug 23, 2024</p>
+                <h3><a href="/2024/08/23/iptable_router.html">IPTables Router</a></h3>
+                <p>We create a ubuntu server a iptables based router Router Ubuntu sudo gedit /etc/sysctl.conf net.ipv4.ip_forward = 1 sudo sysctl -p sudo iptables -t...</p>
+            </div>
+            <a class="archive-link" href="/2024/08/23/iptable_router.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="add your own syscall to the linux kernel add your own syscall to the linux kernel below in the implementation section, there are implementation...">
+            <div>
+                <p class="post-kicker">Jun 05, 2024</p>
+                <h3><a href="/2024/06/05/custom_syscall.html">Add your own syscall to the Linux kernel</a></h3>
+                <p>Add your own syscall to the Linux kernel Below in the implementation section, there are implementation chapters for the user-space side and kernel ...</p>
+            </div>
+            <a class="archive-link" href="/2024/06/05/custom_syscall.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="terraform infrastructure as code overview terraform is an open-source infrastructure as code (iac) tool that allows you to define and provision infrastructure using declarative...">
+            <div>
+                <p class="post-kicker">Apr 04, 2024</p>
+                <h3><a href="/2024/04/04/terraform.html">Terraform Infrastructure as Code</a></h3>
+                <p>Overview Terraform is an open-source infrastructure as code (IaC) tool that allows you to define and provision infrastructure using declarative scr...</p>
+            </div>
+            <a class="archive-link" href="/2024/04/04/terraform.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2024" data-search="bpf compile, load, run (includes libbpf skeleton generation concept) bpf compile, load, run (includes libbpf skeleton generation concept) what are traceable functions? we can...">
+            <div>
+                <p class="post-kicker">Jan 23, 2024</p>
+                <h3><a href="/2024/01/23/bpf_compile_build_run.html">BPF Compile, Load, Run (Includes libbpf skeleton generation concept)</a></h3>
+                <p>BPF compile, load, run (Includes libbpf skeleton generation concept) What are traceable functions? We can find all the list of functions in /sys/ke...</p>
+            </div>
+            <a class="archive-link" href="/2024/01/23/bpf_compile_build_run.html">Open</a>
+        </article>
+        
+        <article class="archive-list-item js-writing-item" data-year="2023" data-search="running static website using jekyll clone this github repo in your favorite ide (e.g., ruby mine). you can re-write all git histories. create a...">
+            <div>
+                <p class="post-kicker">Dec 13, 2023</p>
+                <h3><a href="/2023/12/13/running_static_website_using_jekyll.html">Running Static Website Using Jekyll</a></h3>
+                <p>Clone this GitHub repo in your favorite IDE (e.g., Ruby Mine). You can re-write all git histories. Create a GitHub repo something like &lt;websiten...</p>
+            </div>
+            <a class="archive-link" href="/2023/12/13/running_static_website_using_jekyll.html">Open</a>
+        </article>
+        
+    </div>
+
+    <div class="writing-actions">
+        <button class="btn btn-outline-primary" type="button" id="writing-load-more" aria-controls="writing-archive-list">Load more posts</button>
+    </div>
+</section>
+
+<script src="/assets/javascript/blog-index.js" defer></script>
+</div>
+
+    </main>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto">
+    <div class="footer-shell">
+        <section class="footer-utility" aria-label="Footer utilities">
+            <div class="footer-inline" role="list">
+                <span class="footer-label" role="listitem">CONNECT:</span>
+                <a role="listitem" href="mailto:rgrinnovatellc@gmail.com">rgrinnovatellc@gmail.com</a>
+                <a role="listitem" href="https://github.com/uddhavpgautam" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a role="listitem" href="https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+                <a role="listitem" href="https://www.linkedin.com/in/uddhavpgautam/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <span class="footer-separator" aria-hidden="true" role="listitem"></span>
+                <span class="footer-text" role="listitem">© 2026 Uddhav P. Gautam.</span>
+                <a role="listitem" href="/sitemap/">Sitemap</a>
+                <a role="listitem" href="/privacy/">Privacy</a>
+            </div>
+        </section>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

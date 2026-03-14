@@ -1,0 +1,98 @@
+---
+title: "Research"
+layout: gridlay
+sitemap: true
+permalink: /research/
+description: "Linux kernel systems, eBPF observability, performance, and security research."
+image: /images/Uddhav.jpg
+---
+
+{% include utils.html %}
+
+<section class="page-hero surface-panel">
+    <p class="eyebrow">Research</p>
+    <h1>Observability, performance, and system security</h1>
+    <p class="hero-lead">Research at the intersection of Linux observability, system performance, and platform security, with methods designed for real-world workloads.</p>
+</section>
+
+<section class="page-section">
+    <div class="section-heading-row">
+        <div>
+            <p class="eyebrow">Themes</p>
+            <h2 class="section-heading">Core areas</h2>
+        </div>
+        <p class="section-copy">Core concerns include measurement overhead, data quality, deployment constraints, and tooling usability beyond publication prototypes.</p>
+    </div>
+
+    <div class="focus-grid research-grid">
+        <article class="focus-card surface-panel">
+            <h3>Kernel observability with eBPF</h3>
+            <p>Tracing methods that preserve insight while minimizing overhead on untraced or lightly traced processes.</p>
+        </article>
+        <article class="focus-card surface-panel">
+            <h3>Performance analysis and tuning</h3>
+            <p>Evidence-driven analysis of bottlenecks, runtime behavior, and instrumentation tradeoffs.</p>
+        </article>
+        <article class="focus-card surface-panel">
+            <h3>Platform and device security</h3>
+            <p>Security techniques for Android, Bluetooth, networking, and IoT, with visibility and protection under resource constraints.</p>
+        </article>
+        <article class="focus-card surface-panel">
+            <h3>Research to tooling</h3>
+            <p>Research ideas translated into software artifacts, reference implementations, and workflows usable beyond prototypes.</p>
+        </article>
+    </div>
+</section>
+
+<section class="page-section split-grid">
+    <div class="surface-panel">
+        <p class="eyebrow">Projects</p>
+        <h2 class="section-heading">In progress</h2>
+        <div class="resource-stack">
+            {% for project in pi_data.current_projects %}
+            <article class="resource-card project-card">
+                <h3>{{ project.name }}</h3>
+                <p>{{ project.description }}</p>
+                <span class="tag-chip">{{ project.status }}</span>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="surface-panel">
+        <p class="eyebrow">Outcomes</p>
+        <h2 class="section-heading">Publications and milestones</h2>
+        <div class="news-feed">
+            {% for item in site.data.news %}
+            <article class="news-feed-item">
+                <span class="news-date">{{ item.date }}</span>
+                <div class="news-headline">{{ item.headline }}</div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="page-section split-grid">
+    <div class="surface-panel">
+        <p class="eyebrow">Method</p>
+        <h2 class="section-heading">Approach</h2>
+        <ul class="compact-list">
+            <li>Measure first, optimize second.</li>
+            <li>Prefer instrumentation that adds as little overhead as possible.</li>
+            <li>Pair low-level implementation with clear documentation and reproducible workflows.</li>
+            <li>Keep research artifacts readable and maintainable.</li>
+        </ul>
+    </div>
+
+    <div class="surface-panel">
+        <p class="eyebrow">Related</p>
+        <h2 class="section-heading">Links</h2>
+        <div class="footer-links">
+            <a href="{{ '/publications/' | relative_url }}">Publications</a>
+            <a href="{{ '/software/' | relative_url }}">Software</a>
+            <a href="{{ '/blogs/' | relative_url }}">Technical writing</a>
+            <a href="mailto:{{ contact_email }}">Contact</a>
+        </div>
+    </div>
+</section>

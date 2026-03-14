@@ -1,0 +1,989 @@
+<h1 id="linux-memory-management">Linux Memory Management</h1>
+
+<div style="height: 2rem;"></div>
+
+<h2 id="what-is-memory">What is memory?</h2>
+<p>Fundamentally, memory is just a form of storage. Computers have many layers of storage — CPU Registers, CPU Cache, RAM, Disk. Access to each layer of memory consumes time, lesser the cycles faster the access.</p>
+<pre><code>CPU Registers - 1 CPU cycle
+CPU Cache - 3-14 CPU cycles
+RAM - ~250 CPU cycles
+Disk - ~40 million CPU cycles
+</code></pre>
+<p>In 32-bit systems, there are total 2^32 unique addresses. Each these unique addresses points to 1 byte in RAM.  The term 32-bit usually refers to the width of the data bus, memory addresses, or the general-purpose registers that can hold 32-bit values (which can represent numbers, addresses, etc.). This means the processor can handle 32-bit data in a single operation. These registers are named EAX, EBX, ECX, EDX, ESI, EDI, EBP, ESP. The &quot;E&quot; in the register names refers to &quot;Extended&quot;, meaning they are 32-bit wide. </p>
+<p>In 32-bit system, we can have max 4 GB (i.e., 2^32 bytes) of RAM for direct memory allocation (not talking other technologies like Physical Address Extension), and 64-bit systems can address up to 16EB of memory (2^64 different addresses).  Nowadays main memory is not allocated directly, only virtual memory is. </p>
+<p>In modern computer systems (both 32-bit and 64-bit), virtual memory is used extensively. Virtual memory is an abstraction that allows programs to use more memory than is physically installed in the system by using disk space (paging, swapping, etc.) to extend the effective memory. It provides isolation between processes and makes the management of memory more flexible. Even though physical memory exists, the operating system manages it through virtual memory, which is mapped to physical memory by the Memory Management Unit (MMU) in the CPU. With virtual memory, each process thinks it has access to a large, contiguous block of memory, even if physical memory is fragmented or smaller. The OS uses paging or segmentation to map virtual memory addresses to actual physical memory (RAM). There didn&#39;t have MMU hardware, that&#39;s why there was no virtual memory in older systems. </p>
+<p>Linux divide memory into “Zones” — 32 bit and 64-bit have different memory zones.</p>
+<p>32-bit</p>
+<pre><code>ZONE_DMA: Low 16Mbyte for DMA-suitable memory by ancient ISA devices
+ZONE_NORMAL: RAM from 16Mbyte up to 896MB
+ZONE_HIGHMEM: All RAM above 896MB
+</code></pre>
+<p>64-bit</p>
+<pre><code>ZONE_DMA: Low 16Mbyte for DMA-suitable memory by ancient ISA devices
+ZONE_DMA32: From 16MB to 4GB for DMA-suitable memory in a 32-bit addressable area
+ZONE_NORMAL: All RAM above 4GB
+ZONE_MOVABLE: To deal with fragmentation — map of movable pages
+</code></pre>
+<p>A zone might be restricted to certain types of memory allocations, like memory reserved for kernel space (i.e., memory used by the operating system itself) or critical system memory. The operating system may try to allocate memory from the most easily available zone first, but if that&#39;s not possible, it may need to fall back on using a more restrictive zone where memory is harder to allocate or where only certain types of allocations are allowed.</p>
+<p>A node refers to a physical or logical grouping of memory in large servers or systems with non-uniform memory architecture (NUMA). NUMA is a design where the system has multiple memory modules (or memory banks) spread across different physical locations. So, when a system has more than one node, it means the system has multiple memory groups, and each group can have its own memory zone. You can do <code>cat /proc/zoneinfo</code>. </p>
+<pre><code class="language-bash">Node 0, zone      DMA
+  per-node stats
+      nr_inactive_anon 0
+      nr_active_anon 997013
+      nr_inactive_file 1148635
+      nr_active_file 709357
+      nr_unevictable 15735
+      nr_slab_reclaimable 91751
+      nr_slab_unreclaimable 180400
+      nr_isolated_anon 0
+      nr_isolated_file 0
+      workingset_nodes 0
+      workingset_refault_anon 0
+      workingset_refault_file 0
+      workingset_activate_anon 0
+      workingset_activate_file 0
+      workingset_restore_anon 0
+      workingset_restore_file 0
+      workingset_nodereclaim 0
+      nr_anon_pages 991098
+      nr_mapped    259280
+      nr_file_pages 1879713
+      nr_dirty     262
+      nr_writeback 0
+      nr_writeback_temp 0
+      nr_shmem     20126
+      nr_shmem_hugepages 0
+      nr_shmem_pmdmapped 0
+      nr_file_hugepages 193
+      nr_file_pmdmapped 0
+      nr_anon_transparent_hugepages 0
+      nr_vmscan_write 0
+      nr_vmscan_immediate_reclaim 0
+      nr_dirtied   2521054
+      nr_written   2185652
+      nr_throttled_written 0
+      nr_kernel_misc_reclaimable 0
+      nr_foll_pin_acquired 1270
+      nr_foll_pin_released 1270
+      nr_kernel_stack 28288
+      nr_page_table_pages 14630
+      nr_sec_page_table_pages 0
+      nr_swapcached 0
+      pgpromote_success 0
+      pgpromote_candidate 0
+      pgdemote_kswapd 0
+      pgdemote_direct 0
+      pgdemote_khugepaged 0
+  pages free     2818
+        boost    0
+        min      1
+        low      4
+        high     7
+        spanned  4095
+        present  3999
+        managed  3842
+        cma      0
+        protection: (0, 1665, 128452, 128452, 128452)
+      nr_free_pages 2818
+      nr_zone_inactive_anon 0
+      nr_zone_active_anon 0
+      nr_zone_inactive_file 0
+      nr_zone_active_file 0
+      nr_zone_unevictable 0
+      nr_zone_write_pending 0
+      nr_mlock     0
+      nr_bounce    0
+      nr_zspages   0
+      nr_free_cma  0
+      nr_unaccepted 0
+      numa_hit     1
+      numa_miss    0
+      numa_foreign 0
+      numa_interleave 1
+      numa_local   1
+      numa_other   0
+  pagesets
+    cpu: 0
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 1
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 2
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 3
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 4
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 5
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 6
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 7
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 8
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 9
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 10
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 11
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 12
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 13
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 14
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 15
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 16
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 17
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 18
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 19
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 20
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 21
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 22
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 23
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 24
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 25
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 26
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 27
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 28
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 29
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 30
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+    cpu: 31
+              count: 0
+              high:  0
+              batch: 1
+  vm stats threshold: 12
+  node_unreclaimable:  0
+  start_pfn:           1
+Node 0, zone    DMA32
+  pages free     442199
+        boost    0
+        min      219
+        low      645
+        high     1071
+        spanned  1044480
+        present  460687
+        managed  443735
+        cma      0
+        protection: (0, 0, 126786, 126786, 126786)
+      nr_free_pages 442199
+      nr_zone_inactive_anon 0
+      nr_zone_active_anon 0
+      nr_zone_inactive_file 0
+      nr_zone_active_file 0
+      nr_zone_unevictable 0
+      nr_zone_write_pending 0
+      nr_mlock     0
+      nr_bounce    0
+      nr_zspages   0
+      nr_free_cma  0
+      nr_unaccepted 0
+      numa_hit     2
+      numa_miss    0
+      numa_foreign 0
+      numa_interleave 2
+      numa_local   2
+      numa_other   0
+  pagesets
+    cpu: 0
+              count: 0
+              high:  252
+              batch: 63
+  vm stats threshold: 60
+    cpu: 1
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 2
+              count: 0
+              high:  252
+              batch: 63
+  vm stats threshold: 60
+    cpu: 3
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 4
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 5
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 6
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 7
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 8
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 9
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 10
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 11
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 12
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 13
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 14
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 15
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 16
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 17
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 18
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 19
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 20
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 21
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 22
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 23
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 24
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 25
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 26
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 27
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 28
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 29
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 30
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+    cpu: 31
+              count: 0
+              high:  0
+              batch: 63
+  vm stats threshold: 60
+  node_unreclaimable:  0
+  start_pfn:           4096
+Node 0, zone   Normal
+  pages free     28931385
+        boost    0
+        min      16674
+        low      49131
+        high     81588
+        spanned  33021568
+        present  33021568
+        managed  32459074
+        cma      0
+        protection: (0, 0, 0, 0, 0)
+      nr_free_pages 28931385
+      nr_zone_inactive_anon 0
+      nr_zone_active_anon 997013
+      nr_zone_inactive_file 1148635
+      nr_zone_active_file 709357
+      nr_zone_unevictable 15735
+      nr_zone_write_pending 262
+      nr_mlock     10897
+      nr_bounce    0
+      nr_zspages   0
+      nr_free_cma  0
+      nr_unaccepted 0
+      numa_hit     81052041
+      numa_miss    0
+      numa_foreign 0
+      numa_interleave 5013
+      numa_local   81052040
+      numa_other   0
+  pagesets
+    cpu: 0
+              count: 1251
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 1
+              count: 377
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 2
+              count: 1130
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 3
+              count: 241
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 4
+              count: 273
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 5
+              count: 1401
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 6
+              count: 1003
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 7
+              count: 732
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 8
+              count: 219
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 9
+              count: 1026
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 10
+              count: 1033
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 11
+              count: 825
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 12
+              count: 421
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 13
+              count: 688
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 14
+              count: 760
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 15
+              count: 940
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 16
+              count: 470
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 17
+              count: 315
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 18
+              count: 527
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 19
+              count: 867
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 20
+              count: 1058
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 21
+              count: 208
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 22
+              count: 260
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 23
+              count: 1496
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 24
+              count: 453
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 25
+              count: 122
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 26
+              count: 577
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 27
+              count: 211
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 28
+              count: 1043
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 29
+              count: 345
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 30
+              count: 1291
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+    cpu: 31
+              count: 258
+              high:  1535
+              batch: 63
+  vm stats threshold: 125
+  node_unreclaimable:  0
+  start_pfn:           1048576
+Node 0, zone  Movable
+  pages free     0
+        boost    0
+        min      32
+        low      32
+        high     32
+        spanned  0
+        present  0
+        managed  0
+        cma      0
+        protection: (0, 0, 0, 0, 0)
+Node 0, zone   Device
+  pages free     0
+        boost    0
+        min      0
+        low      0
+        high     0
+        spanned  0
+        present  0
+        managed  0
+        cma      0
+        protection: (0, 0, 0, 0, 0)
+</code></pre>
+<p>In above <code>zoneinfo</code> output, you can see I have 5 zones. </p>
+<h2 id="virtual-memory">Virtual Memory</h2>
+<p>CPU Chip: CPU ----- MMU (MMU is a hardware)
+    Virtual (or Logical) address: Larger than physical memory RAM (this is the memory abstraction) --- we have pages here
+    Physical Memory: RAM (we have page frames here)</p>
+<p>Logical or Virtual memory doesn&#39;t reside anywhere, it is just a label or tagging. Physical memory is actual RAM.
+    If process allocates more logical memory then there happens internal (logical) memory fragmentation. </p>
+<p>In 64-bit systems, we can have 2^64 addressable units. This much big virtual memory we can have, althogh we have limited RAM installed. In earlier 32-bit system, we could achieve max. 64 GB of logical addressable units through Physical Address Extension (PAE). </p>
+<h2 id="paging-vs-segmentation">Paging vs. Segmentation</h2>
+<h3 id="paging">Paging</h3>
+<ol>
+    <li>Fixed-size blocks: In paging, the memory is divided into fixed-size blocks called pages (for logical memory) and frames (for physical memory).</li>
+    <li>No external fragmentation: Since the pages are of fixed size, paging eliminates external fragmentation, although internal fragmentation can still occur (if a page isn’t fully utilized).</li>
+    <li>Efficient memory allocation: It helps in allocating memory in a more flexible manner, as pages can be placed anywhere in the physical memory.</li>
+    <li>Translation of addresses: The operating system uses a page table to map logical pages to physical frames. The page table keeps track of where each page is located in physical memory.</li>
+    <li>Fixed size: The page size is typically fixed, so all pages are of the same size.</li>
+    <li>Easy swapping: Paging makes it easier to swap out pages to and from disk to manage memory more efficiently.</li>
+</ol>
+<h3 id="segmentation">Segmentation</h3>
+<ol>
+    <li>Variable-size blocks: In segmentation, memory is divided into segments of different sizes based on the logical division of a program (e.g., code, data, stack).
+        External fragmentation: Segmentation can lead to external fragmentation, as segments can vary in size, and it may be hard to find a large enough contiguous block of memory.</li>
+    <li>Logical division: Each segment has a specific meaning and is associated with a logical division of the program, which can make it easier to manage program components (e.g., separate the stack, heap, and code).</li>
+    <li>Segment table: A segment table is used to map the logical segments to physical memory addresses.</li>
+    <li>Variable size: Segments are of variable sizes, and the size of each segment depends on the needs of the program.</li>
+    <li>Difficult swapping: Because segments can vary in size, swapping them in and out of memory can be more complicated than with paging.</li>
+</ol>
+<h2 id="paging-details">Paging Details</h2>
+<p>Paging is basically the movement of pages in and out of the main memory and storage. It allows partially loaded &amp; programs larger than memory to execute. Unlike Swapping which moves entire program in and out, Paging only moves pages, which are relatively small (e.g., 4KB). Processes that are swapped out are still known by the kernel as metadata is still resident in kernel memory. Kernel prioritizes swapping is based on various factors like thread priority, wait time, size of process. The longer it has been waiting and the smaller it is, the higher in the queue it will be. Modern Linux does not perform traditional swapping at all, it uses paging operation on a swap device or file instead. Some UNIX systems still perform actual swapping. In Linux, Kernel uses various caches to optimize performance.</p>
+<h3 id="file-system-paging">File System Paging</h3>
+<p>It involves reading/writing of pages in memory mapped files (mmap()) and on the file systems that uses page cache.</p>
+<p>If file system page has been modified in main memory, it is a “dirty” page, and requires a write to disk. If it is not modified, or a “clean” page, then then page out just frees the memory immediately.</p>
+<h3 id="anonymous-paging">Anonymous Paging</h3>
+<p>Anonymous paging is private to processes (process’ heaps and stacks). It is called anonymous due to lack of a named location in the operating system, such as file system path.</p>
+<p>Anonymous page outs require the data be moved to the physical swap devices or swap files — ‘swapping’. Anonymous paging, or swapping, hurts performance, and is thus consider a “bad” paging.</p>
+<p>Applications that requires access to the anonymous pages, that have been paged out, require anonymous page in, which blocks I/O call to the disk.</p>
+<p>Page outs themselves may not negatively affect performance as they can be done asynchronously, while page ins are synchronous.</p>
+<h3 id="on-demand-paging">On Demand Paging</h3>
+<p>On demand paging is the act of mapping pages of virtual memory to main memory on demand. It defers CPU overhead of creating mapping until they are needed and accessed, instead of when memory is first allocated.</p>
+<p>A page fault occurs when a page is accessed that has no page memory from virtual memory to main memory.</p>
+<p>If the mapping can be satisfied from another page in memory, it is called a minor fault which may occur for mapping a new page from available memory. It can also occur when mapping to an existing page, such as reading a page from a shared library.</p>
+<h2 id="virtual-memory-states">Virtual Memory States</h2>
+<p>The UNIX virtual memory has 4 states for a page:</p>
+<ol>
+    <li>Unallocated</li>
+    <li>Allocated, unmapped (Unpopulated and not yet faulted)</li>
+    <li>Allocated, mapped to main memory</li>
+    <li>Allocated, mapped to swap device</li>
+</ol>
+<h3 id="overcommit">Overcommit</h3>
+<p>Overcommit allows more memory to be allocated than physically available. (more that the main memory + swap). It is dependent on on-demand paging and on applications not using more than a minority of allocated memory. It allows for malloc () requests to succeed instead of failing as system will rarely decline requests for virtual memory. Consequences of overcommit depend on tumbles and how kernel manages memory pressure — most frequently you’ll see OOM Killed (Out of memory killer).</p>
+<h2 id="file-systems-cache">File Systems Cache</h2>
+<p>True free memory is not useful and it does nothing, so the OS will attempt to utilize spare memory to cache file system. Kernel is also able to quickly free memory from file system cache. This processes is transparent to applications . Logical I/O latency is much lower, as requests are being served from main memory.</p>
+<p>Cache grows over time and “free” memory shrinks. Regular caching is used to improve read performance and buffering inside the cache is used to improve write performance.</p>
+<h2 id="page-cache">Page cache</h2>
+<p>Buffer cache is stored in the page cache in modern Linux and is used for disk I/O to buffer writes.</p>
+<p>It is dynamic and current cache size can be checked in /proc/meminfo. Page cache is used to increase directly and file I/O and virtual memory pages and file system pages are stored in it. Dirty file system pages are flushed by flusher threads (flush), per device processes.</p>
+<p>It happens after:</p>
+<ol>
+    <li>An interval (default 30s)</li>
+    <li>Sync(), fsync(), msync() system calls</li>
+    <li>Too many dirty pages (dirty_ratio)</li>
+    <li>No available page cache pages</li>
+</ol>
+<p>If there is a system memory deficient, kswapd will look for dirty pages to be written to disk. All I/O goes through the page cache unless explicitly set not to do so — Direct I/O. This can result in all writes being blocked if the page cache has completely filled. When all writes are blocked, operating system have a tendency to stop.</p>
+<h2 id="dropping-cache">Dropping Cache</h2>
+<p>It is possible to drop the page, dentry (directory entry cache), and inode caches in Linux, either to forcefully free up memory, or to test file system performance prior to anything being cached.</p>
+<p>To drop the page cache, use “Echo 1 &gt; /proc/sys/vm/drop_caches”
+    To drop dentry and inode caches use “Echo 2 /proc/sys/vm/drop_caches”
+    To drop both use: “Echo 3 &gt; / proc/sys/vm/drop_caches”</p>
+<h2 id="oom-killer-in-linux">OOM Killer in Linux</h2>
+<p>Linux uses various memory management techniques, such as paging, cache shrinking, and cache removal, to handle memory usage. However, there are times when these methods are insufficient, and that’s when the OOM Killer comes into action.</p>
+<p>The OOM Killer will terminate processes to free up memory and ensure the system stays operational. It also terminates processes that share the same memory structure (mm_struct) as the chosen process.</p>
+<p>You can make certain processes less likely to be killed by modifying the oom_adj value at /proc/<pid>/oom_adj. Setting this value to -1000 will protect the process, while setting it to +1000 makes it a prime candidate for termination. The OOM score, located at /proc/<pid>/oom_score, determines which process gets killed. The OOM score reflects how much memory a process is actually using, with a fully utilized memory (100%) resulting in a score of 1000.</p>
+<p>For root-owned processes, the OOM score is slightly reduced by 30 points, which makes them less likely to be targeted by the OOM Killer.</p>
+<p>The issue is triggered primarily for low-order allocations, such as 2³ or smaller.
+    In Linux, memory allocation is done in powers of 2. For example:</p>
+<ol>
+    <li>A 1st-order allocation (2¹) would request 2 pages.</li>
+    <li>A 2nd-order allocation (2²) would request 4 pages.</li>
+    <li>A 3rd-order allocation (2³) would request 8 pages, and so on.</li>
+</ol>
+<p>Memory pages are allocated in powers of 2, meaning a 3rd-order allocation will involve 2³ (8) pages, with the total size depending on the page size.</p>
+<p>** What causes this? **</p>
+<p>The most common cause is that the system is truly out of memory. If /proc/meminfo shows SwapFree and MemFree are around 1% or less, this is likely the cause.</p>
+<p>In rarer cases, a kernel data structure issue or memory leak could be responsible. To investigate, check /proc/meminfo for SwapFree and MemFree, and then examine /proc/slabinfo. One sign of trouble is if the task_struct objects are unusually high, indicating the system might be forking many processes and exhausting kernel memory. You can also identify the specific object consuming the most memory.</p>
+<p>SwapFree may appear misleading if a program uses mlock() or HugeTLB, as memory allocated this way cannot be swapped. In typical setups where swap is not enabled, SwapFree is not usually relevant.</p>
+<p>In most situations, the system is indeed running out of memory, so tracking process memory usage to identify the culprit is crucial.</p>
+<p>The issue can also be triggered by specific memory allocation requirements, such as:</p>
+<ol>
+    <li>A specific memory zone</li>
+    <li>A particular GFP flag</li>
+    <li>A particular allocation order</li>
+</ol>
+<h3 id="segmentation-fault-segfault">Segmentation Fault (segfault)</h3>
+<p>Segfaults are access violations. Hardware with memory protection will notify the OS that a memory access violation has occurred. This might be caused by trying to read a part of memory that the application is not allowed to access, or trying to use a section of memory in a way that is not allowed, such as trying to write to read-only memory.</p>
+<p>Ultimately caused by software errors, most often seen in C programs where pointers reference a portion of virtual memory they are not allowed to access.</p>
+<p>Some programs have exception handling built in for segfaults, but more frequently do not, and segfault will result in the process crashing and potentially generating a core dump. Core dumps are files containing a process’s memory address space at a specific time — in this case, the time of the crash. In practice, you often see other pieces of the program state also dumped, such as processor registers, which often include the program counter and stack pointer, general memory management information, and other processor and operating system flags.</p>
+<h3 id="page-allocation-failure">Page Allocation Failure</h3>
+<p>Implies that the system has failed to allocated a page.</p>
+<p>It can be caused by memory segmentation — the available memory is so fragmented that there is not enough contiguous space to allocated pages that require contiguous space.</p>
+<p>It can also be caused by a general lack of memory — as we discussed earlier, OOM Killer doesn’t trigger on high order allocations. In such a case that you are trying to allocate a larger set of pages than would trigger OOM Killer when low on memory, you might see this instead</p>
+<h3 id="null-pointer-reference">Null Pointer reference</h3>
+<p>A pointer is a variable that contains another variable as the value — such as a memory address.</p>
+<p>Occurs when a pointer is used pointing at a NULL value, when the assumption is made that it is pointing at a valid memory address</p>
+<p>Almost always results in the process crashing, unless exception handling is built in, similar to with segfaults.</p>
+<h3 id="machine-check-exceptions">Machine Check Exceptions</h3>
+<p>MCEs are a hardware error, thrown when the CPU detects a hardware problem. Main potential causes are errors with the system bus, memory, and CPU cache.</p>
+<h3 id="huge-pages--transparent-huge-pages">Huge pages &amp; Transparent Huge Pages</h3>
+<p>As discussed earlier, pages are generally 4KB in size, however, you can change this. Huge Pages allow for pages that are 2MB and 1GB in size.</p>
+<p>As modern processors contain a limited set of page table entries — when you use larger pages, the processor can work with more memory, without failing back to the slower software memory management.</p>
+<p>It requires applications to be aware and coded to take advantage of them.</p>
+<p>Transparent Huge pages are an attempt to abstract this so that everything can take advantage of Huge pages — however, this can cause oddities in behavior on some applications, and some vendors such as Red hat explicitly state that they are problematic in certain workloads such as databases.</p>
+<p>Setting /sys/kernel/mm/transparent_hugepapge/enabled to never will disable them.</p>
+<h3 id="changing-overcommit-settings">Changing overcommit settings</h3>
+<p>You can modify the system overcommit behavior by modifying /proc/sys/vm/overcommit_memory</p>
+<p>(You generally should not not modify this settings)</p>
+<pre><code>0: Heuristic overcommitting. Ensures “crazy” allocations fail while allowing more normal over allocation. (Default)
+1: Always allows overcommitting
+2: Never allow overcommitting. Total address space is limited to swap+configurable percentage of physical RAM. Percentage defaults to 50%, is set at /proc/sys/vm/overcommit_ratio
+</code></pre>
+<h3 id="file-system-repair-and-memory-requirements">File System repair and Memory Requirements</h3>
+<p>When checking/repairing a file system, you can see fairly extreme requirements on memory, particularly when a large file system is involved. Specifics vary, but XFS for example is particularly onerous — SGI recommends 2GB of RAM per TB of space, and 200MB of RAM per million inodes. Can be worked around with using a large swap partition, or with fsck, a scratch file (setting a scratch file can be done in /etc/e2fsck.conf).</p>
+<p>When in doubt, it is safer to side with more RAM and swap — repairs failing due to a lack of memory can be damaging to the data you are trying to save.</p>
+<h2 id="memory-management-in-modern-linux-systems-and-android-differs-in-several-key-aspects">Memory management in modern Linux systems and Android differs in several key aspects:</h2>
+<p>Memory Zones: Linux uses specific memory zones (DMA, DMA32, NORMAL, MOVABLE) for different purposes, while Android&#39;s zoning is tailored for mobile devices. Low Memory Killer: Android employs a Low Memory Killer (LMK) to aggressively terminate background processes when memory is low, which is not present in standard Linux systems.  Kernel Same-page Merging (KSM): Android makes extensive use of KSM to reduce memory footprint, especially for duplicate app data. This feature is less commonly used in desktop Linux. Zram: Android heavily relies on zram for compressed swap space in RAM, which is less common in traditional Linux systems. Memory Allocation: Android uses a custom memory allocator (jemalloc) optimized for mobile devices, while Linux typically uses glibc&#39;s malloc. OOM Handling: Android&#39;s Out-of-Memory (OOM) handling is more aggressive, prioritizing foreground apps and system processes over background tasks. Memory Tracking: Android includes additional memory tracking tools like meminfo and procrank, which are specific to its ecosystem. </p>
+<h2 id="pressure-stall-information-psi">Pressure Stall Information (PSI)</h2>
+<p>Contended CPU, memory, or I/O resources lead to latency spikes, throughput losses, and potential OOM kills. Without precise metrics, users must either under-utilize resources to avoid risk or overcommit, facing frequent disruptions.</p>
+<p>The PSI identifies and quantifies disruptions caused by resource shortages, measuring their impact on workloads and systems. Accurate data on productivity losses helps users optimize workload sizing or hardware provisioning. By aggregating real-time information, systems can be dynamically managed through load shedding, job migration, or pausing low-priority tasks. This enables efficient hardware use without compromising workload stability or risking OOM kills.</p>
+<h3 id="cpu">CPU</h3>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/cpu
+some avg10=0.00 avg60=0.00 avg300=0.00 total=150844896
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+upgautam@amd:~$ sudo cat /proc/pressure/io
+some avg10=0.00 avg60=0.01 avg300=0.00 total=129022505
+full avg10=0.00 avg60=0.01 avg300=0.00 total=126547588
+upgautam@amd:~$ sudo cat /proc/pressure/memory
+some avg10=0.00 avg60=0.00 avg300=0.00 total=12
+full avg10=0.00 avg60=0.00 avg300=0.00 total=12
+</code></pre>
+<p><strong>CPU Pressure</strong>: The pressure values in /proc/pressure/cpu reflect how much time the CPU has been under stress due to a combination of factors, including how much it’s used by active processes and how much it’s having to wait or contend with other resource demands (like memory or I/O). </p>
+<p>These values are percentage of time spent. The max. go upto 100. </p>
+<p><strong>some</strong>: Represents the percentage of time the CPU has been under some pressure — that is, the CPU was waiting for other resources (such as I/O or memory) or was being scheduled to handle multiple tasks but not fully saturated.</p>
+<p><strong>full</strong>: Represents the percentage of time the CPU was under full pressure — meaning it was 100% utilized, and no more tasks could be scheduled for that CPU at that moment.</p>
+<p>avg10, avg60, avg300: These are average pressure values over different time windows:</p>
+<ol>
+    <li>avg10: The average CPU pressure over the last 10 seconds.</li>
+    <li>avg60: The average CPU pressure over the last 60 seconds.</li>
+    <li>avg300: The average CPU pressure over the last 300 seconds (5 minutes).</li>
+</ol>
+<p><strong>total</strong>: This is the total number of CPU pressure events that have occurred since the system was booted. These are cumulative counts of how often the CPU has experienced pressure at each level.</p>
+<p>Running stress-ng,
+    I confirm from <code>top</code> command, I see my CPU is used 99.9%. </p>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/cpu
+some avg10=0.67 avg60=0.80 avg300=0.70 total=47501908
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+</code></pre>
+<p>Linux is efficient in distributing CPU tasks. Even though stress-ng is using a lot of CPU, it’s a single process. The scheduler is capable of handling this efficiently by distributing tasks across available CPU cores. Hence, the CPU is not &quot;waiting&quot; for resources in the same way it would if there were a mix of processes with different types of resource demands (e.g., CPU, I/O, memory). The value increased only when I used multiple processes.</p>
+<p>If you open multiple chrome tabs and some other applications, including <code>upgautam@amd:~$  sudo stress-ng --cpu 32 --verbose</code> then </p>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/cpu
+some avg10=7.78 avg60=2.18 avg300=0.64 total=4712040
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+</code></pre>
+<h3 id="memory">Memory</h3>
+<p>I must stress out to my memory to limit. I do have very fast 128 GB RAM. To stress out, my fast 128GB of RAM, I used <code>sudo stress-ng --vm 4 --vm-bytes 62G --timeout 60s --vm-method all</code> and then checked PSI for memory, </p>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/memory
+some avg10=2.19 avg60=0.77 avg300=0.19 total=755622
+full avg10=1.57 avg60=0.58 avg300=0.14 total=603300
+</code></pre>
+<p>Pressure on the RAM is the one that makes user-interaction bad. </p>
+<h3 id="io">io</h3>
+<pre><code class="language-bash">upgautam@amd:~$ sudo stress-ng --io 32 --timeout 60s
+(or you can use iomix as `sudo stress-ng --iomix 1024`)
+
+upgautam@amd:~$ sudo cat /proc/pressure/io
+some avg10=74.87 avg60=38.62 avg300=10.40 total=36519348
+full avg10=73.75 avg60=38.16 avg300=10.28 total=35167137
+</code></pre>
+<h2 id="monitoring-for-pressure-thresholds">Monitoring for pressure thresholds</h2>
+<pre><code class="language-bash">upgautam@amd:~$ sudo cat /proc/pressure/memory
+some avg10=2.19 avg60=0.77 avg300=0.19 total=755622
+full avg10=1.57 avg60=0.58 avg300=0.14 total=603300
+</code></pre>
+<p>And we can write a user-space program to monitor memory pressure as, </p>
+<pre><code class="language-c">#include &lt;errno.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;poll.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+
+/*
+ * Monitor memory partial stall with 1s tracking window size
+ * and 150ms threshold.
+ */
+int main() {
+      // 150000 ms cumulative delays of total time 1000000
+      // it means for every 100 ms, if cumulative delays cross 15ms, we trigger
+      // trigger format: &lt;type&gt; &lt;cumulative_stall_threshold&gt; &lt;tracking_window&gt;
+      // These values are provided by kernel through sampling.
+      const char trig[] = &quot;some 150000 1000000&quot;;
+      struct pollfd fds;
+      int n;
+
+      fds.fd = open(&quot;/proc/pressure/memory&quot;, O_RDWR | O_NONBLOCK);
+      if (fds.fd &lt; 0) {
+              printf(&quot;/proc/pressure/memory open error: %s\n&quot;,
+                      strerror(errno));
+              return 1;
+      }
+      fds.events = POLLPRI;
+
+      if (write(fds.fd, trig, strlen(trig) + 1) &lt; 0) {
+              printf(&quot;/proc/pressure/memory write error: %s\n&quot;,
+                      strerror(errno));
+              return 1;
+      }
+
+      printf(&quot;waiting for events...\n&quot;);
+      while (1) {
+              n = poll(&amp;fds, 1, -1);
+              if (n &lt; 0) {
+                      printf(&quot;poll error: %s\n&quot;, strerror(errno));
+                      return 1;
+              }
+              if (fds.revents &amp; POLLERR) {
+                      printf(&quot;got POLLERR, event source is gone\n&quot;);
+                      return 0;
+              }
+              if (fds.revents &amp; POLLPRI) {
+                      printf(&quot;event triggered!\n&quot;);
+              } else {
+                      printf(&quot;unknown event received: 0x%x\n&quot;, fds.revents);
+                      return 1;
+              }
+      }
+
+      return 0;
+}
+</code></pre>
+<p>or, we can use Cgroup2 interface, </p>
+<p>Cgroup provides isolation, and several other benefits. You can move those processes that you want to become part of your cgroup. </p>
+<p><code>echo 12345 | sudo tee /sys/fs/cgroup/my_cgroup/cgroup.procs</code>
+    <code>echo 12346 | sudo tee /sys/fs/cgroup/my_cgroup/cgroup.procs</code> and so on.  </p>
+<p>This cgrup2 is basically giving the process-level granularity PSI monitoring. </p>
+<p>In a system with a CONFIG_CGROUPS=y kernel and the cgroup2 filesystem mounted, pressure stall information is also tracked for tasks grouped into cgroups. Each subdirectory in the cgroupfs mountpoint contains cpu.pressure, memory.pressure, and io.pressure files; the format is the same as the /proc/pressure/ files.</p>
+<p>Enable this in kernel config <code>CONFIG_CGROUPS=y</code></p>
+<pre><code class="language-c">#include &lt;errno.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;poll.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;unistd.h&gt;
+
+int main() {
+    // Path to the memory pressure file in the cgroup
+    const char *cgroup_memory_pressure_path = &quot;/sys/fs/cgroup/my_cgroup/memory.pressure&quot;;
+
+    // Trigger string: monitor &quot;some&quot; memory pressure, 150ms threshold in a 1s window
+    const char trigger[] = &quot;some 150000 1000000&quot;;
+
+    struct pollfd fds;
+    int n;
+
+    // Open the memory pressure file for the specific cgroup
+    fds.fd = open(cgroup_memory_pressure_path, O_RDWR | O_NONBLOCK);
+    if (fds.fd &lt; 0) {
+        printf(&quot;Error opening %s: %s\n&quot;, cgroup_memory_pressure_path, strerror(errno));
+        return 1;
+    }
+    fds.events = POLLPRI;
+
+    // Write the trigger to set up monitoring
+    if (write(fds.fd, trigger, strlen(trigger) + 1) &lt; 0) {
+        printf(&quot;Error writing trigger to %s: %s\n&quot;, cgroup_memory_pressure_path, strerror(errno));
+        close(fds.fd);
+        return 1;
+    }
+
+    printf(&quot;Monitoring memory pressure for cgroup at %s...\n&quot;, cgroup_memory_pressure_path);
+
+    // Poll for events
+    while (1) {
+        n = poll(&amp;fds, 1, -1); // Wait indefinitely for an event
+        if (n &lt; 0) {
+            printf(&quot;Poll error: %s\n&quot;, strerror(errno));
+            close(fds.fd);
+            return 1;
+        }
+
+        // Check for events
+        if (fds.revents &amp; POLLERR) {
+            printf(&quot;POLLERR: Event source is gone\n&quot;);
+            break;
+        } else if (fds.revents &amp; POLLPRI) {
+            printf(&quot;Memory pressure event triggered!\n&quot;);
+        } else {
+            printf(&quot;Unknown event: 0x%x\n&quot;, fds.revents);
+            break;
+        }
+    }
+
+    close(fds.fd);
+    return 0;
+}
+</code></pre>
+<p><strong>Steps to do:</strong></p>
+<ol>
+    <li>Set up cgroup: <code>sudo mount -t cgroup2 none /sys/fs/cgroup</code></li>
+    <li><code>sudo mkdir /sys/fs/cgroup/my_cgroup</code></li>
+    <li>Move process into cgroup: <code>echo &lt;PID&gt; | sudo tee /sys/fs/cgroup/my_cgroup/cgroup.procs</code></li>
+    <li>Compile and run above C program then also use <code>stress-ng</code> to do memory pressure. </li>
+    <li>If cumulative memory stall time exceeds the threshold (150ms within a 1s window), the program will print:
+        Memory pressure event triggered!</li>
+</ol>

@@ -1,0 +1,134 @@
+# =============================================================================
+# PRINCIPAL INVESTIGATOR DATA
+# =============================================================================
+
+name: "Uddhav P. Gautam"
+photo: "Uddhav.jpg"
+department: "Computer Engineering"
+university: "Virginia Tech"
+email: "upgautam@vt.edu | rgrinnovatellc@gmail.com"
+
+# Professional Links
+links:
+  github: "https://github.com/uddhavgautam3"
+  scholar: "https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
+  researchgate: "https://www.researchgate.net/profile/Uddhav-Gautam-2"
+  linkedin: "https://www.linkedin.com/in/uddhavpgautam/"
+  vt_profile: "https://ece.vt.edu/"
+
+# CV and Documents
+documents:
+  cv: "cv/Resume_UddhavGautam.pdf"
+
+# Education History
+education:
+  - degree: "PhD in Computer Engineering"
+    institution: "Virginia Tech"
+    period: "2024-present"
+    advisors:
+      - name: "Prof. Haining Wang"
+        role: "Chair"
+        link: "https://ece.vt.edu/people/profile/wangh.html"
+      - name: "Randy Marchany"
+        role: "Co-chair"
+        link: "https://security.vt.edu/about/staff/randy-marchany/"
+    status: "In Progress"
+
+  - degree: "PhD in Computer Science (transferred to Virginia Tech)"
+    institution: "University of Arkansas at Little Rock"
+    period: "2018-2020"
+    status: "Transferred"
+    
+  - degree: "M.S. Computer Science"
+    institution: "University of Arkansas at Little Rock"
+    period: "2015-2017"
+    status: "Completed"
+    
+  - degree: "BSc Computer Science"
+    institution: "Tribhuvan University"
+    period: "2009-2013"
+    location: "Nepal"
+    status: "Completed"
+    
+  - degree: "B.S. Mathematics"
+    institution: "Trichandra Campus"
+    period: "2007-2010"
+    location: "Nepal"
+    status: "Completed"
+
+# Research Interests
+research_interests:
+  - "Computer Security"
+  - "eBPF and Linux Kernel"
+  - "Embedded and IoT Security"
+  - "Bluetooth Low Energy Security"
+  - "System Performance"
+  - "Network Security"
+
+# Current Projects
+current_projects:
+  - name: "ZeroDown"
+    description: "A zero-downtime IoT policy enforcement framework for MCU-class devices with OTA policy updates, runtime toggling, and embedded uBPF execution."
+    status: "Active"
+
+  - name: "BlueSentry"
+    description: "An application-layer BLE security framework combining FSM enforcement and runtime eBPF policies for embedded-device threat detection."
+    status: "Active"
+
+  - name: "eBPF tracing overhead analysis"
+    description: "Kernel observability work on reducing tracing overhead and improving measurement quality under real workloads."
+    status: "Published and ongoing"
+
+  - name: "Kernel protobuf firewall prototypes"
+    description: "Application-layer firewall and protobuf parsing work in the Linux kernel using custom kfunc support and TC-based enforcement."
+    status: "Prototype"
+
+# Professional Experience
+experience:
+  - title: "Graduate Research Assistant"
+    role: "Linux kernel, eBPF, embedded security, and systems research"
+    organization: "Virginia Tech"
+    organization_url: "https://www.vt.edu/"
+    period: "Sep 2023-present"
+    description: "Research on eBPF tracing overhead, runtime IoT policy enforcement, BLE security, kernel instrumentation, and deployable systems prototypes."
+    status: "Current"
+    
+  - title: "Mobile Solutions Technical Lead & Architect"
+    role: "Technical Lead"
+    organization: "Perficient Inc"
+    organization_url: "https://www.perficient.com/"
+    period: "Jun 2021-May 2023"
+    description: "Led Android architecture and delivery for TD Ameritrade to Charles Schwab migration work across a large regulated mobile platform."
+    status: "Previous"
+
+  - title: "Senior Android Developer"
+    role: "Mobile and IoT application engineering"
+    organization: "Viper Design LLC"
+    organization_url: "https://www.viperdesignllc.com/"
+    period: "Mar 2020-Feb 2021"
+    description: "Built IoT and mobile software for Shark robot vacuum products across firmware-adjacent and cross-platform application layers."
+    status: "Previous"
+
+  - title: "U.S. Army"
+    role: "Service"
+    organization: "United States Army"
+    organization_url: "https://www.army.mil/"
+    period: "Apr 2019-Apr 2023"
+    description: "Served four years while developing leadership and operational discipline alongside graduate study and engineering work."
+    status: "Previous"
+
+  - title: "Android Developer"
+    role: "Mobile application development"
+    organization: "Pontos Solution"
+    organization_url: "#"
+    period: "2012-2015"
+    description: "Worked on Android application development in Nepal across product delivery and client-facing engineering work."
+    status: "Previous"
+
+  - title: "System Administrator"
+    role: "Systems administration"
+    organization: "iDream Pvt. Ltd."
+    organization_url: "#"
+    period: "2008-2012"
+    description: "Early infrastructure and systems administration work in Nepal covering operational support and system maintenance."
+    status: "Previous"

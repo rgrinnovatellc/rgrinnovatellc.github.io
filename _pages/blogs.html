@@ -1,0 +1,93 @@
+---
+layout: gridlay
+sitemap: true
+permalink: /blogs/
+title: "Writing"
+description: "Technical articles and implementation notes covering Linux, Android, kernel work, performance, systems programming, and software quality."
+image: /images/Uddhav.jpg
+---
+
+<section class="page-hero surface-panel">
+    <p class="eyebrow">Writing</p>
+    <h1>Technical writing on systems, software, and implementation details</h1>
+    <p class="hero-lead">These posts document practical systems work: Linux internals, Android internals, networking, observability, tooling, and software engineering. The aim is to make them useful when you need to build, debug, or measure something.</p>
+</section>
+
+<section class="page-section">
+    <div class="section-heading-row">
+        <div>
+            <p class="eyebrow">Featured posts</p>
+            <h2 class="section-heading">Start here</h2>
+        </div>
+    </div>
+
+    <div class="post-preview-grid">
+        {% for post in site.posts limit: 3 %}
+        <article class="post-preview-card surface-panel">
+            <p class="post-kicker">{{ post.date | date: '%B %d, %Y' }}</p>
+            <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+            <p>{{ post.excerpt | strip_html | normalize_whitespace | truncate: 180 }}</p>
+            <a class="text-link" href="{{ post.url | relative_url }}">Read article</a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="page-section surface-panel">
+    <p class="eyebrow">Archive</p>
+    <h2 class="section-heading">All posts</h2>
+
+    <div class="writing-controls" data-writing-index>
+        <div class="writing-control-field">
+            <label for="writing-search">Search posts</label>
+            <input id="writing-search" class="form-control" type="search" placeholder="Search by title or topic" autocomplete="off">
+        </div>
+
+        <div class="writing-control-field">
+            <label for="writing-year-filter">Filter by year</label>
+            <select id="writing-year-filter" class="form-select">
+                <option value="all">All years</option>
+                {% assign years_csv = "" %}
+                {% for post in site.posts %}
+                    {% assign y = post.date | date: "%Y" %}
+                    {% unless years_csv contains y %}
+                        {% assign years_csv = years_csv | append: y | append: "," %}
+                    {% endunless %}
+                {% endfor %}
+                {% assign years = years_csv | split: "," %}
+                {% for y in years %}
+                    {% unless y == "" %}
+                <option value="{{ y }}">{{ y }}</option>
+                    {% endunless %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <p class="writing-results" id="writing-results" aria-live="polite"></p>
+
+    <div class="writing-applied" id="writing-applied" hidden>
+        <span class="writing-applied-label">Applied</span>
+        <div class="writing-applied-list" id="writing-applied-list"></div>
+        <button class="writing-clear" type="button" id="writing-clear-filters">Clear all</button>
+    </div>
+
+    <div class="archive-list" id="writing-archive-list">
+        {% for post in site.posts %}
+        <article class="archive-list-item js-writing-item" data-year="{{ post.date | date: '%Y' }}" data-search="{{ post.title | append: ' ' | append: post.excerpt | strip_html | normalize_whitespace | truncatewords: 24 | downcase | escape }}">
+            <div>
+                <p class="post-kicker">{{ post.date | date: '%b %d, %Y' }}</p>
+                <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+                <p>{{ post.excerpt | strip_html | normalize_whitespace | truncate: 150 }}</p>
+            </div>
+            <a class="archive-link" href="{{ post.url | relative_url }}">Open</a>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="writing-actions">
+        <button class="btn btn-outline-primary" type="button" id="writing-load-more" aria-controls="writing-archive-list">Load more posts</button>
+    </div>
+</section>
+
+<script src="{{ '/assets/javascript/blog-index.js' | relative_url }}" defer></script>

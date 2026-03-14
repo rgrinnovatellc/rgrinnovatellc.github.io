@@ -1,0 +1,24 @@
+---
+title: "News"
+layout: textlay
+sitemap: true
+permalink: /allnews/
+description: "Research and publication news for Uddhav P. Gautam."
+---
+
+<section class="page-hero surface-panel">
+    <p class="eyebrow">News</p>
+    <h1>News</h1>
+    <p class="hero-lead">Papers, milestones, and updates.</p>
+</section>
+
+<section class="surface-panel news-list-panel">
+    <div class="news-feed">
+    {% for article in site.data.news %}
+        <article class="news-feed-item news-list-item">
+            <span class="news-date">{{ article.date }}</span>
+            <div class="news-headline">{{ article.headline }}</div>
+        </article>
+    {% endfor %}
+    </div>
+</section>

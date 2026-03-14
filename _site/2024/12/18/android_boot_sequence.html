@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    
+    
+    
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Android Boot Sequence - Uddhav P. Gautam | Systems Research and Software</title>
+    <meta name="description" content="Android Boot Sequence Power On -&gt; Bootloader -&gt; Linux Kernel -&gt; Init -&gt; Zygote -&gt; System Server -&gt; System UI -&gt; Launcher Init: aosp/syst...">
+    <meta name="author" content="Uddhav P. Gautam">
+    <meta name="keywords" content="Uddhav P. Gautam, Uddhav Gautam, Uddhav P Gautam, Uddhav Gautam Virginia Tech, Virginia Tech Computer Engineering, PhD Candidate Virginia Tech, Linux kernel, eBPF, observability, Android security, IoT security, software engineering, systems research, official website">
+    <meta name="theme-color" content="#126554">
+    <meta name="color-scheme" content="light dark">
+    <meta name="format-detection" content="telephone=no">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="googlebot" content="index,follow,max-image-preview:large">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Android Boot Sequence">
+    <meta property="og:description" content="Android Boot Sequence Power On -&gt; Bootloader -&gt; Linux Kernel -&gt; Init -&gt; Zygote -&gt; System Server -&gt; System UI -&gt; Launcher Init: aosp/syst...">
+    <meta property="og:url" content="https://uddhavpgautam.github.io/2024/12/18/android_boot_sequence.html">
+    <meta property="og:site_name" content="Uddhav P. Gautam | Systems Research and Software">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://uddhavpgautam.github.io/images/Uddhav.jpg">
+  <meta property="og:image:alt" content="Portrait of Uddhav P. Gautam">
+    
+    <meta property="article:published_time" content="2024-12-18T00:00:00-05:00">
+    <meta property="article:modified_time" content="2024-12-18T00:00:00-05:00">
+    <meta property="article:author" content="Uddhav P. Gautam">
+    
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Android Boot Sequence">
+    <meta name="twitter:description" content="Android Boot Sequence Power On -&gt; Bootloader -&gt; Linux Kernel -&gt; Init -&gt; Zygote -&gt; System Server -&gt; System UI -&gt; Launcher Init: aosp/syst...">
+    <meta name="twitter:image" content="https://uddhavpgautam.github.io/images/Uddhav.jpg">
+    <meta name="twitter:url" content="https://uddhavpgautam.github.io/2024/12/18/android_boot_sequence.html">
+
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="https://uddhavpgautam.github.io/2024/12/18/android_boot_sequence.html">
+    <link rel="me" href="https://www.linkedin.com/in/uddhavpgautam/">
+    <link rel="me" href="https://github.com/uddhavgautam3">
+    <link rel="me" href="https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ">
+    <link rel="me" href="https://ece.vt.edu/">
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollegeOrUniversity",
+        "@id": "https://uddhavpgautam.github.io#organization",
+        "name": "Virginia Tech",
+        "url": "https://www.vt.edu/",
+        "sameAs": [
+          "https://www.vt.edu/"
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://uddhavpgautam.github.io#person",
+        "name": "Uddhav P. Gautam",
+        "alternateName": [
+          "Uddhav P Gautam",
+          
+          
+          "Uddhav Gautam",
+          
+          "Uddhav P Gautam"
+          
+          
+        ],
+        "givenName": "Uddhav",
+        "familyName": "Gautam",
+        "url": "https://uddhavpgautam.github.io/about/",
+        "mainEntityOfPage": "https://uddhavpgautam.github.io/2024/12/18/android_boot_sequence.html",
+        "image": "https://uddhavpgautam.github.io/images/Uddhav.jpg",
+        "description": "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software.",
+        "email": "mailto:upgautam@vt.edu",
+        "jobTitle": "PhD Candidate",
+        "affiliation": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        },
+        "worksFor": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        },
+        "alumniOf": [
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Virginia Tech"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arkansas at Little Rock"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arkansas at Little Rock"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Tribhuvan University"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Trichandra Campus"
+          }
+          
+        ],
+        "knowsAbout": [
+          
+          "Computer Security",
+          
+          "eBPF and Linux Kernel",
+          
+          "Embedded and IoT Security",
+          
+          "Bluetooth Low Energy Security",
+          
+          "System Performance",
+          
+          "Network Security"
+          
+        ],
+        "sameAs": [
+          
+          "https://github.com/uddhavgautam3"
+          ,"https://www.linkedin.com/in/uddhavpgautam/"
+          ,"https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
+          ,"https://www.researchgate.net/profile/Uddhav-Gautam-2"
+          ,"https://ece.vt.edu/"
+        ]
+      }
+    </script>
+
+    
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Uddhav P. Gautam | Systems Research and Software",
+        "url": "https://uddhavpgautam.github.io",
+        "description": "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software.",
+        "about": {
+          "@id": "https://uddhavpgautam.github.io#person"
+        },
+        "publisher": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        }
+      }
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+</head>
+
+
+  <body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm" aria-label="Primary site navigation">
+    <div class="navbar-inner">
+        <div class="navbar-brand">
+            <a href="/" class="brand-link" aria-label="Go to homepage">
+                <span class="brand-kicker">Research and Software</span>
+                <span class="brand-text">Uddhav P. Gautam</span>
+            </a>
+        </div>
+
+        <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse site-nav-collapse" id="navbarColor02">
+            <div class="navbar-nav site-nav-links me-auto">
+                <a class="nav-item nav-link" href="/">Home</a>
+                
+                    
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/research">Research</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/publications">Publications</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/software">Software</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/blogs">Writing</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/about">About</a>
+                        
+                    
+                
+            </div>
+
+            <div class="navbar-nav site-nav-actions ms-auto">
+                
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light theme">
+                    <i id="theme-icon" class="fa fa-moon-o"></i>
+                </button>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <main class="content-wrapper" id="main-content">
+        <article class="card" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="card-header">
+    <h1 class="post-title" itemprop="name headline">Android Boot Sequence</h1>
+    <div class="post-meta">
+      <i class="fa fa-calendar"></i>
+      <time datetime="2024-12-18T00:00:00-05:00" itemprop="datePublished">Dec 18, 2024</time>
+      
+    </div>
+  </div>
+
+  <div class="card-body post-content" itemprop="articleBody">
+    <h2 id="android-boot-sequence">Android Boot Sequence</h2>
+<p><code>Power On -&gt; Bootloader -&gt; Linux Kernel -&gt; Init -&gt; Zygote -&gt; System Server -&gt; System UI -&gt; Launcher</code></p>
+<h3 id="init-aospsystemcoreinit">Init: aosp/system/core/init</h3>
+<ul>
+<li>Execute init.rc script (this is executed by the init process, which is the very first user-space process). The information from init.rc is used to do all other subsequent steps such as mounting FS, starting zygote etc.</li>
+<li>Mounts file system</li>
+<li>Starts Zygote process for ART (it holds common state (e.g., loaded system libraries) for all android apps and reduces the overhead of starting new apps. (similar to fork in Linux)</li>
+<li>Starts system server, which is responsible for ActivityManager, WindowManager etc. </li>
+<li>Sets System Properties (you can see using <code>adb shell getprop</code>)</li>
+<li>Starts services (e.g., MediaServer, SurfaceFlinger, TimeService) </li>
+<li>Runs any other custom scripts and config. files</li>
+<li>Handles runtime responses (e.g., setup callbacks)</li>
+<li>Transition to user-space</li>
+</ul>
+
+
+  </div>
+
+</article>
+    </main>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto">
+    <div class="footer-shell">
+        <section class="footer-utility" aria-label="Footer utilities">
+            <div class="footer-inline" role="list">
+                <span class="footer-label" role="listitem">CONNECT:</span>
+                <a role="listitem" href="mailto:rgrinnovatellc@gmail.com">rgrinnovatellc@gmail.com</a>
+                <a role="listitem" href="https://github.com/uddhavpgautam" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a role="listitem" href="https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+                <a role="listitem" href="https://www.linkedin.com/in/uddhavpgautam/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <span class="footer-separator" aria-hidden="true" role="listitem"></span>
+                <span class="footer-text" role="listitem">© 2026 Uddhav P. Gautam.</span>
+                <a role="listitem" href="/sitemap/">Sitemap</a>
+                <a role="listitem" href="/privacy/">Privacy</a>
+            </div>
+        </section>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

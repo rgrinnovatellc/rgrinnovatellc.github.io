@@ -1,0 +1,23 @@
+<h1 id="add-your-binary-to-ubuntu-launcher-and-pin-to-dashboard">Add your binary to Ubuntu Launcher and Pin to Dashboard</h1>
+<p>For any application you can create a symbolic link into your <code>/usr/share/bin</code></p>
+<p><code>sudo ln -s /mnt/nvme1n1p1/dictionary/kiwix-desktop_x86_64_2.4.1.appimage /usr/local/bin/kiwix</code></p>
+<p>Now, you can launch as <code>kiwix</code></p>
+<p>To make you can search from Ubuntu show apps menu, you need to create <code>.desktop</code> shortcut file inside <code>~/.local/share/applications</code> folder, </p>
+<pre><code class="language-bash">upgautam@amd:~/Desktop$ nano ~/.local/share/applications/kiwix.desktop
+[Desktop Entry]
+Version=1.0
+Name=Kiwix
+Comment=Offline Wikipedia Reader
+Icon=/home/upgautam/.local/share/icons/kiwix.png
+Exec=kiwix
+Icon=kiwix
+Terminal=false
+Type=Application
+Categories=Education;Offline;
+</code></pre>
+<p>As you can see, I have kiwix.png kiwix logo download there in share/icons folder.</p>
+<p><code>upgautam@amd:~/Desktop$ chmod +x ~/.local/share/applications/kiwix.desktop</code></p>
+<p>Done! Now you can search and then do <code>Pin to Dashboard</code></p>
+<p>Kiwix is an app that is used to open Wikiionary dictionary .zim (9.8 GB database file) file. I had downloaded both Kiwix app image and .zim file before. If not, these are the links,</p>
+<p><a href="https://library.kiwix.org/#lang=eng">https://library.kiwix.org/#lang=eng</a> (download any .zim file)
+<a href="https://kiwix.org/en/applications/">https://kiwix.org/en/applications/</a> (you give +x permission to .appimage file and then you can run that, open .zim file from there)</p>

@@ -1,0 +1,615 @@
+<h1 id="kfunc-kfunc">Kfunc </h1>
+<p><a href="https://docs.kernel.org/bpf/kfuncs.html">https://docs.kernel.org/bpf/kfuncs.html</a><br><a href="https://eunomia.dev/en/tutorials/43-kfuncs/">https://eunomia.dev/en/tutorials/43-kfuncs/</a></p>
+<p>BPF Kernel Functions (kfuncs) are kernel functions exposed for use by BPF programs. Unlike stable BPF helper functions added by the Linux team, kfuncs are not stable and may change between kernel versions. </p>
+<p>Kfuncs provide an alternative to BPF helper functions, and their usage grows as helper functions reach limitations. Kfuncs can be created by anyone and don&#39;t necessarily need to be part of the upstream Linux kernel.</p>
+<p>Two ways we can implement Kfunc: 1) Write a wrapper for BPF 2) Make existing kernel functions visible from bpf . </p>
+<h2 id="creating-a-wrapper-kfunc-creating-a-wrapper-kfunc">Creating a wrapper Kfunc </h2>
+<p>Wrappers are used to control the arguments of the function. </p>
+<pre><code>/* Disables missing prototype warnings */
+__bpf_kfunc_start_defs();
+__bpf_kfunc struct task_struct *bpf_find_get_task_by_vpid(pid_t nr)
+{
+//<a href="https://elixir.bootlin.com/linux/v6.11/source/include/linux/sched.h%5C#L1898">https://elixir.bootlin.com/linux/v6.11/source/include/linux/sched.h#L1898</a>
+    return find_get_task_by_vpid(nr);
+}
+__bpf_kfunc_end_defs();
+</code></pre>
+<p>This means, the kernel function now can be wrapped inside a Kfunc that bpf can call. This extends bpf functionality. We could also make existing kernel functions visible to bpf (for this all we need to do is register kernel functions to the BPF system), but wrapping it adds few benefits such as annotating parameters of the Kfuncs. Parameter annotations are to provide more context to the bpf verifier.</p>
+
+<p>Example of __sz annotation (What it tells is when you pass a memory pointer, also pass the size of the object pointed by that memory pointer). This makes sure whatever mem points that size should be known by the verifier.</p>
+
+<pre><code>__bpf_kfunc void bpf_memzero(void *mem, int mem__sz) //__sz annotation
+{
+    //your function implementation
+}</code></pre>
+
+<p>There is another annotation __k (not a separate annotation parameter but used as a suffix). Annotate as __k, this is a known type that also has fixed size. It means we know the size of the object of this type. So the verifier accepts it.</p>
+
+<pre><code>__bpf_kfunc void *bpf_obj_new(u32 local_type_id__k, ...)
+{
+    //your function implementation
+}</code></pre>
+
+<p>If we have to pass an uninitialized parameter, then we must annotate that with __uninit.</p>
+
+<pre><code>__bpf_kfunc int bpf_dynptr_from_skb(..., struct bpf_dynptr_kern *ptr__uninit)
+{
+    //your function implementation
+}</code></pre>
+
+<p>__opt annotation is used to indicate that the buffer associated with an __sz or __szk argument may be null. If the function is passed a nullptr in place of the buffer, the verifier will not check that length is appropriate for the buffer.</p>
+
+<pre><code>__bpf_kfunc void *bpf_dynptr_slice(..., void *buffer__opt, u32 buffer__szk)
+{
+    //your function implementation
+}</code></pre>
+
+<p>__str annotation is used to indicate that the argument is a constant string.</p>
+
+<pre><code>__bpf_kfunc bpf_get_file_xattr(..., const char *name__str, ...)
+{
+    //your function implementation
+}</code></pre>
+
+<h2 id="kfunc-as-an-existing-kernel-function-kfunc-as-an-existing-kernel-function">Kfunc as an existing kernel function</h2>
+
+<p>In addition to kfuncs’ arguments, the bpf verifier may need more information about the type of kfunc(s) being registered with the BPF subsystem. To do so, we define flags on a set of kfuncs as follows:</p>
+
+<pre><code>__bpf_kfunc struct task_struct *bpf_get_task_pid(s32 pid)
+{
+    …
+}</code></pre>
+
+<pre><code>// #define BTF_KFUNCS_START(name) static struct btf_id_set8 __maybe_unused name = { .flags = BTF_SET8_KFUNCS };
+BTF_KFUNCS_START(bpf_task_set) //bpf_task_set is any variable name
+//#define BTF_ID_FLAGS(prefix, name, ...)
+BTF_ID_FLAGS(func, bpf_get_task_pid, KF_ACQUIRE | KF_RET_NULL) //bpf_get_task_pid is our kfunc
+BTF_ID_FLAGS(func, bpf_put_pid, KF_RELEASE)
+// #define BTF_KFUNCS_END(name)
+BTF_KFUNCS_END(bpf_task_set)</code></pre>
+
+<p>Everything above are user-defined symbols (e.g., variables, flags, function names) except those Macro.</p>
+
+<p>Check <a href="https://docs.kernel.org/bpf/kfuncs.html">https://docs.kernel.org/bpf/kfuncs.html</a> to know more about these flags.</p>
+
+<h3 id="registering-the-kfuncs-registering-the-kfuncs">Registering the kfuncs</h3>
+
+<p>Once the kfunc is prepared for use, the final step to making it visible is registering it with the BPF subsystem. Registration is done per BPF program type. An example is shown below:</p>
+
+<pre><code>BTF_KFUNCS_START(bpf_task_set)
+BTF_ID_FLAGS(func, bpf_get_task_pid, KF_ACQUIRE | KF_RET_NULL)
+BTF_ID_FLAGS(func, bpf_get_task_pid, KF_RELEASE)
+BTF_KFUNCS_END(bpf_task_set)
+
+static const struct btf_kfunc_id_set bpf_task_kfunc_set = {
+        .owner = THIS_MODULE,
+        .set   = &bpf_task_set,
+};
+
+static int init_subsystem(void)
+{
+        return register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &bpf_task_kfunc_set);
+}
+late_initcall(init_subsystem); //this gets called somehow</code></pre>
+
+<p>In our example, we have module init, where we register kfunc, and then module when unloaded automatically unregister kfunc (this is done by system), so you don’t need to unregister.</p>
+
+<h2 id="kfunc-practical-implementation">Kfunc practical implementation</h2>
+
+<p>Below linux directory contains linux kernel version 6.11. I have compiled the kernel there (make), installed headers, installed modules, compiled libbpf, and bpftool, and then updated grub. This makes sure that my host is running the same kernel version 6.11 and the bpf code, kfunc module. Later, I will compile and link against the same system v6.11.</p>
+
+<pre><code>sudo apt install -y git gcc-multilib build-essential gcc g++ cpio fakeroot libncurses5-dev libssl-dev ccache dwarves libelf-dev cmake automake mold libdw-dev libdwarf-dev bpfcc-tools libbpfcc-dev libbpfcc zstd linux-headers-generic libtinfo-dev terminator libstdc++-11-dev libstdc++-12-dev libstdc++-13-dev libstdc++-14-dev bc fping xterm trace-cmd tcpdump flex bison rsync python3-venv ltrace sysdig kmod xdp-tools net-tools iproute2 htop libcap-dev libdisasm-dev binutils-dev unzip pkg-config lsb-release wget curl software-properties-common gnupg zlib1g openssh-client openssh-server strace bpftrace tmux gdb attr busybox vim openssl genisoimage pciutils clang llvm libvirt-daemon-system libvirt-clients qemu-kvm libbpf-dev linux-tools-common</code></pre>
+
+<p>Cd to linux directory</p>
+
+<pre><code>cat /boot/config-$(uname -r) &gt; .config # get the .config file from your running kernel</code></pre>
+
+<pre><code># do these 4 lines; otherwise make fails. This is required only if you install real linux
+scripts/config --disable SYSTEM_TRUSTED_KEYS
+scripts/config --disable SYSTEM_REVOCATION_KEYS
+scripts/config --set-str CONFIG_SYSTEM_TRUSTED_KEYS ""
+scripts/config --set-str CONFIG_SYSTEM_REVOCATION_KEYS ""</code></pre>
+
+<pre><code>make olddefconfig</code></pre>
+
+<pre><code>fakeroot make -j`nproc`
+echo $?
+make headers_install</code></pre>
+
+<pre><code>cd tools/lib/bpf
+make</code></pre>
+
+<pre><code>cd tools/bpf/bpftool
+make</code></pre>
+
+<pre><code># go back to linux root directory
+sudo ln -s /usr/include/x86_64-linux-gnu/asm /usr/include/asm
+sudo make modules_install
+sudo make install
+reboot</code></pre>
+
+<h2 id="directory-structure-directory-structure">Directory structure</h2>
+
+<pre><code>&lt;root&gt;/
+├── linux/
+│   ├── ...
+├── bpf-progs/
+│   ├── kfunc/
+│   │   ├── bpf/
+│   │   │   ├── Makefile
+│   │   │   ├── kfunc.kern.c
+│   │   ├── kfunc_module/
+│   │   │   ├── Makefile
+│   │   │   ├── hello.c
+│   │   ├── loader/
+│   │   │   ├── Makefile
+│   │   │   ├── load.user.c
+</code></pre>
+
+<h2 id="bpf-progskfuncbpf-bpf-progskfuncbpf">bpf-progs/kfunc/bpf }</h2>
+
+<p>This directory holds Makefile to that compiles *.kern.c using Clang compiler.</p>
+
+<h3 id="bpf-progskfuncbpfmakefile-bpf-progskfuncbpfmakefile">bpf-progs/kfunc/bpf/Makefile</h3>
+
+<pre>
+SOURCES := $(wildcard *.kern.c)
+FILES := $(SOURCES:.c=.o)
+
+CLANG ?= clang
+LLVM_STRIP ?= llvm-strip
+BPF_TARGET := bpf
+
+CFLAGS := -O2 -g -target $(BPF_TARGET) -Wall -Werror -I/usr/include
+
+all: $(FILES)
+
+$(FILES) : %.o : %.c
+    $(CLANG) $(CFLAGS) -c $< -o $@
+
+.PHONY : clean
+
+clean:
+    rm $(FILES)
+</pre>
+
+<h3 id="bpf-progskfuncbpfkfunckernc-bpf-progskfuncbpfkfunckernc">bpf-progs/kfunc/bpf/kfunc.kern.c </h3>
+<pre>
+/* SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause) */
+#define BPF_NO_GLOBAL_DATA
+#include &lt;linux/bpf.h&gt;
+#include &lt;bpf/bpf_helpers.h&gt;
+#include &lt;bpf/bpf_tracing.h&gt;
+
+typedef unsigned int u32;
+typedef long long s64;
+
+/* Declare the external kfunc */
+extern int bpf_strstr(const char *str, u32 str__sz, const char *substr, u32 substr__sz) __ksym;
+
+char LICENSE[] SEC(&quot;license&quot;) = &quot;Dual BSD/GPL&quot;;
+
+SEC(&quot;kprobe/do_unlinkat&quot;)
+int handle_kprobe(struct pt_regs *ctx)
+{
+    __u32 pid = bpf_get_current_pid_tgid() &gt;&gt; 32;
+    char str[] = &quot;Hello, world!&quot;;
+    char substr[] = &quot;wor&quot;;
+    int result = bpf_strstr(str, sizeof(str) - 1, substr, sizeof(substr) - 1);
+    if (result != -1)
+    {
+        bpf_printk(&quot;&#39;%s&#39; found in &#39;%s&#39; at index %d\n&quot;, substr, str, result);
+    }
+    bpf_printk(&quot;Hello, world! (pid: %d) bpf_strstr %d\n&quot;, pid, result);
+    return 0;
+}
+
+<h3 id="bpf-progskfunckfunc_modulemakefile-bpf-progskfunckfunc_modulemakefile">bpf-progs/kfunc/kfunc_module/Makefile </h3>
+
+obj-m += hello.o  # hello.o is the target
+
+# Enable BTF generation
+KBUILD_CFLAGS += -g -O2
+
+all:
+    make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+
+clean:
+    make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+</pre>
+
+<h3 id="bpf-progskfunckfunc_modulehelloc-bpf-progskfunckfunc_modulehelloc">bpf-progs/kfunc/kfunc_module/hello.c </h3>
+
+<pre>
+#include &lt;linux/init.h&gt;   	// Macros for module initialization
+#include &lt;linux/module.h&gt; 	// Core header for loading modules
+#include &lt;linux/kernel.h&gt; 	// Kernel logging macros
+#include &lt;linux/bpf.h&gt;
+#include &lt;linux/btf.h&gt;
+#include &lt;linux/btf_ids.h&gt;
+
+/* Declare the kfunc prototype */
+__bpf_kfunc int bpf_strstr(const char *str, u32 str__sz, const char *substr, u32 substr__sz);
+
+/* Begin kfunc definitions */
+__bpf_kfunc_start_defs();
+
+/* Define the bpf_strstr kfunc */
+__bpf_kfunc int bpf_strstr(const char *str, u32 str__sz, const char *substr, u32 substr__sz)
+{
+    // Edge case: if substr is empty, return 0 (assuming empty string is found at the start)
+    if (substr__sz == 0)
+    {
+        return 0;
+    }
+    // Edge case: if the substring is longer than the main string, it's impossible to find
+    if (substr__sz &gt; str__sz)
+    {
+        return -1; // Return -1 to indicate not found
+    }
+    // Iterate through the main string, considering the size limit
+    for (size_t i = 0; i &lt;= str__sz - substr__sz; i++)
+    {
+        size_t j = 0;
+        // Compare the substring with the current position in the string
+        while (j &lt; substr__sz &amp;&amp; str[i + j] == substr[j])
+        {
+            j++;
+        }
+        // If the entire substring was found
+        if (j == substr__sz)
+        {
+            return i; // Return the index of the first match
+        }
+    }
+    // Return -1 if the substring is not found
+    return -1;
+}
+
+/* End kfunc definitions */
+__bpf_kfunc_end_defs();
+
+/* Define the BTF kfuncs ID set */
+BTF_KFUNCS_START(bpf_kfunc_example_ids_set)
+BTF_ID_FLAGS(func, bpf_strstr)
+BTF_KFUNCS_END(bpf_kfunc_example_ids_set)
+
+/* Register the kfunc ID set */
+static const struct btf_kfunc_id_set bpf_kfunc_example_set = {
+    .owner = THIS_MODULE,
+    .set = &amp;bpf_kfunc_example_ids_set,
+};
+
+/* Function executed when the module is loaded */
+static int __init hello_init(void)
+{
+    int ret;
+
+    printk(KERN_INFO &quot;Hello, world!\\n&quot;);
+
+    /* Register the BTF kfunc ID set for BPF_PROG_TYPE_KPROBE */
+    ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_KPROBE, &amp;bpf_kfunc_example_set);
+    if (ret)
+    {
+        pr_err(&quot;bpf_kfunc_example: Failed to register BTF kfunc ID set\\n&quot;);
+        return ret;
+    }
+    printk(KERN_INFO &quot;bpf_kfunc_example: Module loaded successfully\\n&quot;);
+    return 0; // Return 0 if successful
+}
+
+/* Function executed when the module is removed */
+static void __exit hello_exit(void)
+{
+    /* Unregister the BTF kfunc ID set */
+    // unregister_btf_kfunc_id_set(BPF_PROG_TYPE_KPROBE, &amp;bpf_kfunc_example_set);
+    printk(KERN_INFO &quot;Goodbye, world!\\n&quot;);
+}
+
+/* Macros to define the module’s init and exit points */
+module_init(hello_init);
+module_exit(hello_exit);
+
+MODULE_LICENSE(&quot;GPL&quot;);             	// License type (GPL)
+MODULE_AUTHOR(&quot;Your Name&quot;);
+</pre>
+
+
+<h3 id="bpf-progskfuncloadermakefile-bpf-progskfuncloadermakefile">bpf-progs/kfunc/loader/Makefile </h3>
+<pre>
+USER_SRC := $(wildcard *.user.c)
+USER := $(USER_SRC:.c=)
+
+BPF-CLANG := clang
+BPF_CLANG_CFLAGS := -target bpf -g -Wall -O2 -c
+
+#Your custom compiled linux source code directory
+LINUX_DIR := ../../../linux
+USER-CFLAGS := -I$(LINUX_DIR)/usr/include -I$(LINUX_DIR)/tools/lib/ -L$(LINUX_DIR)/tools/lib/bpf/
+
+all: $(USER)
+
+$(USER) : % : %.c
+    gcc $(USER-CFLAGS) $&lt; -lbpf -o $@
+
+.PHONY : clean
+
+clean :
+    rm $(FILES) $(USER)
+</pre>
+
+<h3 id="bpf-progskfuncloaderloaduserc-bpf-progskfuncloaderloaduserc">bpf-progs/kfunc/loader/load.user.c</h3>
+
+<pre>
+/**
+ * User program for loading a single generic program and attaching
+ * Usage: ./load.user bpf_file bpf_prog_name
+ */
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/syscall.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &lt;bpf/bpf.h&gt;
+#include &lt;bpf/libbpf.h&gt;
+
+int main(int argc, char *argv[])
+{
+    if (argc != 3) {
+        printf(&quot;Not enough args\n&quot;);
+        printf(&quot;Expected: ./load.user bpf_file bpf_prog_name\n&quot;);
+        return -1;
+    }
+
+    char * bpf_path = argv[1];
+    char * prog_name = argv[2];
+
+    // Open the shared1.kern object
+    struct bpf_object * prog = bpf_object__open(bpf_path);
+
+    // Try and load this program
+    // This should make the map we need
+    if (bpf_object__load(prog)) {
+        printf(&quot;Failed&quot;);
+        return 0;
+    }
+
+    struct bpf_program * program = bpf_object__find_program_by_name(prog, prog_name);
+
+    if (program == NULL) {
+        printf(&quot;Shared 1 failed\\n&quot;);
+        return 0;
+    }
+
+    printf(&quot;PID: %d\\n&quot;, getpid());
+
+    getchar();
+
+    bpf_program__attach(program);
+
+    while (1) {
+        sleep(1);
+    }
+
+    return 0;
+}
+</pre>
+
+
+
+<h2 id="testing">Testing</h2>
+<pre>
+upgautamvt@upgautamlenovo:/opt/bpfabsorb$ cd bpf-progs/kfunc/kfunc_module/
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module$ make
+make -C /lib/modules/6.12.0/build M=/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module modules
+make[1]: Entering directory '/opt/bpfabsorb/linux611'
+  CC [M]  /opt/bpfabsorb/bpf-progs/kfunc/kfunc_module/hello.o
+  MODPOST /opt/bpfabsorb/bpf-progs/kfunc/kfunc_module/Module.symvers
+  CC [M]  /opt/bpfabsorb/bpf-progs/kfunc/kfunc_module/hello.mod.o
+  CC [M]  /opt/bpfabsorb/bpf-progs/kfunc/kfunc_module/.module-common.o
+  LD [M]  /opt/bpfabsorb/bpf-progs/kfunc/kfunc_module/hello.ko
+  BTF [M] /opt/bpfabsorb/bpf-progs/kfunc/kfunc_module/hello.ko
+make[1]: Leaving directory '/opt/bpfabsorb/linux611'
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module$ ls
+hello.c  hello.ko  hello.mod  hello.mod.c  hello.mod.o  hello.o  Makefile  modules.order  Module.symvers
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module$ cd ../loader/
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ make
+gcc -I../../../linux/usr/include -I../../../linux/tools/lib/ -L../../../linux/tools/lib/bpf/ load.user.c -lbpf -o load.user
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ ls
+load.user  load.user.c  Makefile
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ cd ../bpf/
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/bpf$ make
+clang -O2 -g -target bpf -Wall -Werror -I/usr/include -c kfunc.kern.c -o kfunc.kern.o
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/bpf$ ls
+kfunc.kern.c  kfunc.kern.o  Makefile
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/bpf$ cd ../kfunc_module/
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module$ sudo insmod hello.ko
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module$ sudo lsmod | grep hello
+hello              	12288  0
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module$ sudo cat /proc/kallsyms | grep bpf_strstr
+ffffffffc451805c r __BTF_ID__func__bpf_strstr__91451	[hello]
+ffffffffc11cd000 t __pfx_bpf_strstr 	[hello]
+ffffffffc11cd010 t bpf_strstr   [hello]
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/kfunc_module$ cd ../loader/
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ sudo ./load.user ../bpf/
+kfunc.kern.c  kfunc.kern.o  Makefile
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ sudo ./load.user ../bpf/kfunc.kern.o handle_kprobe
+PID: 26176
+^Z
+[1]+  Stopped             	sudo ./load.user ../bpf/kfunc.kern.o handle_kprobe
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ sudo bpftool prog show | grep handle_kprobe
+104: kprobe  name handle_kprobe  tag 6ae48a8f9b9725bb  gpl
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ touch file
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ rm file
+upgautamvt@upgautamlenovo:/opt/bpfabsorb/bpf-progs/kfunc/loader$ sudo dmesg | tail
+[ 1234.5678] 'wor' found in 'Hello, world!' at index 7
+[ 1234.5679] Hello, world! (pid: 2075) bpf_strstr 7
+</pre>
+
+
+<h2 id="tcingress-kfunc">tc/ingress Kfunc</h2>
+
+<p>Add kfunc in kernel module</p>
+<h2 id="kfunc_module_tc_ingressc-kfunc_module_tc_ingressc">kfunc_module_tc_ingress.c</h2>
+
+<p>#include &lt;linux/init.h&gt;<br>#include &lt;linux/module.h&gt;<br>#include &lt;linux/kernel.h&gt;<br>#include &lt;linux/bpf.h&gt;<br>#include &lt;linux/btf.h&gt;<br>#include &lt;linux/btf_ids.h&gt;<br>#include &lt;linux/netfilter.h&gt;<br>#include &lt;linux/netfilter_ipv4.h&gt;<br>#include &lt;linux/ip.h&gt;<br>#include &lt;linux/if_ether.h&gt;<br>#include &lt;linux/filter.h&gt;<br>#include &lt;linux/udp.h&gt;</p>
+<p>// pbtools stuff<br>#include &quot;pbtools.c&quot;</p>
+<p>#include &quot;dropme.c&quot;</p>
+
+<p>/* Declare the kfunc prototype */<br>__bpf_kfunc int kfunc_tc_ingress_clsact_filter(struct sk_buff *skb, u32 skb__sz);</p>
+<p>/* Begin kfunc definitions */<br>__bpf_kfunc_start_defs();</p>
+
+<p>/* Define the bpf_strstr kfunc */<br>__bpf_kfunc int kfunc_tc_ingress_clsact_filter(struct sk_buff *skb, u32 skb__sz)<br>{<br>    void *data = (void *)(long)skb-&gt;data;<br>    //void *data_end = (void *)(long)(skb-&gt;data + skb-&gt;len);</p>
+
+<pre><code>u8 workspace[64];
+struct dropme_foo_t *foo_p;
+void * payload = data + sizeof(struct ethhdr) + sizeof(struct iphdr) + sizeof(struct udphdr);
+u32 len = *(u32 *)payload;
+
+// turn encoded into data of the packet
+foo_p = dropme_foo_new(&workspace[0], sizeof(workspace));
+len = dropme_foo_decode(foo_p, data + sizeof(struct ethhdr) + sizeof(struct iphdr) + sizeof(struct udphdr) + sizeof(u32), len);
+
+if (foo_p->drop == 1) {
+    return -1;
+}
+
+// Check for invalid Ethernet header and drop the packet
+//if (data + sizeof(struct ethhdr) > data_end) {
+//    return -1; // Drop packet
+//}
+
+//struct ethhdr *eth = data;
+
+// If not IPv4, continue processing
+//if (eth->h_proto != __constant_htons(ETH_P_IP)) {
+//    return 0; // Continue processing
+//}
+
+// Check for invalid IP header
+//if (data + sizeof(struct ethhdr) + sizeof(struct iphdr) > data_end) {
+//    return -1; // Drop packet
+//}
+
+//struct iphdr *ip = (struct iphdr *)(data + sizeof(struct ethhdr));
+//__be32 src_ip = ip->saddr; // Get source IP
+
+// Check if source IP matches the value in the map
+//if (src_ip == *value) {
+//    return -1; // Drop packets here and return
+//}
+
+return 0; // Accept packet
+</code></pre>
+
+<p>}</p>
+
+<p>/* End kfunc definitions */<br>__bpf_kfunc_end_defs();</p>
+
+<p>/* Define the BTF kfuncs ID set */<br>BTF_KFUNCS_START(bpf_kfunc_example_ids_set)<br>BTF_ID_FLAGS(func, kfunc_tc_ingress_clsact_filter)<br>BTF_KFUNCS_END(bpf_kfunc_example_ids_set)</p>
+
+<p>/* Register the kfunc ID set */<br>static const struct btf_kfunc_id_set bpf_kfunc_example_set = {<br>   .owner = THIS_MODULE,<br>   .set = &amp;bpf_kfunc_example_ids_set,<br>};</p>
+
+<p>/* Function executed when the module is loaded */<br>static int __init kfunc_module_tc_ingress_init(void)<br>{<br>   int ret;</p>
+<p>   printk(KERN_INFO &quot;Hello, world!\n&quot;);<br>   /* Register the BTF kfunc ID set for BPF_PROG_TYPE_KPROBE */<br>   ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &amp;bpf_kfunc_example_set);<br>   if (ret)<br>   {<br>       pr_err(&quot;bpf_kfunc_example: Failed to register BTF kfunc ID set\n&quot;);<br>       return ret;<br>   }<br>   printk(KERN_INFO &quot;bpf_kfunc_example: Module loaded successfully\n&quot;);<br>   return 0; // Return 0 if successful<br>}</p>
+
+<p>/* Function executed when the module is removed */<br>static void __exit kfunc_module_tc_ingress_exit(void)<br>{<br>   /* Unregister the BTF kfunc ID set */<br>   // unregister_btf_kfunc_id_set(BPF_PROG_TYPE_KPROBE, &amp;bpf_kfunc_example_set);<br>   printk(KERN_INFO &quot;Goodbye, world!\n&quot;);<br>}</p>
+
+<p>/* Macros to define the module’s init and exit points */<br>module_init(kfunc_module_tc_ingress_init);<br>module_exit(kfunc_module_tc_ingress_exit);</p>
+
+<p>MODULE_LICENSE(&quot;GPL&quot;);<br>MODULE_AUTHOR(&quot;Uddhav P. Gautam (Owner of RGR Innovate LLC)&quot;);<br>MODULE_DESCRIPTION(&quot;Module for tc_ingress_clsact_filter functionality accessible via BPF kfunc&quot;);<br>MODULE_VERSION(&quot;1.0&quot;);</p>
+
+
+<h3 id="makefile-makefile">Makefile </h3>
+
+<pre><code>obj-m += kfunc_module_tc_ingress.o  # kfunc_module_tc_ingress.o is the target
+
+# Enable BTF generation
+KBUILD_CFLAGS += -g -O2
+
+all:
+    make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+
+clean:
+    make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+
+insmod kfunc_module_tc_ingress /check lsmod
+
+//also do cat /proc/kallsysm | grep kfunc_tc_ingress_clsact_filter to make sure you see the added kfunc symbol in kallsyms
+
+Now, we can consume this kfunc from bpf program.
+</code></pre>
+
+
+<h2 id="dummy_kernc-dummy_kernc">dummy_kern.c </h2>
+
+<pre><code>#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+
+// Define the size of the __sk_buff struct (typically 256 bytes, confirm for your kernel version)
+#define SKB_SIZE 256
+
+// Declare the external kfunc prototype with __ksym
+extern int kfunc_tc_ingress_clsact_filter(struct __sk_buff *skb, __u32 skb__sz) __ksym;
+
+SEC("tc/ingress")
+int kfunc_firewall(struct __sk_buff *skb) {
+    // Call the kfunc to process the skb, passing the size of skb and value
+    int result = kfunc_tc_ingress_clsact_filter(skb, SKB_SIZE);
+
+    bpf_printk("Result of kfunc was %d\\n", result);
+
+    // Logic based on kfunc return value
+    if (result == -1) {
+        return BPF_DROP; // DROP packet
+    } else {
+        return BPF_OK; // ACCEPT packet
+    }
+
+    return BPF_OK; // If nothing in map, always allow
+}
+
+char LICENSE[] SEC("license") = "GPL";
+</code></pre>
+
+
+
+
+<h3 id="makefile-makefile-1">Makefile </h3>
+
+<pre><code>
+SOURCES := $(wildcard *.kern.c)
+FILES := $(SOURCES:.c=.o)
+
+CLANG ?= clang
+LLVM_STRIP ?= llvm-strip
+BPF_TARGET := bpf
+
+CFLAGS := -O2 -g -target $(BPF_TARGET) -Wall -Werror -I/usr/include
+
+all: $(FILES)
+
+$(FILES) : %.o : %.c
+    $(CLANG) $(CFLAGS) -c $< -o $@
+
+.PHONY : clean
+
+clean:
+    rm $(FILES)
+</code></pre>
+
+
+
+<h3 id="to-trigger-bpf-program-to-trigger-bpf-program">To trigger bpf program </h3>
+<pre><code>
+Now, trigger the whole logic
+tc qdisc add dev eth0 clsact
+tc filter add dev eth0 ingress bpf da obj ./dummy.kern.o sec tc/ingress
+</code></pre>
+
+Everything should work!
+
+
+<h2 id="docker-cleanup">Docker cleanup</h2>
+<pre>docker ps -aq | xargs -r docker rm -f<br>docker images -q | xargs -r docker rmi -f<br>docker volume ls -q | xargs -r docker volume rm<br>docker system prune -a --volumes -f</pre>

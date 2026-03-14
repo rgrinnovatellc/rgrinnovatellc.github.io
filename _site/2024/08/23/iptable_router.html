@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    
+    
+    
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>IPTables Router - Uddhav P. Gautam | Systems Research and Software</title>
+    <meta name="description" content="We create a ubuntu server a iptables based router Router Ubuntu sudo gedit /etc/sysctl.conf net.ipv4.ip_forward = 1 sudo sysctl -p sudo iptables -t nat -A PO...">
+    <meta name="author" content="Uddhav P. Gautam">
+    <meta name="keywords" content="Uddhav P. Gautam, Uddhav Gautam, Uddhav P Gautam, Uddhav Gautam Virginia Tech, Virginia Tech Computer Engineering, PhD Candidate Virginia Tech, Linux kernel, eBPF, observability, Android security, IoT security, software engineering, systems research, official website">
+    <meta name="theme-color" content="#126554">
+    <meta name="color-scheme" content="light dark">
+    <meta name="format-detection" content="telephone=no">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="googlebot" content="index,follow,max-image-preview:large">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="IPTables Router">
+    <meta property="og:description" content="We create a ubuntu server a iptables based router Router Ubuntu sudo gedit /etc/sysctl.conf net.ipv4.ip_forward = 1 sudo sysctl -p sudo iptables -t nat -A PO...">
+    <meta property="og:url" content="https://uddhavpgautam.github.io/2024/08/23/iptable_router.html">
+    <meta property="og:site_name" content="Uddhav P. Gautam | Systems Research and Software">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://uddhavpgautam.github.io/images/Uddhav.jpg">
+  <meta property="og:image:alt" content="Portrait of Uddhav P. Gautam">
+    
+    <meta property="article:published_time" content="2024-08-23T00:00:00-04:00">
+    <meta property="article:modified_time" content="2024-08-23T00:00:00-04:00">
+    <meta property="article:author" content="Uddhav P. Gautam">
+    
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="IPTables Router">
+    <meta name="twitter:description" content="We create a ubuntu server a iptables based router Router Ubuntu sudo gedit /etc/sysctl.conf net.ipv4.ip_forward = 1 sudo sysctl -p sudo iptables -t nat -A PO...">
+    <meta name="twitter:image" content="https://uddhavpgautam.github.io/images/Uddhav.jpg">
+    <meta name="twitter:url" content="https://uddhavpgautam.github.io/2024/08/23/iptable_router.html">
+
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="canonical" href="https://uddhavpgautam.github.io/2024/08/23/iptable_router.html">
+    <link rel="me" href="https://www.linkedin.com/in/uddhavpgautam/">
+    <link rel="me" href="https://github.com/uddhavgautam3">
+    <link rel="me" href="https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ">
+    <link rel="me" href="https://ece.vt.edu/">
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollegeOrUniversity",
+        "@id": "https://uddhavpgautam.github.io#organization",
+        "name": "Virginia Tech",
+        "url": "https://www.vt.edu/",
+        "sameAs": [
+          "https://www.vt.edu/"
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://uddhavpgautam.github.io#person",
+        "name": "Uddhav P. Gautam",
+        "alternateName": [
+          "Uddhav P Gautam",
+          
+          
+          "Uddhav Gautam",
+          
+          "Uddhav P Gautam"
+          
+          
+        ],
+        "givenName": "Uddhav",
+        "familyName": "Gautam",
+        "url": "https://uddhavpgautam.github.io/about/",
+        "mainEntityOfPage": "https://uddhavpgautam.github.io/2024/08/23/iptable_router.html",
+        "image": "https://uddhavpgautam.github.io/images/Uddhav.jpg",
+        "description": "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software.",
+        "email": "mailto:upgautam@vt.edu",
+        "jobTitle": "PhD Candidate",
+        "affiliation": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        },
+        "worksFor": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        },
+        "alumniOf": [
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Virginia Tech"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arkansas at Little Rock"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arkansas at Little Rock"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Tribhuvan University"
+          },
+          
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Trichandra Campus"
+          }
+          
+        ],
+        "knowsAbout": [
+          
+          "Computer Security",
+          
+          "eBPF and Linux Kernel",
+          
+          "Embedded and IoT Security",
+          
+          "Bluetooth Low Energy Security",
+          
+          "System Performance",
+          
+          "Network Security"
+          
+        ],
+        "sameAs": [
+          
+          "https://github.com/uddhavgautam3"
+          ,"https://www.linkedin.com/in/uddhavpgautam/"
+          ,"https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
+          ,"https://www.researchgate.net/profile/Uddhav-Gautam-2"
+          ,"https://ece.vt.edu/"
+        ]
+      }
+    </script>
+
+    
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Uddhav P. Gautam | Systems Research and Software",
+        "url": "https://uddhavpgautam.github.io",
+        "description": "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software.",
+        "about": {
+          "@id": "https://uddhavpgautam.github.io#person"
+        },
+        "publisher": {
+          "@id": "https://uddhavpgautam.github.io#organization"
+        }
+      }
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="/assets/javascript/theme-switcher.js" defer></script>
+    <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js" defer></script>
+
+
+
+<script>
+MathJax = {
+    tex: {
+    inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+    tags: 'ams'  // should be 'ams', 'none', or 'all' }. This line makes the equation numbering and labeling work
+    }, 
+    svg: {
+    fontCache: 'global'
+    }
+};
+</script>
+<script
+    type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script> 
+
+</head>
+
+
+  <body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!-- Google Tag Manager (noscript) -->
+
+
+<nav class="navbar sticky-top navbar-expand-sm" aria-label="Primary site navigation">
+    <div class="navbar-inner">
+        <div class="navbar-brand">
+            <a href="/" class="brand-link" aria-label="Go to homepage">
+                <span class="brand-kicker">Research and Software</span>
+                <span class="brand-text">Uddhav P. Gautam</span>
+            </a>
+        </div>
+
+        <button class="toggler navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse site-nav-collapse" id="navbarColor02">
+            <div class="navbar-nav site-nav-links me-auto">
+                <a class="nav-item nav-link" href="/">Home</a>
+                
+                    
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/research">Research</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/publications">Publications</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/software">Software</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/blogs">Writing</a>
+                        
+                    
+                        
+                            <a class="nav-item nav-link" href="/about">About</a>
+                        
+                    
+                
+            </div>
+
+            <div class="navbar-nav site-nav-actions ms-auto">
+                
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light theme">
+                    <i id="theme-icon" class="fa fa-moon-o"></i>
+                </button>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <main class="content-wrapper" id="main-content">
+        <p>We create a ubuntu server a iptables based router</p>
+<h1 id="router-ubuntu">Router Ubuntu</h1>
+<pre><code>sudo gedit /etc/sysctl.conf
+net.ipv4.ip_forward = 1
+sudo sysctl -p
+</code></pre>
+<p><code>sudo iptables -t nat -A POSTROUTING -o wlx0013eff30e78 -j MASQUERADE</code></p>
+<ul>
+<li><code>-A POSTROUTING</code> specifies that the rule applies to packets after they have been routed.</li>
+<li><code>-o wlx0013eff30e78</code> specifies the outgoing interface, which is your Wi-Fi interface connected to the internet.</li>
+<li><code>-j MASQUERADE</code> tells the system to replace the source IP address of outgoing packets with the IP address of the
+interface (in this case, the public IP of <code>wlx0013eff30e78</code>). This way, the return packets can find their way back to
+the originating device.</li>
+</ul>
+<p><code>sudo iptables -A FORWARD -i wlx0013eff30e78 -o eth0 -j ACCEPT</code></p>
+<ul>
+<li><code>-A FORWARD</code> indicates that this rule applies to packets being forwarded.</li>
+<li><code>-i wlx0013eff30e78</code> specifies that the packets are coming in from the Wi-Fi interface.</li>
+<li><code>-o enp0s31f6</code> specifies that the packets are going out to the Ethernet interface connected to the other machine.</li>
+<li><code>-j ACCEPT</code> allows these packets to be forwarded.</li>
+</ul>
+<p><code>sudo iptables -A FORWARD -i enp0s31f6 -o wlx0013eff30e78 -m state --state RELATED,ESTABLISHED -j ACCEPT</code></p>
+<ul>
+<li><code>-m state --state RELATED,ESTABLISHED</code> matches packets that are related to existing connections (i.e., responses to
+requests made by the devices on the local network).</li>
+<li>This is crucial for allowing replies from the internet back to the local devices.</li>
+</ul>
+<p>Wlx0013eff30e78 is a wifi internet interface. Enp0s31f6 is connected to another machine’s enp0s31f6. They have manual IP
+192.168.1.102 and 101 respectively.</p>
+<h2 id="to-persist">To persist</h2>
+<p>We have two options: (1) Using iptables-persistent (2) Using script</p>
+<h3 id="using-iptables-persistent">Using iptables-persistent</h3>
+<pre><code>sudo apt install iptables-persistent
+sudo iptables -t nat -A POSTROUTING -o wlx0013eff30e78 -j MASQUERADE
+sudo iptables -A FORWARD -i wlx0013eff30e78 -o eth0 -j ACCEPT
+sudo iptables -A FORWARD -i enp0s31f6 -o wlx0013eff30e78 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo netfilter-persistent save
+</code></pre>
+<h3 id="using-script">Using script</h3>
+<pre><code>sudo nano /etc/network/if-up.d/router-iptables
+#!/bin/sh
+  iptables -t nat -A POSTROUTING -o wlx0013eff30e78 -j MASQUERADE
+  iptables -A FORWARD -i wlx0013eff30e78 -o eth0 -j ACCEPT
+  iptables -A FORWARD -i enp0s31f6 -o wlx0013eff30e78 -m state --state RELATED,ESTABLISHED -j ACCEPT
+</code></pre>
+<p><code>sudo chmod +x /etc/network/if-up.d/router-iptables</code></p>
+<p>To check</p>
+<pre><code>sudo iptables -L
+sudo iptables -t nat -L
+</code></pre>
+<h2 id="other-machine">Other machine</h2>
+<pre><code>sudo ip route add default via 192.168.1.102
+echo &quot;nameserver 8.8.8.8&quot; | sudo tee /etc/resolv.conf
+nameserver 8.8.8.8
+</code></pre>
+<h2 id="persist">Persist</h2>
+<p>Edit /etc/network/interfaces as</p>
+<pre><code>auto enp1s0
+iface enp1s0 inet dhcp
+post-up ip route add default via 192.168.1.102
+</code></pre>
+<p>And, sudo nano /etc/systemd/resolved.conf</p>
+<pre><code>[Resolve]
+DNS=8.8.8.8
+</code></pre>
+
+
+    </main>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<footer class="footer mt-auto">
+    <div class="footer-shell">
+        <section class="footer-utility" aria-label="Footer utilities">
+            <div class="footer-inline" role="list">
+                <span class="footer-label" role="listitem">CONNECT:</span>
+                <a role="listitem" href="mailto:rgrinnovatellc@gmail.com">rgrinnovatellc@gmail.com</a>
+                <a role="listitem" href="https://github.com/uddhavpgautam" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a role="listitem" href="https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+                <a role="listitem" href="https://www.linkedin.com/in/uddhavpgautam/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <span class="footer-separator" aria-hidden="true" role="listitem"></span>
+                <span class="footer-text" role="listitem">© 2026 Uddhav P. Gautam.</span>
+                <a role="listitem" href="/sitemap/">Sitemap</a>
+                <a role="listitem" href="/privacy/">Privacy</a>
+            </div>
+        </section>
+    </div>
+</footer>
+
+
+  </body>
+
+</html>

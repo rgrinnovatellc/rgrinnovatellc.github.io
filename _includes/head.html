@@ -1,0 +1,192 @@
+<head>
+    {% assign page_title = page.title | default: site.title %}
+    {% assign meta_description = page.description | default: page.excerpt | default: site.data.site.metadata.description | default: site.description | strip_html | normalize_whitespace | truncate: 160 %}
+    {% assign canonical_url = page.url | replace:'index.html','' | absolute_url %}
+    {% assign default_share_image = '/images/' | append: site.data.pi.photo %}
+    {% assign share_image = page.image | default: default_share_image | absolute_url %}
+  {% assign robots_directive = "index,follow,max-image-preview:large" %}
+  {% if page.noindex == true or page.index == false %}
+    {% assign robots_directive = "noindex,follow,max-image-preview:large" %}
+  {% endif %}
+  {% assign og_type = "website" %}
+  {% if page.layout == 'post' or page.collection == 'posts' %}
+    {% assign og_type = "article" %}
+  {% endif %}
+  {% assign profile_name = site.data.pi.name | default: site.title %}
+  {% assign profile_name_plain = profile_name | replace: '.', '' %}
+  {% assign profile_first_name = profile_name | split: ' ' | first %}
+  {% assign profile_last_name = profile_name | split: ' ' | last %}
+  {% assign profile_affiliation = site.affiliation | default: site.data.site.academic.affiliation %}
+  {% assign profile_position = site.position | default: site.data.site.academic.position %}
+  {% assign profile_description = site.data.site.metadata.description | default: site.description %}
+  {% assign profile_about_url = '/about/' | absolute_url %}
+  {% assign institution_url = site.data.site.academic.university_url | default: site.url %}
+  {% assign profile_aliases = site.data.site.metadata.person_aliases %}
+  {% assign personal_github = site.data.pi.links.github | default: site.data.site.social.github %}
+  {% assign personal_linkedin = site.data.pi.links.linkedin | default: site.data.site.social.linkedin %}
+  {% assign personal_scholar = site.data.pi.links.scholar | default: site.data.site.social.scholar %}
+  {% assign personal_researchgate = site.data.pi.links.researchgate | default: site.data.site.social.researchgate %}
+  {% assign personal_vt_profile = site.data.pi.links.vt_profile | default: institution_url %}
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% if page.url == '/' or page_title == site.title %}{{ site.title | escape }}{% else %}{{ page_title | escape }} - {{ site.title | escape }}{% endif %}</title>
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="author" content="{{ site.data.site.metadata.author | default: site.title }}">
+    <meta name="keywords" content="{{ page.keywords | default: site.data.site.metadata.keywords }}">
+    <meta name="theme-color" content="#126554">
+    <meta name="color-scheme" content="light dark">
+    <meta name="format-detection" content="telephone=no">
+  <meta name="robots" content="{{ robots_directive }}">
+  <meta name="googlebot" content="{{ robots_directive }}">
+
+    <meta property="og:type" content="{{ og_type }}">
+    <meta property="og:title" content="{{ page_title | escape }}">
+    <meta property="og:description" content="{{ meta_description }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:site_name" content="{{ site.title | escape }}">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="{{ share_image }}">
+  <meta property="og:image:alt" content="Portrait of {{ profile_name }}">
+    {% if og_type == 'article' %}
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+    <meta property="article:modified_time" content="{{ page.last_modified_at | default: page.date | date_to_xmlschema }}">
+    <meta property="article:author" content="{{ profile_name }}">
+    {% endif %}
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page_title | escape }}">
+    <meta name="twitter:description" content="{{ meta_description }}">
+    <meta name="twitter:image" content="{{ share_image }}">
+    <meta name="twitter:url" content="{{ canonical_url }}">
+
+    <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="me" href="{{ personal_linkedin }}">
+    <link rel="me" href="{{ personal_github }}">
+    <link rel="me" href="{{ personal_scholar }}">
+    <link rel="me" href="{{ personal_vt_profile }}">
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollegeOrUniversity",
+        "@id": {{ site.url | append: '#organization' | jsonify }},
+        "name": {{ profile_affiliation | jsonify }},
+        "url": {{ institution_url | jsonify }},
+        "sameAs": [
+          {{ institution_url | jsonify }}
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": {{ site.url | append: '#person' | jsonify }},
+        "name": {{ profile_name | jsonify }},
+        "alternateName": [
+          {{ profile_name_plain | jsonify }}{% if profile_aliases and profile_aliases.size > 0 %},{% endif %}
+          {% if profile_aliases and profile_aliases.size > 0 %}
+          {% for alias in profile_aliases %}
+          {{ alias | jsonify }}{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+          {% endif %}
+        ],
+        "givenName": {{ profile_first_name | jsonify }},
+        "familyName": {{ profile_last_name | jsonify }},
+        "url": {{ profile_about_url | jsonify }},
+        "mainEntityOfPage": {{ canonical_url | jsonify }},
+        "image": {{ share_image | jsonify }},
+        "description": {{ profile_description | jsonify }},
+        "email": {{ site.email | split: '|' | first | strip | prepend: 'mailto:' | jsonify }},
+        "jobTitle": {{ profile_position | jsonify }},
+        "affiliation": {
+          "@id": {{ site.url | append: '#organization' | jsonify }}
+        },
+        "worksFor": {
+          "@id": {{ site.url | append: '#organization' | jsonify }}
+        },
+        "alumniOf": [
+          {% for edu in site.data.pi.education %}
+          {
+            "@type": "CollegeOrUniversity",
+            "name": {{ edu.institution | jsonify }}
+          }{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ],
+        "knowsAbout": [
+          {% for interest in site.data.pi.research_interests %}
+          {{ interest | jsonify }}{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ],
+        "sameAs": [
+          {% assign comma = '' %}
+          {% if personal_github %}{{ comma }}{{ personal_github | jsonify }}{% assign comma = ',' %}{% endif %}
+          {% if personal_linkedin %}{{ comma }}{{ personal_linkedin | jsonify }}{% assign comma = ',' %}{% endif %}
+          {% if personal_scholar %}{{ comma }}{{ personal_scholar | jsonify }}{% assign comma = ',' %}{% endif %}
+          {% if personal_researchgate %}{{ comma }}{{ personal_researchgate | jsonify }}{% assign comma = ',' %}{% endif %}
+          {% if personal_vt_profile %}{{ comma }}{{ personal_vt_profile | jsonify }}{% endif %}
+        ]
+      }
+    </script>
+
+    {% if page.url == '/about/' %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "url": {{ canonical_url | jsonify }},
+        "name": {{ page_title | escape | jsonify }},
+        "mainEntity": {
+          "@id": {{ site.url | append: '#person' | jsonify }}
+        }
+      }
+    </script>
+    {% endif %}
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": {{ site.title | jsonify }},
+        "url": {{ site.url | jsonify }},
+        "description": {{ profile_description | jsonify }},
+        "about": {
+          "@id": {{ site.url | append: '#person' | jsonify }}
+        },
+        "publisher": {
+          "@id": {{ site.url | append: '#organization' | jsonify }}
+        }
+      }
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="{{ site.baseurl }}/favicon.svg">
+    <link rel="apple-touch-icon" href="{{ site.baseurl }}/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com">
+    <link rel="preconnect" href="https://f.vimeocdn.com">
+
+    <script src="{{ '/assets/javascript/theme-switcher.js' | relative_url }}" defer></script>
+    <script src="{{ '/assets/javascript/bootstrap/bootstrap.bundle.min.js' | relative_url }}" defer></script>
+
+{% if jekyll.environment == 'production' %}
+{% include analytics.html %}
+{% endif %}
+
+{% include mathjax.html %}
+
+</head>
