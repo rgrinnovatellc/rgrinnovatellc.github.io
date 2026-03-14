@@ -130,6 +130,12 @@ Changes in `_data/` are rendered by templates in `_layouts/` and `_includes/`.
 
 This repository is configured for GitHub Pages-style static hosting.
 
+Important for this repository:
+
+- This site depends on `jekyll-scholar` and custom gems from `Gemfile`.
+- In GitHub repository settings, set Pages Source to `GitHub Actions`.
+- Do not use `Deploy from a branch` for this repo, because that path runs the restricted `actions/jekyll-build-pages` environment (`github-pages` gem / Jekyll 3.10) and does not support `jekyll-scholar` tags.
+
 Typical deployment flow:
 
 1. Commit and push source changes to the configured branch.
@@ -139,6 +145,12 @@ Notes:
 
 - `_site/` is the generated output directory.
 - The `Rakefile` includes a `publish` task inherited from an old template remote; do not rely on that task unless you intentionally reconfigure its git remote.
+
+If CI fails with a message like `Liquid syntax error: Unknown tag 'bibliography'`:
+
+1. Open `Settings -> Pages` in GitHub.
+2. Under `Build and deployment`, set `Source` to `GitHub Actions`.
+3. Re-run the failed workflow or push a new commit.
 
 ## Troubleshooting
 
