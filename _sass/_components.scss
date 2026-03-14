@@ -855,3 +855,11 @@ img {
 .hero-signal-card strong { white-space: nowrap; }
 .page-hero .hero-portrait { align-items: stretch; }
 .hero-portrait .hero-image { width: 100%; max-width: none; }
+
+.title-credential {
+    font-size: 0.55em;
+    color: var(--text-muted);
+    font-weight: 500;
+    vertical-align: middle;
+    margin-left: 0.3rem;
+}
