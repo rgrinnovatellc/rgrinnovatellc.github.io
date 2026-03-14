@@ -13,6 +13,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@086ffb1a2090c870a3f881cc91ea83aa4243d408 #1.95.1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Build site
+        run: bundle exec jekyll build
+
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
@@ -21,12 +30,12 @@ jobs:
             --verbose
             --no-progress
             --accept 200,206,301,302,403,429
-            --exclude-mail
-            --exclude-path _site
-            --exclude-path vendor
+            --max-retries 2
+            --timeout 20
+            --root-dir _site
             --exclude "^http://127.0.0.1"
             --exclude "^http://localhost"
-            "**/*.md"
-            "**/*.html"
-            "robots.txt"
-            "sitemap.xml"
+            --exclude "^https://www.viperdesignllc.com/?$"
+            "_site/**/*.html"
+            "_site/sitemap.xml"
+            "_site/feed.xml"
