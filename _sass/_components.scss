@@ -344,19 +344,20 @@ img {
 
 /* About page: keep portrait frame and role card tight to content */
 .page-hero .hero-visual {
+  justify-self: end;
   width: fit-content;
   max-width: 100%;
 }
 
 .page-hero .hero-portrait {
-  width: min(100%, 16.8rem);
+  width: 20rem;
   max-width: 100%;
   align-items: flex-start;
   aspect-ratio: auto;
 }
 
 .page-hero .premium-frame {
-  width: min(100%, 16.8rem);
+  width: 20rem;
   max-width: 100%;
 }
 
@@ -580,7 +581,7 @@ img {
 
 .page-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
+  grid-template-columns: 1fr auto;
   gap: 2.1rem;
   align-items: center;
 }
@@ -711,7 +712,7 @@ img {
   border-radius: 0.9rem;
   max-width: 100%;
 }
-.profile-image { max-width: 250px; }
+.profile-image { display: block; width: 100%; object-fit: cover; }
 .profile-image-small { max-width: 150px; }
 
 // Responsive
@@ -850,3 +851,7 @@ img {
     transition: none !important;
   }
 }
+
+.hero-signal-card strong { white-space: nowrap; }
+.page-hero .hero-portrait { align-items: stretch; }
+.hero-portrait .hero-image { width: 100%; max-width: none; }
