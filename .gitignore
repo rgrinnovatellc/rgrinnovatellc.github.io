@@ -17,6 +17,7 @@ Gemfile.lock
 package-lock.json
 node_modules/
 yarn.lock
+vendor/bundle/
 
 # IDE files
 .idea/

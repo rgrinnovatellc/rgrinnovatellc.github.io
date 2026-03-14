@@ -11,7 +11,7 @@ url: "https://uddhavpgautam.github.io"
 # Contact Information
 email: "upgautam@vt.edu | rgrinnovatellc@gmail.com"
 phone: "+1 (919) 729-4141"
-github_username: "upgautamvt"
+github_username: "uddhavpgautam"
 
 # Academic Information
 affiliation: "Virginia Tech"
@@ -31,7 +31,7 @@ office:
 
 # Social Media & Professional Links
 social:
-  github: "https://github.com/uddhavgautam3"
+  github: "https://github.com/uddhavpgautam"
   scholar: "https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
   researchgate: "https://www.researchgate.net/profile/Uddhav-Gautam-2"
 
@@ -110,6 +110,9 @@ sass:
 # Plugins
 plugins:
   - "jekyll/scholar"
+  - "jekyll-seo-tag"
+  - "jekyll-sitemap"
+  - "jekyll-feed"
 
 # Include Configuration
 include:

@@ -1,0 +1,32 @@
+name: Link Check
+
+on:
+  push:
+    branches: ["master", "main"]
+  pull_request:
+    branches: ["master", "main"]
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          fail: true
+          args: >-
+            --verbose
+            --no-progress
+            --accept 200,206,301,302,403,429
+            --exclude-mail
+            --exclude-path _site
+            --exclude-path vendor
+            --exclude "^http://127.0.0.1"
+            --exclude "^http://localhost"
+            "**/*.md"
+            "**/*.html"
+            "robots.txt"
+            "sitemap.xml"
