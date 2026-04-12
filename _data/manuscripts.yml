@@ -4,7 +4,8 @@
 #   year: "2026"
 #   summary: "A zero-downtime post-commissioning policy enforcement framework for MCU-class IoT devices using an embedded uBPF runtime and secure OTA policy lifecycle management."
 
-- title: "BlueSentry: Dynamic Runtime eBPF Policies for Comprehensive BLE Security on Embedded Devices"
-  status: "Under review"
-  year: "2025"
-  summary: "A BLE security framework combining FSM-based enforcement and runtime-tunable eBPF policies for embedded-device threat detection without kernel or controller changes."
+# HIDDEN: double-blind review — uncomment after decision
+# - title: "BlueSentry: Dynamic Runtime eBPF Policies for Comprehensive BLE Security on Embedded Devices"
+#   status: "Under review"
+#   year: "2025"
+#   summary: "A BLE security framework combining FSM-based enforcement and runtime-tunable eBPF policies for embedded-device threat detection without kernel or controller changes."

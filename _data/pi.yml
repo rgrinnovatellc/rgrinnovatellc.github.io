@@ -72,9 +72,10 @@ current_projects:
 #     description: "A zero-downtime IoT policy enforcement framework for MCU-class devices with OTA policy updates, runtime toggling, and embedded uBPF execution."
 #     status: "Active"
 
-  - name: "BlueSentry"
-    description: "An application-layer BLE security framework combining FSM enforcement and runtime eBPF policies for embedded-device threat detection."
-    status: "Active"
+# HIDDEN: double-blind review — uncomment after decision
+#   - name: "BlueSentry"
+#     description: "An application-layer BLE security framework combining FSM enforcement and runtime eBPF policies for embedded-device threat detection."
+#     status: "Active"
 
   - name: "eBPF tracing overhead analysis"
     description: "Kernel observability work on reducing tracing overhead and improving measurement quality under real workloads."

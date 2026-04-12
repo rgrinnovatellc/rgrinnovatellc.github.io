@@ -103,7 +103,8 @@ enforcement; runtime monitoring for resource-constrained systems.
   % HIDDEN: double-blind review — uncomment after decision
   % \item \hangindent=1em \textbf{Uddhav P. Gautam}. ``ZeroDown: A Zero-Downtime IoT Policy Enforcement Framework.'' Submitted to \textit{ACM WiSec}, 2026.
 
-  \item \hangindent=1em \textbf{Uddhav P. Gautam}. ``BlueSentry: Dynamic Runtime eBPF Policies for Comprehensive BLE Security on Embedded Devices.'' Under review, 2025.
+  % HIDDEN: double-blind review — uncomment after decision
+  % \item \hangindent=1em \textbf{Uddhav P. Gautam}. ``BlueSentry: Dynamic Runtime eBPF Policies for Comprehensive BLE Security on Embedded Devices.'' Under review, 2025.
 
 \end{itemize}
 
@@ -135,15 +136,16 @@ enforcement; runtime monitoring for resource-constrained systems.
 %   \item Demonstrated deterministic runtime policy toggling for BLE pairing enforcement without rebooting or reflashing the device
 % \end{itemize}
 
-\vspace{3pt}
-\textbf{Bluetooth System/Security Research (BlueSentry Project)}
-\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
-  \item Designed \textbf{BlueSentry}, an application-layer BLE security framework that combines FSM-based enforcement of core invariants with sandboxed eBPF policies for pattern-based D1--D4 threat detection, without kernel or controller changes
-  \item Built a hybrid policy architecture with per-device MAC exceptions, device-class policies, zero-trust defaults, and runtime-tunable timing profiles
-  \item Implemented integrity-verified OTA policy updates carrying runtime flags, thresholds, and eBPF bytecode, enabling security policy evolution without firmware reflashing or service interruption
-  \item Validated host-visible detection of pairing and key-size downgrades, pairing and authentication anomalies, reconnection spoofing, and CTKD weakening on Zephyr RTOS
-  \item Demonstrated deployability on nRF52840 DK with a 291KB flash footprint, 81KB peak RAM usage, and 11,280-byte OTA policy updates completing in 4.4s median
-\end{itemize}
+% HIDDEN: double-blind review — uncomment after decision
+% \vspace{3pt}
+% \textbf{Bluetooth System/Security Research (BlueSentry Project)}
+% \begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
+%   \item Designed \textbf{BlueSentry}, an application-layer BLE security framework that combines FSM-based enforcement of core invariants with sandboxed eBPF policies for pattern-based D1--D4 threat detection, without kernel or controller changes
+%   \item Built a hybrid policy architecture with per-device MAC exceptions, device-class policies, zero-trust defaults, and runtime-tunable timing profiles
+%   \item Implemented integrity-verified OTA policy updates carrying runtime flags, thresholds, and eBPF bytecode, enabling security policy evolution without firmware reflashing or service interruption
+%   \item Validated host-visible detection of pairing and key-size downgrades, pairing and authentication anomalies, reconnection spoofing, and CTKD weakening on Zephyr RTOS
+%   \item Demonstrated deployability on nRF52840 DK with a 291KB flash footprint, 81KB peak RAM usage, and 11,280-byte OTA policy updates completing in 4.4s median
+% \end{itemize}
 
 \vspace{3pt}
 \textbf{eBPF \& Linux Kernel Research}
