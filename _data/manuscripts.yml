@@ -1,7 +1,8 @@
-- title: "ZeroDown: A Zero-Downtime IoT Policy Enforcement Framework"
-  status: "Submitted to ACM WiSec"
-  year: "2026"
-  summary: "A zero-downtime post-commissioning policy enforcement framework for MCU-class IoT devices using an embedded uBPF runtime and secure OTA policy lifecycle management."
+# HIDDEN: double-blind review — uncomment after decision
+# - title: "ZeroDown: A Zero-Downtime IoT Policy Enforcement Framework"
+#   status: "Submitted to ACM WiSec"
+#   year: "2026"
+#   summary: "A zero-downtime post-commissioning policy enforcement framework for MCU-class IoT devices using an embedded uBPF runtime and secure OTA policy lifecycle management."
 
 - title: "BlueSentry: Dynamic Runtime eBPF Policies for Comprehensive BLE Security on Embedded Devices"
   status: "Under review"

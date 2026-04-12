@@ -1,5 +1,6 @@
-- date: 10 February, 2026
-  headline: "Submitted manuscript: ZeroDown, a zero-downtime IoT policy enforcement framework for MCU-class devices"
+# HIDDEN: double-blind review — uncomment after decision
+# - date: 10 February, 2026
+#   headline: "Submitted manuscript: ZeroDown, a zero-downtime IoT policy enforcement framework for MCU-class devices"
 
 - date: 18 October, 2025
   headline: "Manuscript update: BlueSentry, a runtime eBPF policy framework for BLE security on embedded devices"

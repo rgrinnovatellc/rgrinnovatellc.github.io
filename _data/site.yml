@@ -4,9 +4,9 @@
 
 # Site Metadata
 metadata:
-  title: "Uddhav P. Gautam | Systems Research and Software"
-  description: "Official website of Uddhav P. Gautam, PhD Candidate in Computer Engineering at Virginia Tech. Linux systems, eBPF observability, Android and IoT security, publications, and software."
-  keywords: "Uddhav P. Gautam, Uddhav Gautam, Uddhav P Gautam, Uddhav Gautam Virginia Tech, Virginia Tech Computer Engineering, PhD Candidate Virginia Tech, Linux kernel, eBPF, observability, Android security, IoT security, software engineering, systems research, official website"
+  title: "Uddhav P. Gautam | RGR Innovate LLC | Systems Research and Software"
+  description: "Official website of Uddhav P. Gautam and RGR Innovate LLC. Systems research, eBPF observability, Android and IoT security, publications, software, and technical writing."
+  keywords: "Uddhav P. Gautam, Uddhav Gautam, Uddhav P Gautam, RGR Innovate LLC, RGR Innovate, Uddhav Gautam Virginia Tech, Virginia Tech Computer Engineering, PhD Candidate Virginia Tech, Linux kernel, eBPF, observability, Android security, IoT security, software engineering, systems research, official website"
   author: "Uddhav P. Gautam"
   person_aliases:
     - "Uddhav Gautam"
@@ -18,9 +18,17 @@ metadata:
 urls:
   site: "https://uddhavpgautam.github.io"
   baseurl: ""
-  repository: "uddhavpgautam/uddhavpgautam.github.io"
-  github_repo: "https://github.com/uddhavpgautam/uddhavpgautam.github.io"
-  github_api: "https://api.github.com/repos/uddhavpgautam/uddhavpgautam.github.io"
+  repository: "rgrinnovatellc/rgrinnovatellc.github.io"
+  github_repo: "https://github.com/rgrinnovatellc/rgrinnovatellc.github.io"
+  github_api: "https://api.github.com/repos/rgrinnovatellc/rgrinnovatellc.github.io"
+
+organization:
+  name: "RGR Innovate LLC"
+  legal_name: "RGR Innovate LLC"
+  url: "https://uddhavpgautam.github.io"
+  email: "rgrinnovatellc@gmail.com"
+  same_as:
+    - "https://github.com/rgrinnovatellc"
 
 # Contact Information
 contact:
@@ -71,8 +79,8 @@ config:
 # Footer Configuration
 footer:
   copyright_year: 2025
-  copyright_text: "© 2025 Uddhav P. Gautam. All rights reserved."
-  source_code_link: "https://github.com/uddhavpgautam/uddhavpgautam.github.io"
+  copyright_text: "© 2025 Uddhav P. Gautam and RGR Innovate LLC. All rights reserved."
+  source_code_link: "https://github.com/rgrinnovatellc/rgrinnovatellc.github.io"
   template_credit: "Based on Academic Website Template"
   
 # Navigation Configuration

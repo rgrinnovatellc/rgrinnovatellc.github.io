@@ -67,9 +67,10 @@ research_interests:
 
 # Current Projects
 current_projects:
-  - name: "ZeroDown"
-    description: "A zero-downtime IoT policy enforcement framework for MCU-class devices with OTA policy updates, runtime toggling, and embedded uBPF execution."
-    status: "Active"
+# HIDDEN: double-blind review — uncomment after decision
+#   - name: "ZeroDown"
+#     description: "A zero-downtime IoT policy enforcement framework for MCU-class devices with OTA policy updates, runtime toggling, and embedded uBPF execution."
+#     status: "Active"
 
   - name: "BlueSentry"
     description: "An application-layer BLE security framework combining FSM enforcement and runtime eBPF policies for embedded-device threat detection."
