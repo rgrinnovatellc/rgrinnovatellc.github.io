@@ -71,7 +71,7 @@ image: /images/Uddhav.jpg
                     <h3>{{ item.title }}</h3>
                     <span class="timeline-period">{{ item.period }}</span>
                 </div>
-                <p class="timeline-subtitle"><a href="{{ item.organization_url }}" target="_blank" rel="noopener noreferrer">{{ item.organization }}</a></p>
+                <p class="timeline-subtitle">{% if item.organization_url %}<a href="{{ item.organization_url }}" target="_blank" rel="noopener noreferrer">{{ item.organization }}</a>{% else %}{{ item.organization }}{% endif %}</p>
                 <p>{{ item.description }}</p>
             </li>
             {% endfor %}

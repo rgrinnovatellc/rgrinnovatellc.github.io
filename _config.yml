@@ -37,9 +37,12 @@ social:
 
 # Navigation Configuration
 nav_pages:
-  - name: "about"
-    title: "About"
-    url: "/about"
+  - name: "home"
+    title: "Home"
+    url: "/"
+  - name: "research"
+    title: "Research"
+    url: "/research"
   - name: "publications"
     title: "Publications"
     url: "/publications"
@@ -49,6 +52,9 @@ nav_pages:
   - name: "blogs"
     title: "Blogs"
     url: "/blogs"
+  - name: "about"
+    title: "About"
+    url: "/about"
 
 # Content Configuration
 content:

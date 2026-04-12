@@ -18,6 +18,7 @@ layout: null
     {% assign page_changefreq = 'weekly' %}
   {% elsif canonical_path == '/about/' or canonical_path == '/software/' %}
     {% assign page_priority = '0.7' %}
+    {% assign page_changefreq = 'monthly' %}
   {% elsif canonical_path == '/privacy/' %}
     {% assign page_priority = '0.3' %}
     {% assign page_changefreq = 'yearly' %}

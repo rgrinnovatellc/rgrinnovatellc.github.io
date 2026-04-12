@@ -10,11 +10,10 @@ email: "upgautam@vt.edu | rgrinnovatellc@gmail.com"
 
 # Professional Links
 links:
-  github: "https://github.com/uddhavgautam3"
+  github: "https://github.com/uddhavpgautam"
   scholar: "https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ"
   researchgate: "https://www.researchgate.net/profile/Uddhav-Gautam-2"
   linkedin: "https://www.linkedin.com/in/uddhavpgautam/"
-  vt_profile: "https://ece.vt.edu/"
 
 # CV and Documents
 documents:
@@ -122,7 +121,6 @@ experience:
   - title: "Android Developer"
     role: "Mobile application development"
     organization: "Pontos Solution"
-    organization_url: "#"
     period: "2012-2015"
     description: "Worked on Android application development in Nepal across product delivery and client-facing engineering work."
     status: "Previous"
@@ -130,7 +128,6 @@ experience:
   - title: "System Administrator"
     role: "Systems administration"
     organization: "iDream Pvt. Ltd."
-    organization_url: "#"
     period: "2008-2012"
     description: "Early infrastructure and systems administration work in Nepal covering operational support and system maintenance."
     status: "Previous"

@@ -78,8 +78,8 @@ config:
   
 # Footer Configuration
 footer:
-  copyright_year: 2025
-  copyright_text: "© 2025 Uddhav P. Gautam and RGR Innovate LLC. All rights reserved."
+  copyright_year: 2026
+  copyright_text: "© 2026 Uddhav P. Gautam and RGR Innovate LLC. All rights reserved."
   source_code_link: "https://github.com/rgrinnovatellc/rgrinnovatellc.github.io"
   template_credit: "Based on Academic Website Template"
   

@@ -30,15 +30,14 @@
   {% assign personal_linkedin = site.data.pi.links.linkedin | default: site.data.site.social.linkedin %}
   {% assign personal_scholar = site.data.pi.links.scholar | default: site.data.site.social.scholar %}
   {% assign personal_researchgate = site.data.pi.links.researchgate | default: site.data.site.social.researchgate %}
-  {% assign personal_vt_profile = site.data.pi.links.vt_profile | default: institution_url %}
+  {% assign personal_vt_profile = site.data.pi.links.vt_profile %}
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>{% if page.url == '/' or page_title == site.title %}{{ site.title | escape }}{% else %}{{ page_title | escape }} - {{ site.title | escape }}{% endif %}</title>
-    {% seo %}
-    <meta name="description" content="{{ meta_description }}">
+    {% seo title: false %}
     <meta name="author" content="{{ site.data.site.metadata.author | default: site.title }}">
     <meta name="keywords" content="{{ page.keywords | default: site.data.site.metadata.keywords }}">
     <meta name="theme-color" content="#126554">
@@ -47,32 +46,14 @@
   <meta name="robots" content="{{ robots_directive }}">
   <meta name="googlebot" content="{{ robots_directive }}">
 
-    <meta property="og:type" content="{{ og_type }}">
-    <meta property="og:title" content="{{ page_title | escape }}">
-    <meta property="og:description" content="{{ meta_description }}">
-    <meta property="og:url" content="{{ canonical_url }}">
-    <meta property="og:site_name" content="{{ site.title | escape }}">
     <meta property="og:locale" content="en_US">
-    <meta property="og:image" content="{{ share_image }}">
-  <meta property="og:image:alt" content="Portrait of {{ profile_name }}">
-    {% if og_type == 'article' %}
-    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
-    <meta property="article:modified_time" content="{{ page.last_modified_at | default: page.date | date_to_xmlschema }}">
-    <meta property="article:author" content="{{ profile_name }}">
-    {% endif %}
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ page_title | escape }}">
-    <meta name="twitter:description" content="{{ meta_description }}">
-    <meta name="twitter:image" content="{{ share_image }}">
-    <meta name="twitter:url" content="{{ canonical_url }}">
+    <meta property="og:image:alt" content="Portrait of {{ profile_name }}">
 
     <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
-    <link rel="canonical" href="{{ canonical_url }}">
     <link rel="me" href="{{ personal_linkedin }}">
     <link rel="me" href="{{ personal_github }}">
     <link rel="me" href="{{ personal_scholar }}">
-    <link rel="me" href="{{ personal_vt_profile }}">
+    {% if personal_vt_profile %}<link rel="me" href="{{ personal_vt_profile }}">{% endif %}
 
     <script type="application/ld+json">
       {
