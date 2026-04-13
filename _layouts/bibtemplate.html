@@ -6,21 +6,19 @@
 <!-- You can use the below to make your name bold -->
 <!-- {{reference | replace_first: 'Bryngelson, S. H.', '<b>Bryngelson, S. H.</b>' | replace_first: 'Bryngelson, S.', '<b>Bryngelson, S.</b>' }}</div> -->
 
-{% assign bibtest = false %}
+{% assign download_available = false %}
+{% assign download_file = "" %}
 {% if entry.file %}
 {% assign bibfile = "/papers/" | append: entry.file %}
 {% for file in site.static_files %}
-  {% if file.path contains bibfile %}
-   {% assign bibtest = true %}
-  {% endif %}
+    {% if file.path == bibfile %}
+     {% assign download_available = true %}
+     {% assign download_file = entry.file %}
+    {% endif %}
 {% endfor %}
 {% endif %}
 
 <div class="publication-actions">
-{% if bibtest %}
-<a href="{{ site.baseurl }}/papers/{{ entry.file }}" target="_blank" rel="noopener noreferrer" class="publication-chip publication-chip-file">PDF</a>
-{% endif %}
-
 {% if entry.doi %}
 {% if entry.type == 'unpublished' %}
 <a href="{{ entry.doi | prepend: 'https://arxiv.org/abs/' }}" target="_blank" rel="noopener noreferrer" class="publication-chip publication-chip-link">ARXIV</a>
@@ -31,6 +29,10 @@
 
 {% if entry.type == 'unpublished' or entry.type == 'article' or  entry.type == 'thesis' or entry.type == 'inproceedings' or entry.type == 'report' %}
 <button type="button" class="publication-chip publication-chip-toggle" onclick="toggleBibtex{{entry.key}}()">BIB</button>
+{% endif %}
+
+{% if download_available %}
+<a href="{{ site.baseurl }}/papers/{{ download_file }}" target="_blank" rel="noopener noreferrer" class="publication-chip publication-chip-file">DOWNLOAD</a>
 {% endif %}
 
 {% if entry.abstract %}
