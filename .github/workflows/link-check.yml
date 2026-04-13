@@ -38,6 +38,7 @@ jobs:
             --exclude "^http://localhost"
             --exclude "^https://www.viperdesignllc.com/?$"
             --exclude "^https://www\.linkedin\.com/in/uddhavpgautam/?$"
+            --exclude "^https://scholar\.google\.com/citations\?hl=en&user=Rbmabp4AAAAJ"
             --exclude "^https://doi\.org/"
             --exclude "^http://dx\.doi\.org/"
             --exclude "^https://dl\.acm\.org/"
