@@ -28,25 +28,31 @@ Install:
 
 - Ruby (version compatible with Jekyll `4.3.3`)
 - Bundler
+- `act` (for local GitHub Actions checks)
+- TeX Live / `pdflatex` (for CV PDF generation)
 
 Then install gems:
 
 ```bash
-bundle install
+make install
 ```
+
+Note: plain `make` is intentionally disabled to enforce explicit commands.
 
 ## Local Development
 
 Build once:
 
 ```bash
-bundle exec jekyll build
+make build
 ```
+
+`make build` is a pristine build: it runs `jekyll clean` first, then `jekyll build`.
 
 Run a local preview server:
 
 ```bash
-bundle exec rake serve
+make serve
 ```
 
 Why `rake serve` is preferred:
@@ -57,18 +63,41 @@ Why `rake serve` is preferred:
 
 Open the URL printed in the terminal (usually `http://127.0.0.1:4000`).
 
-Alternative direct serve command:
+Build the CV PDF in-place (`cv/Resume_UddhavGautam.pdf`):
 
 ```bash
-bundle exec jekyll serve --trace --host 127.0.0.1 --port 4001
+make cv-pdf
+```
+
+`make cv-pdf` is a pristine PDF build: it removes old PDF/intermediate files, recompiles, and keeps only `.pdf` and `.tex` afterward.
+
+Clean generated LaTeX intermediates:
+
+```bash
+make cv-pdf-clean
+```
+
+`make cv-pdf-clean` removes all generated CV artifacts, including the PDF.
+
+Run local GitHub Actions checks with `act`:
+
+```bash
+make check-links
+make check-pages-build
 ```
 
 ## Common Commands
 
-- Install dependencies: `bundle install`
-- Build site: `bundle exec jekyll build`
-- Serve with auto-port: `bundle exec rake serve`
-- Serve on a fixed port: `bundle exec jekyll serve --trace --port 4001`
+- Install dependencies: `make install`
+- Build site: `make build`
+- Pristine site build always starts from clean output.
+- Serve with auto-port: `make serve`
+- Compile CV PDF: `make cv-pdf`
+- Pristine CV PDF build always starts from clean artifacts and keeps only `.pdf` + `.tex`.
+- Clean all CV generated files (including PDF): `make cv-pdf-clean`
+- Run local link-check workflow: `make check-links`
+- Run local Pages build workflow: `make check-pages-build`
+- Run local CI combo (build + cv + link check + pages build): `make ci-local`
 
 ## Repository Layout
 
@@ -139,7 +168,12 @@ Important for this repository:
 Typical deployment flow:
 
 1. Commit and push source changes to the configured branch.
-2. Let GitHub Pages (or your CI pipeline) build and publish the site.
+2. Let GitHub Pages workflows build and publish the site.
+
+Recommended pre-push flow:
+
+1. `make ci-local`
+2. `git push`
 
 Notes:
 
@@ -155,14 +189,14 @@ If CI fails with a message like `Liquid syntax error: Unknown tag 'bibliography'
 ## Troubleshooting
 
 - Port already in use:
-	- Use `bundle exec rake serve` to auto-select an available port.
+	- Use `make serve` to auto-select an available port.
 
 - Liquid/HTML rendered as plain text:
 	- Move the page from `.md` to `.html` if it contains significant raw HTML/Liquid.
 
 - Build fails after gem changes:
-	- Run `bundle install` again.
-	- Re-run `bundle exec jekyll build` to verify.
+	- Run `make install` again.
+	- Re-run `make build` to verify.
 
 ## License
 

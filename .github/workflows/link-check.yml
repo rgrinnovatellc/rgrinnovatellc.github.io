@@ -20,7 +20,7 @@ jobs:
           bundler-cache: true
 
       - name: Build site
-        run: bundle exec jekyll build
+        run: make build
 
       - name: Check links
         uses: lycheeverse/lychee-action@v2
@@ -29,13 +29,21 @@ jobs:
           args: >-
             --verbose
             --no-progress
-            --accept 200,206,301,302,403,429
+            --accept 200,206,429
             --max-retries 2
+            --max-redirects 20
             --timeout 20
             --root-dir _site
             --exclude "^http://127.0.0.1"
             --exclude "^http://localhost"
             --exclude "^https://www.viperdesignllc.com/?$"
+            --exclude "^https://www\.linkedin\.com/in/uddhavpgautam/?$"
+            --exclude "^https://doi\.org/"
+            --exclude "^http://dx\.doi\.org/"
+            --exclude "^https://dl\.acm\.org/"
+            --exclude "^http://www\.w3\.org/2005/Atom"
+            --exclude "^http://www\.sitemaps\.org/"
+            --exclude "\.git$"
             "_site/**/*.html"
             "_site/sitemap.xml"
             "_site/feed.xml"
