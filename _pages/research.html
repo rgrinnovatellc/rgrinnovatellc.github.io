@@ -36,61 +36,23 @@ image: /images/Uddhav.jpg
             <p>Security techniques for Android, Bluetooth, networking, and IoT, with visibility and protection under resource constraints.</p>
         </article>
         <article class="focus-card surface-panel">
-            <h3>Research to tooling</h3>
-            <p>Research ideas translated into software artifacts, reference implementations, and workflows usable beyond prototypes.</p>
+            <h3>Research software</h3>
+            <p>Implementations, tools, and workflows that accompany published research.</p>
         </article>
     </div>
 </section>
 
-<section class="page-section split-grid">
+<section class="page-section">
     <div class="surface-panel">
-        <p class="eyebrow">Projects</p>
-        <h2 class="section-heading">In progress</h2>
+        <h2 class="section-heading">Current projects</h2>
         <div class="resource-stack">
             {% for project in pi_data.current_projects %}
-            <article class="resource-card project-card">
+            <article class="resource-card">
                 <h3>{{ project.name }}</h3>
                 <p>{{ project.description }}</p>
                 <span class="tag-chip">{{ project.status }}</span>
             </article>
             {% endfor %}
-        </div>
-    </div>
-
-    <div class="surface-panel">
-        <p class="eyebrow">Outcomes</p>
-        <h2 class="section-heading">Publications and milestones</h2>
-        <div class="news-feed">
-            {% for item in site.data.news %}
-            <article class="news-feed-item">
-                <span class="news-date">{{ item.date }}</span>
-                <div class="news-headline">{{ item.headline }}</div>
-            </article>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<section class="page-section split-grid">
-    <div class="surface-panel">
-        <p class="eyebrow">Method</p>
-        <h2 class="section-heading">Approach</h2>
-        <ul class="compact-list">
-            <li>Measure first, optimize second.</li>
-            <li>Prefer instrumentation that adds as little overhead as possible.</li>
-            <li>Pair low-level implementation with clear documentation and reproducible workflows.</li>
-            <li>Keep research artifacts readable and maintainable.</li>
-        </ul>
-    </div>
-
-    <div class="surface-panel">
-        <p class="eyebrow">Related</p>
-        <h2 class="section-heading">Links</h2>
-        <div class="footer-links">
-            <a href="{{ '/publications/' | relative_url }}">Publications</a>
-            <a href="{{ '/software/' | relative_url }}">Software</a>
-            <a href="{{ '/blogs/' | relative_url }}">Technical writing</a>
-            <a href="mailto:{{ contact_email }}">Contact</a>
         </div>
     </div>
 </section>

@@ -152,7 +152,7 @@ img {
   padding-top: clamp(0.6rem, 1.2vw, 1rem);
 }
 
-.hero-panel-premium {
+.hero-panel-main {
   padding-bottom: clamp(1.5rem, 3vw, 2.4rem);
 }
 
@@ -213,7 +213,7 @@ img {
   margin-left: auto;
 }
 
-.premium-frame {
+.hero-frame {
   --portrait-frame-pad: 0.72rem;
   padding: var(--portrait-frame-pad);
   border-radius: 1.6rem;
@@ -356,7 +356,7 @@ img {
   aspect-ratio: auto;
 }
 
-.page-hero .premium-frame {
+.page-hero .hero-frame {
   width: 20rem;
   max-width: 100%;
 }
@@ -786,7 +786,7 @@ img {
     margin-left: 0;
   }
 
-  .premium-frame {
+  .hero-frame {
     --portrait-frame-pad: 0.56rem;
     border-radius: 1.25rem;
   }

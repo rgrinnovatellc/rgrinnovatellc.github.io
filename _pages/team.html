@@ -9,51 +9,13 @@ description: "Research network, advising, and collaboration."
 {% include utils.html %}
 
 <section class="page-hero surface-panel">
-    <div class="page-hero-grid">
-        <div class="hero-copy">
-            <p class="eyebrow">Research network</p>
-            <h1>Collaboration</h1>
-            <p class="hero-lead">A collaboration model centered on systems research, software artifacts, and measurable outcomes.</p>
-            <p class="section-copy">This page outlines research focus, faculty advising, and collaboration opportunities across security, observability, and performance engineering.</p>
-
-            <div class="cta-row">
-                {% if contact_email %}<a href="mailto:{{ contact_email }}" class="btn btn-primary">Contact</a>{% endif %}
-                <a href="{{ '/research/' | relative_url }}" class="btn btn-outline-primary">Research</a>
-                <a href="{{ '/publications/' | relative_url }}" class="btn btn-outline-dark">Publications</a>
-            </div>
-        </div>
-
-        <div class="page-hero-aside">
-            {% if profile_photo %}
-            <img src="{{ profile_photo }}" class="profile-image hero-image" alt="Portrait of {{ pi_data.name }}"/>
-            {% endif %}
-            <div class="tag-list">
-                {% for interest in pi_data.research_interests %}
-                <span class="tag-chip">{{ interest }}</span>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+    <h1>People</h1>
+    <p class="hero-lead">Advising and collaboration.</p>
 </section>
 
 <section class="page-section split-grid">
     <div class="surface-panel">
-        <p class="eyebrow">Lead researcher</p>
-        <h2 class="section-heading">{{ pi_data.name }}</h2>
-        <p class="section-copy">{{ academic_position }} in {{ academic_department }} at {{ academic_university }}, working on Linux kernel instrumentation, eBPF observability, Android and IoT security, and rigorous software engineering.</p>
-        <div class="resource-stack">
-            {% for project in pi_data.current_projects %}
-            <article class="resource-card">
-                <h3>{{ project.name }}</h3>
-                <p>{{ project.description }}</p>
-            </article>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="surface-panel">
-        <p class="eyebrow">Advising</p>
-        <h2 class="section-heading">Faculty</h2>
+        <h2 class="section-heading">Faculty advisors</h2>
         <ul class="timeline-list">
             {% for advisor in pi_data.education[0].advisors %}
             <li>
@@ -66,47 +28,14 @@ description: "Research network, advising, and collaboration."
             {% endfor %}
         </ul>
     </div>
-</section>
 
-<section class="page-section split-grid">
     <div class="surface-panel">
-        <p class="eyebrow">Model</p>
-        <h2 class="section-heading">Structure</h2>
+        <h2 class="section-heading">Collaboration</h2>
         <ul class="compact-list">
-            <li>Work organized around papers, experiments, and engineering artifacts.</li>
-            <li>Collaborations around shared systems problems: observability, security, networking, and performance.</li>
-            <li>Publications and writing archive document the work.</li>
+            <li>Research collaboration on kernel measurement, eBPF, system performance, and platform security.</li>
+            <li>Student mentoring in low-level systems, benchmarking, and technical writing.</li>
+            <li>Industry partnerships around real workloads and systems measurement.</li>
         </ul>
-    </div>
-
-    <div class="surface-panel">
-        <p class="eyebrow">Collaboration</p>
-        <h2 class="section-heading">Opportunities</h2>
-        <div class="resource-stack">
-            <article class="resource-card">
-                <h3>Research collaborators</h3>
-                <p>Kernel measurement, eBPF tooling, system performance, platform security.</p>
-            </article>
-            <article class="resource-card">
-                <h3>Students and mentees</h3>
-                <p>Low-level systems, close paper reading, careful benchmarking, useful artifacts.</p>
-            </article>
-            <article class="resource-card">
-                <h3>Industry and applied partners</h3>
-                <p>Careful measurement, practical constraints, solid software engineering.</p>
-            </article>
-        </div>
-    </div>
-</section>
-
-<section class="page-section surface-panel contact-panel" aria-labelledby="team-next-step-heading">
-    <div>
-        <p class="eyebrow">Next step</p>
-        <h2 class="section-heading" id="team-next-step-heading">Next steps</h2>
-        <p class="section-copy">Start with publications, research themes, and technical writing.</p>
-    </div>
-    <div class="cta-row">
-        <a href="{{ '/publications/' | relative_url }}" class="btn btn-primary">Publications</a>
-        <a href="{{ '/blogs/' | relative_url }}" class="btn btn-outline-primary">Writing</a>
+        {% if contact_email %}<p><a href="mailto:{{ contact_email }}">Get in touch</a>.</p>{% endif %}
     </div>
 </section>

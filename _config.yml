@@ -4,7 +4,7 @@
 
 # Site Identity
 title: "Uddhav P. Gautam | RGR Innovate LLC | Systems Research and Software"
-description: "Official website of Uddhav P. Gautam and RGR Innovate LLC. Systems research, eBPF observability, Android and IoT security, publications, and software."
+description: "Uddhav P. Gautam — PhD candidate in Computer Engineering at Virginia Tech, founder of RGR Innovate LLC. Research on Linux kernel instrumentation, eBPF observability, and platform security."
 baseurl: ""
 url: "https://uddhavpgautam.github.io"
 
@@ -63,12 +63,6 @@ content:
   news_max_display: 5
   enable_excerpts: true
   excerpt_length: 150
-
-# Analytics Configuration
-analytics:
-  google_analytics: "" # Set your GA ID here
-  google_analytics_4: "" # Set your GA4 ID here
-  google_tag_manager: "" # Set your GTM ID here
 
 # Jekyll Scholar Configuration
 scholar:

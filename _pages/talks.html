@@ -18,9 +18,9 @@ description: "Speaking topics and presentation formats."
     <div class="section-heading-row">
         <div>
             <p class="eyebrow">Speaking themes</p>
-            <h2 class="section-heading">Topics I can present now</h2>
+            <h2 class="section-heading">Topics</h2>
         </div>
-        <p class="section-copy">From active projects, published work, and recurring research themes.</p>
+        <p class="section-copy">Based on active projects and published work.</p>
     </div>
 
     <div class="focus-grid">
@@ -43,41 +43,15 @@ description: "Speaking topics and presentation formats."
     </div>
 </section>
 
-<section class="page-section split-grid">
+<section class="page-section">
     <div class="surface-panel">
-        <p class="eyebrow">Recent</p>
-        <h2 class="section-heading">Results and milestones</h2>
-        <div class="news-feed">
-            {% for item in site.data.news limit: 5 %}
-            <article class="news-feed-item">
-                <span class="news-date">{{ item.date }}</span>
-                <div class="news-headline">{{ item.headline | strip_html }}</div>
-            </article>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="surface-panel">
-        <p class="eyebrow">Formats</p>
         <h2 class="section-heading">Presentation formats</h2>
         <ul class="compact-list">
-            <li>Research seminars for systems, security, networking, and performance audiences.</li>
-            <li>Guest lectures on Linux internals, eBPF, benchmarking, and engineering methodology.</li>
-            <li>Practitioner talks that connect low-level systems ideas to practical engineering decisions.</li>
-            <li>Paper walkthroughs that emphasize experiment design, limits, and reproducibility.</li>
+            <li>Research seminars</li>
+            <li>Guest lectures</li>
+            <li>Practitioner talks</li>
+            <li>Paper walkthroughs</li>
         </ul>
-    </div>
-</section>
-
-<section class="page-section surface-panel contact-panel" aria-labelledby="talks-invite-heading">
-    <div>
-        <p class="eyebrow">Invite</p>
-        <h2 class="section-heading" id="talks-invite-heading">Invitations</h2>
-        <p class="section-copy">Talks work best when scoped to a concrete systems question. Reach out with your audience and problem focus.</p>
-    </div>
-    <div class="cta-row">
-        {% if contact_email %}<a href="mailto:{{ contact_email }}" class="btn btn-primary">Invite</a>{% endif %}
-        <a href="{{ '/publications/' | relative_url }}" class="btn btn-outline-primary">Publications</a>
-        <a href="{{ '/research/' | relative_url }}" class="btn btn-outline-dark">Research</a>
+        {% if contact_email %}<p><a href="mailto:{{ contact_email }}">Reach out</a> if interested.</p>{% endif %}
     </div>
 </section>

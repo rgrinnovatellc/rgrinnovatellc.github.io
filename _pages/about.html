@@ -3,32 +3,23 @@ title: "About"
 layout: gridlay
 sitemap: true
 permalink: /about/
-description: "About Uddhav P. Gautam, founder of RGR Innovate LLC, PhD Candidate at Virginia Tech, and systems security researcher and engineer."
-keywords: "About Uddhav Gautam, Uddhav Gautam Virginia Tech, Uddhav P. Gautam bio, RGR Innovate LLC founder, Uddhav Gautam researcher"
+description: "Uddhav P. Gautam — PhD candidate in Computer Engineering at Virginia Tech. Education, research, and experience."
+keywords: "Uddhav Gautam, Virginia Tech, Computer Engineering, systems security, eBPF, Linux kernel"
 image: /images/Uddhav.jpg
 ---
 
 {% include utils.html %}
 
-<section class="page-hero surface-panel hero-panel-premium">
+<section class="page-hero surface-panel hero-panel-main">
     <div class="page-hero-grid">
         <div class="hero-copy">
-            <h1>{{ pi_data.name }}, <span class="title-credential">PhD@VT</span></h1>
-            <p class="hero-lead">Systems security researcher and platform engineer focused on Linux systems, eBPF observability, Android, IoT, and software quality.</p>
-            <p class="hero-support">PhD@VT in Computer Engineering, advised by <a href="https://ece.vt.edu/people/profile/wangh.html" target="_blank" rel="noopener noreferrer">Haining Wang</a> and <a href="https://security.vt.edu/about/staff/randy-marchany/" target="_blank" rel="noopener noreferrer">Randy Marchany</a>; founder of RGR Innovate LLC.</p>
-            <p class="section-copy">This page summarizes education, research, publications, and industry experience, from kernel observability and performance-aware instrumentation to production software architecture and delivery.</p>
-
-            <div class="cta-row">
-                {% if contact_email %}<a href="mailto:{{ contact_email }}" class="btn btn-primary">Email</a>{% endif %}
-                {% if linkedin_link %}<a href="{{ linkedin_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">LinkedIn</a>{% endif %}
-                {% if scholar_link %}<a href="{{ scholar_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-info">Scholar</a>{% endif %}
-                {% if github_link %}<a href="{{ github_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-dark">GitHub</a>{% endif %}
-                {% if cv_link %}<a href="{{ cv_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary">CV</a>{% endif %}
-            </div>
+            <h1>{{ pi_data.name }}</h1>
+            <p class="hero-lead">PhD candidate in Computer Engineering at Virginia Tech, studying Linux kernel instrumentation, eBPF observability, and platform security.</p>
+            <p class="hero-support">Advised by <a href="https://ece.vt.edu/people/profile/wangh.html" target="_blank" rel="noopener noreferrer">Haining Wang</a> and <a href="https://security.vt.edu/about/staff/randy-marchany/" target="_blank" rel="noopener noreferrer">Randy Marchany</a>.</p>
         </div>
 
         <div class="hero-visual">
-            <div class="hero-portrait premium-frame">
+            <div class="hero-portrait hero-frame">
                 {% if profile_photo %}
                 <img src="{{ profile_photo }}" class="profile-image hero-image" alt="Portrait of {{ pi_data.name }}"/>
                 {% endif %}
@@ -59,6 +50,13 @@ image: /images/Uddhav.jpg
             </li>
             {% endfor %}
         </ul>
+
+        <h3>Awards</h3>
+        <ul class="compact-list">
+            {% for award in site.data.awards %}
+            <li>{{ award.name }}</li>
+            {% endfor %}
+        </ul>
     </div>
 
     <div class="surface-panel">
@@ -74,31 +72,6 @@ image: /images/Uddhav.jpg
                 <p class="timeline-subtitle">{% if item.organization_url %}<a href="{{ item.organization_url }}" target="_blank" rel="noopener noreferrer">{{ item.organization }}</a>{% else %}{{ item.organization }}{% endif %}</p>
                 <p>{{ item.description }}</p>
             </li>
-            {% endfor %}
-        </ul>
-    </div>
-</section>
-
-<section class="page-section split-grid">
-    <div class="surface-panel">
-        <p class="eyebrow">Projects</p>
-        <h2 class="section-heading">Active work</h2>
-        <div class="resource-stack">
-            {% for project in pi_data.current_projects %}
-            <article class="resource-card">
-                <h3>{{ project.name }}</h3>
-                <p>{{ project.description }}</p>
-            </article>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="surface-panel">
-        <p class="eyebrow">Recognition</p>
-        <h2 class="section-heading">Awards and distinctions</h2>
-        <ul class="award-list">
-            {% for award in site.data.awards %}
-            <li>{{ award.name }}</li>
             {% endfor %}
         </ul>
     </div>
