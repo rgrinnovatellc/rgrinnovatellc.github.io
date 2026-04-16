@@ -30,6 +30,7 @@
   {% assign personal_linkedin = site.data.pi.links.linkedin | default: site.data.site.social.linkedin %}
   {% assign personal_scholar = site.data.pi.links.scholar | default: site.data.site.social.scholar %}
   {% assign personal_researchgate = site.data.pi.links.researchgate | default: site.data.site.social.researchgate %}
+  {% assign personal_googleplay = site.data.pi.links.googleplay | default: site.data.site.social.googleplay %}
   {% assign personal_vt_profile = site.data.pi.links.vt_profile %}
 
     <meta charset="utf-8">
@@ -53,6 +54,7 @@
     <link rel="me" href="{{ personal_linkedin }}">
     <link rel="me" href="{{ personal_github }}">
     <link rel="me" href="{{ personal_scholar }}">
+    {% if personal_googleplay %}<link rel="me" href="{{ personal_googleplay }}">{% endif %}
     {% if personal_vt_profile %}<link rel="me" href="{{ personal_vt_profile }}">{% endif %}
 
     <script type="application/ld+json">
@@ -138,6 +140,7 @@
           {% if personal_linkedin %}{{ comma }}{{ personal_linkedin | jsonify }}{% assign comma = ',' %}{% endif %}
           {% if personal_scholar %}{{ comma }}{{ personal_scholar | jsonify }}{% assign comma = ',' %}{% endif %}
           {% if personal_researchgate %}{{ comma }}{{ personal_researchgate | jsonify }}{% assign comma = ',' %}{% endif %}
+          {% if personal_googleplay %}{{ comma }}{{ personal_googleplay | jsonify }}{% assign comma = ',' %}{% endif %}
           {% if personal_vt_profile %}{{ comma }}{{ personal_vt_profile | jsonify }}{% endif %}
         ]
       }

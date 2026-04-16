@@ -143,9 +143,9 @@ img {
 
 .hero-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(180px, 0.6fr);
   gap: 2rem;
-  align-items: center;
+  align-items: end;
 }
 
 .hero-panel.surface-panel {
@@ -209,7 +209,7 @@ img {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: min(100%, 25rem);
+  width: min(100%, 16rem);
   margin-left: auto;
 }
 
@@ -350,14 +350,14 @@ img {
 }
 
 .page-hero .hero-portrait {
-  width: 20rem;
+  width: 14rem;
   max-width: 100%;
   align-items: flex-start;
   aspect-ratio: auto;
 }
 
 .page-hero .hero-frame {
-  width: 20rem;
+  width: 14rem;
   max-width: 100%;
 }
 
@@ -583,7 +583,7 @@ img {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 2.1rem;
-  align-items: center;
+  align-items: end;
 }
 
 .page-hero-aside {
@@ -805,7 +805,7 @@ img {
 
   .card-grid-2,
   .card-grid-3 { grid-template-columns: 1fr; }
-  .profile-image { max-width: 200px; }
+  .profile-image { max-width: 160px; }
 }
 
 @media (max-width: 560px) {
