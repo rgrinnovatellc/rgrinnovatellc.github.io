@@ -5,6 +5,7 @@ ACT ?= act
 ACT_ARTIFACT_DIR ?= .act-artifacts
 TEX_ENGINE ?= pdflatex
 BASEURL ?=
+JEKYLL_CONFIG ?= _config.yml
 
 LINK_WORKFLOW := .github/workflows/link-check.yml
 PAGES_WORKFLOW := .github/workflows/jekyll.yml
@@ -17,6 +18,9 @@ CV_PDF := $(CV_DIR)$(CV_BASE).pdf
 CV_PDF_AUX := "$(CV_DIR)$(CV_BASE).aux" "$(CV_DIR)$(CV_BASE).log" "$(CV_DIR)$(CV_BASE).out" "$(CV_DIR)$(CV_BASE).toc" "$(CV_DIR)$(CV_BASE).fls" "$(CV_DIR)$(CV_BASE).fdb_latexmk"
 
 JEKYLL_BUILD_ARGS :=
+ifneq ($(strip $(JEKYLL_CONFIG)),)
+JEKYLL_BUILD_ARGS += --config "$(JEKYLL_CONFIG)"
+endif
 ifneq ($(strip $(BASEURL)),)
 JEKYLL_BUILD_ARGS += --baseurl "$(BASEURL)"
 endif

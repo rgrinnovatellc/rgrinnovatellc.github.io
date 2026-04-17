@@ -20,7 +20,7 @@ jobs:
           bundler-cache: true
 
       - name: Build site
-        run: make build
+        run: make build JEKYLL_CONFIG="_config.yml,_config.link-check.yml"
 
       - name: Check links
         uses: lycheeverse/lychee-action@v2
@@ -48,3 +48,4 @@ jobs:
             "_site/**/*.html"
             "_site/sitemap.xml"
             "_site/feed.xml"
+

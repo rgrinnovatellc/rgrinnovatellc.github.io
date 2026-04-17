@@ -16,7 +16,7 @@ metadata:
 
 # Site URLs and Repository
 urls:
-  site: "https://uddhavpgautam.github.io"
+  site: "https://rgrinnovatellc.github.io"
   baseurl: ""
   repository: "rgrinnovatellc/rgrinnovatellc.github.io"
   github_repo: "https://github.com/rgrinnovatellc/rgrinnovatellc.github.io"
@@ -25,7 +25,7 @@ urls:
 organization:
   name: "RGR Innovate LLC"
   legal_name: "RGR Innovate LLC"
-  url: "https://uddhavpgautam.github.io"
+  url: "https://rgrinnovatellc.github.io"
   email: "rgrinnovatellc@gmail.com"
   same_as:
     - "https://github.com/rgrinnovatellc"
