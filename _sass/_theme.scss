@@ -452,7 +452,7 @@ footer.footer {
 
 .footer-label {
   font-family: var(--font-family-ui);
-  font-size: 0.72rem;
+  font-size: 0.64rem;
   letter-spacing: 0.07em;
   color: var(--text-muted);
   margin-right: 0;
@@ -497,7 +497,7 @@ footer.footer {
 .footer-inline a {
   text-decoration: none;
   font-family: var(--font-family-ui);
-  font-size: 0.91rem;
+  font-size: 0.82rem;
   line-height: 1.2;
   border-bottom: 1px solid transparent;
   transition: border-color var(--transition-fast), color var(--transition-fast);
@@ -510,7 +510,7 @@ footer.footer {
 .footer-text {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   line-height: 1.2;
 }
 
@@ -769,9 +769,12 @@ html { scroll-behavior: smooth; }
     display: none;
   }
 
-  .footer-inline a,
+  .footer-inline a {
+    font-size: 0.76rem;
+  }
+
   .footer-text {
-    font-size: 0.84rem;
+    font-size: 0.8rem;
   }
 
   .footer-label {

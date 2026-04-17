@@ -10,6 +10,7 @@
                 {% if site_data.social.scholar %}<a role="listitem" href="{{ site_data.social.scholar }}" target="_blank" rel="noopener noreferrer">Google Scholar</a>{% endif %}
                 {% if site_data.social.linkedin %}<a role="listitem" href="{{ site_data.social.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>{% endif %}
                 {% if site_data.social.googleplay %}<a role="listitem" href="{{ site_data.social.googleplay }}" target="_blank" rel="noopener noreferrer">Google Play</a>{% endif %}
+                {% if site_data.footer.support_url != blank %}<a role="listitem" href="{{ site_data.footer.support_url }}" target="_blank" rel="noopener noreferrer">{{ site_data.footer.support_label | default: "Buy Me a Coffee" }}</a>{% endif %}
                 <span class="footer-separator" aria-hidden="true" role="listitem"></span>
                 <span class="footer-text" role="listitem">© {{ current_year }} {{ pi_data.name }} and RGR Innovate LLC.</span>
                 <a role="listitem" href="{{ site.baseurl }}/sitemap/">Sitemap</a>
