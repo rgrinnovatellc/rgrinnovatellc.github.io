@@ -1,0 +1,854 @@
+<style>
+  .post-content .metrics-table {
+    width: 100%;
+    margin: 1rem 0 1.5rem;
+    border-collapse: collapse;
+    color: var(--text-primary);
+    background: rgba(var(--surface-accent-rgb), 0.35);
+    font-size: 0.96rem;
+  }
+
+  .post-content .metrics-table th,
+  .post-content .metrics-table td {
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    background: rgba(var(--surface-accent-rgb), 0.5);
+    vertical-align: top;
+  }
+
+  .post-content .metrics-table thead th,
+  .post-content .metrics-table tbody th {
+    font-family: var(--font-family-ui);
+    font-weight: 600;
+    background: rgba(var(--bg-tertiary-rgb), 0.78);
+  }
+
+  .post-content .metrics-table tbody tr:nth-child(even) td {
+    background: rgba(var(--bg-secondary-rgb), 0.56);
+  }
+
+  .post-content .metrics-table code {
+    white-space: nowrap;
+  }
+
+</style>
+
+<p>
+  These classification metrics all come from the same confusion matrix, but they answer different questions.
+  The practical question is not "Which metric is best?" It is "Which mistake is most expensive in this problem?"
+</p>
+
+<p>
+  The most important rule is:
+</p>
+
+<p>
+  <strong>Positive does not mean good. Negative does not mean bad.</strong>
+</p>
+
+<p>
+  In classification metrics, <strong>positive</strong> is just the target label for the thing we are counting.
+  It means "this is the class we want the model to detect."
+  It does not mean the outcome is desirable.
+</p>
+
+<p>
+  For example, if we build a disease screening model, the positive class might be <strong>has disease</strong>.
+  If we build a sales model, the positive class might be <strong>will buy a car</strong>.
+  In both cases, recall still means the same thing: of the actual positive cases, how many did the model catch?
+</p>
+
+<p>
+  Before reading any metric, ask:
+</p>
+
+<pre><code class="language-text">What is the positive class?</code></pre>
+
+<p>
+  Everything else follows from that choice.
+</p>
+
+<h2 id="four-outcomes">Four Outcomes</h2>
+
+<p>
+  For a binary classifier, every prediction falls into one of four groups.
+  In the tables below, rows are the actual classes and columns are the model predictions.
+</p>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Predicted positive</th>
+        <th>Predicted negative</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Actually positive</th>
+        <td><strong>True positive</strong>, <code>TP</code></td>
+        <td><strong>False negative</strong>, <code>FN</code></td>
+      </tr>
+      <tr>
+        <th>Actually negative</th>
+        <td><strong>False positive</strong>, <code>FP</code></td>
+        <td><strong>True negative</strong>, <code>TN</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Term</th>
+        <th>Plain English</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>TP</code></td>
+        <td>The model said positive, and it was actually positive.</td>
+      </tr>
+      <tr>
+        <td><code>FN</code></td>
+        <td>The model said negative, but it was actually positive.</td>
+      </tr>
+      <tr>
+        <td><code>FP</code></td>
+        <td>The model said positive, but it was actually negative.</td>
+      </tr>
+      <tr>
+        <td><code>TN</code></td>
+        <td>The model said negative, and it was actually negative.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 id="metric-definitions">Metric Definitions</h2>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Formula</th>
+        <th>Plain English</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Recall</strong></td>
+        <td><code>TP / (TP + FN)</code></td>
+        <td>Of all actual positives, how many did we catch?</td>
+      </tr>
+      <tr>
+        <td><strong>Precision</strong></td>
+        <td><code>TP / (TP + FP)</code></td>
+        <td>Of all predicted positives, how many were truly positive?</td>
+      </tr>
+      <tr>
+        <td><strong>Accuracy</strong></td>
+        <td><code>(TP + TN) / (TP + FP + FN + TN)</code></td>
+        <td>Of all cases, how many did we classify correctly?</td>
+      </tr>
+      <tr>
+        <td><strong>F1 score</strong></td>
+        <td><code>2 * Precision * Recall / (Precision + Recall)</code></td>
+        <td>A combined score balancing precision and recall.</td>
+      </tr>
+      <tr>
+        <td><strong>Specificity</strong></td>
+        <td><code>TN / (TN + FP)</code></td>
+        <td>Of all actual negatives, how many did we correctly reject?</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  These formulas assume the denominator is not zero.
+  Precision is undefined if the model never predicts positive, recall is undefined if the evaluation set has no actual positives, and specificity is undefined if the evaluation set has no actual negatives.
+  F1 is undefined if <code>2TP + FP + FN = 0</code>, which means there are no true positives, false positives, or false negatives to evaluate for the positive class.
+  Libraries sometimes return 0 for undefined cases by convention, so check the convention before comparing results.
+</p>
+
+<p>
+  The equivalent confusion-matrix form of F1 is:
+</p>
+
+<pre><code class="language-text">F1 = 2TP / (2TP + FP + FN)</code></pre>
+
+<h2 id="recall">Recall</h2>
+
+<p>
+  Recall is also called <strong>sensitivity</strong> or the <strong>true positive rate</strong>.
+</p>
+
+<p>
+  Recall asks: among the things that were truly positive, how many did the model find?
+  High recall means few false negatives.
+</p>
+
+<p>
+  Use recall when missing positives is costly.
+</p>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Positive class</th>
+        <th>High recall means</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Has disease</td>
+        <td>We catch most sick patients.</td>
+      </tr>
+      <tr>
+        <td>Fraudulent transaction</td>
+        <td>We catch most fraud.</td>
+      </tr>
+      <tr>
+        <td>Spam email</td>
+        <td>We catch most spam.</td>
+      </tr>
+      <tr>
+        <td>Will default on a loan</td>
+        <td>We catch most risky borrowers.</td>
+      </tr>
+      <tr>
+        <td>Will buy a car</td>
+        <td>We identify most real buyers.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  Recall is not good or bad by itself. It tells you how completely the model catches the positive class.
+</p>
+
+<h2 id="precision">Precision</h2>
+
+<p>
+  Precision asks: among the cases the model called positive, how many were actually positive?
+  High precision means few false positives among predicted positives.
+</p>
+
+<p>
+  Use precision when false alarms are costly or when acting on a positive prediction consumes scarce resources.
+</p>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Positive class</th>
+        <th>High precision means</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Has disease</td>
+        <td>Most positive test results are truly sick patients.</td>
+      </tr>
+      <tr>
+        <td>Fraudulent transaction</td>
+        <td>Most flagged transactions are actually fraud.</td>
+      </tr>
+      <tr>
+        <td>Will default on a loan</td>
+        <td>Most flagged borrowers really would default.</td>
+      </tr>
+      <tr>
+        <td>Will buy a car</td>
+        <td>Most targeted customers really are buyers.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<pre><code class="language-text">Recall:    Did we catch the actual positives?
+Precision: Can we trust the predicted positives?</code></pre>
+
+<h2 id="specificity">Specificity</h2>
+
+<p>
+  Specificity is also called the <strong>true negative rate</strong>.
+</p>
+
+<p>
+  Specificity asks: among the things that were truly negative, how many did the model correctly leave as negative?
+  High specificity means few false positives among actual negatives.
+</p>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Positive class</th>
+        <th>Actual negative class</th>
+        <th>High specificity means</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Has disease</td>
+        <td>Does not have disease</td>
+        <td>Healthy people are rarely told they may be sick.</td>
+      </tr>
+      <tr>
+        <td>Fraudulent transaction</td>
+        <td>Legitimate transaction</td>
+        <td>Legitimate transactions are rarely flagged as fraud.</td>
+      </tr>
+      <tr>
+        <td>Will default on a loan</td>
+        <td>Will not default on a loan</td>
+        <td>Safe borrowers are rarely flagged as risky.</td>
+      </tr>
+      <tr>
+        <td>Will buy a car</td>
+        <td>Will not buy a car</td>
+        <td>Non-buyers are rarely targeted as buyers.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  Specificity is the negative-class counterpart to recall.
+</p>
+
+<pre><code class="language-text">Recall:      Of actual positives, how many did we catch?
+Specificity: Of actual negatives, how many did we correctly reject?</code></pre>
+
+<p>
+  Specificity is related to the false positive rate: <code>Specificity = 1 - FPR</code>, where <code>FPR = FP / (FP + TN)</code>.
+</p>
+
+<h2 id="accuracy">Accuracy</h2>
+
+<p>
+  Accuracy asks: what fraction of all predictions were correct?
+  It is simple and useful when classes are reasonably balanced and false positives and false negatives have similar costs.
+</p>
+
+<p>
+  Accuracy can be misleading when one class is much more common than the other.
+  If only 1% of people have a disease, a model that always predicts "no disease" gets 99% accuracy, but it has 0% recall for disease.
+  The model is accurate in a shallow sense, but useless for finding the disease.
+</p>
+
+<h2 id="f1-score">F1 Score</h2>
+
+<p>
+  F1 combines precision and recall using the harmonic mean.
+  It is high only when both precision and recall are high.
+  If either one is poor, F1 drops quickly.
+</p>
+
+<p>
+  Use F1 when the positive class matters more than the negative class, the data is imbalanced, and you want one number that balances false positives and false negatives.
+  But F1 does not use <code>TN</code>, so it ignores how well the model handles actual negatives.
+  If the negative class matters a lot, also check specificity.
+</p>
+
+<p>
+  Also remember that F1 treats precision and recall as equally important.
+  If recall matters more than precision, or precision matters more than recall, consider an <code>F-beta</code> score or a cost-based threshold instead of plain F1.
+</p>
+
+<h2 id="example-1-disease-testing">Example 1: Disease Testing</h2>
+
+<p>
+  Suppose the positive class is <strong>has disease</strong>, and the negative class is <strong>does not have disease</strong>.
+</p>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Predicted positive</th>
+        <th>Predicted negative</th>
+        <th>Total actual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Actually positive</th>
+        <td><strong>TP</strong> = 90</td>
+        <td><strong>FN</strong> = 10</td>
+        <td>100</td>
+      </tr>
+      <tr>
+        <th>Actually negative</th>
+        <td><strong>FP</strong> = 45</td>
+        <td><strong>TN</strong> = 855</td>
+        <td>900</td>
+      </tr>
+      <tr>
+        <th>Total predicted</th>
+        <td>135</td>
+        <td>865</td>
+        <td>1000</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Calculation</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Recall</td>
+        <td><code>90 / (90 + 10)</code></td>
+        <td>90.0%</td>
+      </tr>
+      <tr>
+        <td>Precision</td>
+        <td><code>90 / (90 + 45)</code></td>
+        <td>66.7%</td>
+      </tr>
+      <tr>
+        <td>Specificity</td>
+        <td><code>855 / (855 + 45)</code></td>
+        <td>95.0%</td>
+      </tr>
+      <tr>
+        <td>Accuracy</td>
+        <td><code>(90 + 855) / 1000</code></td>
+        <td>94.5%</td>
+      </tr>
+      <tr>
+        <td>F1</td>
+        <td><code>2 * 90 / (2 * 90 + 45 + 10)</code></td>
+        <td>76.6%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  Interpretation: recall says the test catches 90% of sick patients.
+  Precision says that when the test says "disease," it is right about two-thirds of the time.
+  Specificity says the test correctly clears 95% of healthy people.
+  Accuracy is high, but it does not tell the whole story because most people in this dataset are healthy.
+</p>
+
+<p>
+  Precision in medical testing is also affected by prevalence.
+  The same recall and specificity can produce lower precision when the disease is rare, because false positives may outnumber true positives.
+</p>
+
+<h2 id="example-2-car-sales-positive-means-will-buy">Example 2: Car Sales, Positive Means "Will Buy"</h2>
+
+<p>
+  Here the positive class is a good outcome: <strong>will buy a car</strong>.
+  The negative class is <strong>will not buy a car</strong>.
+</p>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Predicted positive</th>
+        <th>Predicted negative</th>
+        <th>Total actual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Actually positive</th>
+        <td><strong>TP</strong> = 70</td>
+        <td><strong>FN</strong> = 30</td>
+        <td>100</td>
+      </tr>
+      <tr>
+        <th>Actually negative</th>
+        <td><strong>FP</strong> = 90</td>
+        <td><strong>TN</strong> = 810</td>
+        <td>900</td>
+      </tr>
+      <tr>
+        <th>Total predicted</th>
+        <td>160</td>
+        <td>840</td>
+        <td>1000</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Calculation</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Recall</td>
+        <td><code>70 / (70 + 30)</code></td>
+        <td>70.0%</td>
+      </tr>
+      <tr>
+        <td>Precision</td>
+        <td><code>70 / (70 + 90)</code></td>
+        <td>43.8%</td>
+      </tr>
+      <tr>
+        <td>Specificity</td>
+        <td><code>810 / (810 + 90)</code></td>
+        <td>90.0%</td>
+      </tr>
+      <tr>
+        <td>Accuracy</td>
+        <td><code>(70 + 810) / 1000</code></td>
+        <td>88.0%</td>
+      </tr>
+      <tr>
+        <td>F1</td>
+        <td><code>2 * 70 / (2 * 70 + 90 + 30)</code></td>
+        <td>53.8%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  Interpretation: recall says the campaign finds 70% of real buyers.
+  Precision says fewer than half of targeted people actually buy.
+  Specificity says the model correctly ignores most non-buyers.
+  Accuracy looks decent because most people are non-buyers, but the sales team may still care more about precision if their time is limited.
+</p>
+
+<h2 id="example-3-car-loans-positive-means-will-default">Example 3: Car Loans, Positive Means "Will Default"</h2>
+
+<p>
+  Now the positive class is a bad event: <strong>will default on a loan</strong>.
+  The negative class is <strong>will not default on a loan</strong>.
+</p>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Predicted positive</th>
+        <th>Predicted negative</th>
+        <th>Total actual</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Actually positive</th>
+        <td><strong>TP</strong> = 30</td>
+        <td><strong>FN</strong> = 10</td>
+        <td>40</td>
+      </tr>
+      <tr>
+        <th>Actually negative</th>
+        <td><strong>FP</strong> = 20</td>
+        <td><strong>TN</strong> = 940</td>
+        <td>960</td>
+      </tr>
+      <tr>
+        <th>Total predicted</th>
+        <td>50</td>
+        <td>950</td>
+        <td>1000</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Calculation</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Recall</td>
+        <td><code>30 / (30 + 10)</code></td>
+        <td>75.0%</td>
+      </tr>
+      <tr>
+        <td>Precision</td>
+        <td><code>30 / (30 + 20)</code></td>
+        <td>60.0%</td>
+      </tr>
+      <tr>
+        <td>Specificity</td>
+        <td><code>940 / (940 + 20)</code></td>
+        <td>97.9%</td>
+      </tr>
+      <tr>
+        <td>Accuracy</td>
+        <td><code>(30 + 940) / 1000</code></td>
+        <td>97.0%</td>
+      </tr>
+      <tr>
+        <td>F1</td>
+        <td><code>2 * 30 / (2 * 30 + 20 + 10)</code></td>
+        <td>66.7%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  Interpretation: recall says we caught 75% of people who would default.
+  Precision says that among people flagged as risky, 60% really would default.
+  Specificity says the model correctly accepts most people who would not default.
+  Accuracy is 97%, but defaults are rare, so accuracy alone can hide risk.
+</p>
+
+<p>
+  This example shows why positive does not mean good.
+  Here the positive class is bad, but recall still simply means: how much of the positive class did we catch?
+</p>
+
+<h2 id="choosing-the-right-metric">Choosing the Right Metric</h2>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Goal</th>
+        <th>Metric to watch</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Catch as many positives as possible</td>
+        <td>Recall</td>
+      </tr>
+      <tr>
+        <td>Make positive predictions trustworthy</td>
+        <td>Precision</td>
+      </tr>
+      <tr>
+        <td>Correctly reject negatives</td>
+        <td>Specificity</td>
+      </tr>
+      <tr>
+        <td>Measure total correctness</td>
+        <td>Accuracy</td>
+      </tr>
+      <tr>
+        <td>Balance precision and recall</td>
+        <td>F1</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="table-responsive">
+  <table class="metrics-table">
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Usually prioritize</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Medical screening where missing disease is dangerous</td>
+        <td>High recall</td>
+        <td>False negatives are dangerous.</td>
+      </tr>
+      <tr>
+        <td>Confirmatory medical test where false alarms are harmful</td>
+        <td>High precision and high specificity</td>
+        <td>Positive results should be trustworthy, and healthy people should not be flagged unnecessarily.</td>
+      </tr>
+      <tr>
+        <td>Fraud detection where missed fraud is costly</td>
+        <td>High recall for fraud</td>
+        <td>The system should catch as much fraud as possible.</td>
+      </tr>
+      <tr>
+        <td>Fraud system where blocking legitimate customers is costly</td>
+        <td>High specificity, often with high precision</td>
+        <td>Legitimate transactions should rarely be flagged, and fraud alerts should be credible.</td>
+      </tr>
+      <tr>
+        <td>Sales campaign with limited sales team time</td>
+        <td>High precision</td>
+        <td>The contacted leads should be likely to convert.</td>
+      </tr>
+      <tr>
+        <td>Sales campaign where contacting extra people is cheap</td>
+        <td>High recall</td>
+        <td>The campaign can afford extra outreach to find more buyers.</td>
+      </tr>
+      <tr>
+        <td>Loan approval where defaults are costly</td>
+        <td>High recall for default</td>
+        <td>The lender wants to catch most likely defaults.</td>
+      </tr>
+      <tr>
+        <td>Loan approval where rejecting safe borrowers is costly</td>
+        <td>High specificity for default</td>
+        <td>The lender wants to avoid wrongly flagging safe borrowers as risky.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 id="thresholds-create-trade-offs">Thresholds Create Trade-Offs</h2>
+
+<p>
+  Many classifiers output a score or probability. A threshold converts that score into a positive or negative prediction.
+  Changing the threshold changes the confusion matrix, which changes the metrics.
+</p>
+
+<ul>
+  <li><strong>Lower threshold:</strong> more predicted positives. Recall cannot decrease, specificity cannot increase, and precision often decreases if the added positives are lower-confidence cases.</li>
+  <li><strong>Higher threshold:</strong> fewer predicted positives. Recall cannot increase, specificity cannot decrease, and precision often increases if the remaining positives are higher-confidence cases.</li>
+</ul>
+
+<p>
+  Recall and specificity move in opposite directions as the model becomes more or less aggressive about calling things positive.
+  Precision is not guaranteed to be monotonic with the threshold; it depends on class prevalence and how well the model ranks examples.
+  This is why a model should not be judged only at the default threshold of 0.5.
+</p>
+
+<h2 id="multiclass-note">Multiclass Note</h2>
+
+<p>
+  For multiclass classification, these metrics are usually computed using a one-vs-rest view for each class.
+  For example, in a three-class classifier with classes A, B, and C, you can compute metrics for class A by treating A as positive and everything else as negative.
+  Then repeat for B and C.
+</p>
+
+<ul>
+  <li><strong>Macro average:</strong> compute the metric per class, then average each class equally. This is useful when minority classes matter.</li>
+  <li><strong>Weighted average:</strong> compute the metric per class, then weight by class frequency. This follows the dataset distribution.</li>
+  <li><strong>Micro average:</strong> pool the counts across classes first, then compute the metric globally. This can be dominated by common classes.</li>
+</ul>
+
+<p>
+  If rare classes matter, look at per-class metrics and macro averages.
+  Weighted and micro averages can look strong even when rare classes are weak.
+  In single-label multiclass classification, micro-averaged precision, micro-averaged recall, and micro-averaged F1 are equal to accuracy, so they may not add much beyond the accuracy number.
+</p>
+
+<h2 id="common-traps">Common Traps</h2>
+
+<h3 id="trap-1-thinking-positive-means-good">Trap 1: Thinking Positive Means Good</h3>
+
+<p>
+  Wrong:
+</p>
+
+<pre><code class="language-text">Positive = good
+Negative = bad</code></pre>
+
+<p>
+  Correct:
+</p>
+
+<pre><code class="language-text">Positive = the class we are detecting
+Negative = everything outside that class</code></pre>
+
+<h3 id="trap-2-confusing-recall-and-precision">Trap 2: Confusing Recall and Precision</h3>
+
+<p>
+  Recall denominator:
+</p>
+
+<pre><code class="language-text">TP + FN = all actual positives</code></pre>
+
+<p>
+  Precision denominator:
+</p>
+
+<pre><code class="language-text">TP + FP = all predicted positives</code></pre>
+
+<p>
+  Memory aid:
+</p>
+
+<pre><code class="language-text">Recall:    Did we find the real positives?
+Precision: Were our positive predictions right?</code></pre>
+
+<h3 id="trap-3-trusting-accuracy-on-imbalanced-data">Trap 3: Trusting Accuracy on Imbalanced Data</h3>
+
+<p>
+  If one class is very common, accuracy can look high even when the model performs badly on the important class.
+  Always compare accuracy with recall, precision, and specificity.
+</p>
+
+<h3 id="trap-4-looking-at-f1-without-specificity">Trap 4: Looking at F1 Without Specificity</h3>
+
+<p>
+  F1 ignores true negatives.
+  If correctly handling negatives matters, F1 alone is not enough.
+</p>
+
+<h3 id="trap-5-forgetting-the-threshold">Trap 5: Forgetting the Threshold</h3>
+
+<p>
+  A threshold is a policy choice.
+  The "best" threshold depends on the cost of a false positive, the cost of a false negative, and the capacity of the people or systems acting on model predictions.
+</p>
+
+<h2 id="one-screen-summary">One-Screen Summary</h2>
+
+<pre><code class="language-text">Positive = the target class, not necessarily a good thing.
+
+Recall      = TP / (TP + FN)
+            = Of actual positives, how many did we catch?
+
+Precision   = TP / (TP + FP)
+            = Of predicted positives, how many were right?
+
+Specificity = TN / (TN + FP)
+            = Of actual negatives, how many did we reject correctly?
+
+Accuracy    = (TP + TN) / Total
+            = Of all cases, how many were correct?
+
+F1          = 2 * Precision * Recall / (Precision + Recall)
+            = One score balancing precision and recall.</code></pre>
+
+<p>
+  Best mental model:
+</p>
+
+<pre><code class="language-text">Recall:      catch the target
+Precision:   trust the alarm
+Specificity: avoid false alarms among non-targets
+Accuracy:    total correctness
+F1:          precision-recall balance</code></pre>
+
+<p>
+  If you remember only one rule, remember this: pick the metric by naming the mistake you cannot afford.
+</p>
