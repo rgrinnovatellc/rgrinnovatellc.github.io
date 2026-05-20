@@ -123,7 +123,6 @@ include:
 exclude:
   - "Gemfile"
   - "Gemfile.lock"
-  - "update_bootstrap.sh"
   - "switch_theme.sh"
   - "tags"
   - "Rakefile"

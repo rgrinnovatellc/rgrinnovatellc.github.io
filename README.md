@@ -86,6 +86,18 @@ make check-links
 make check-pages-build
 ```
 
+Run the local CI bundle:
+
+```bash
+make ci-local
+```
+
+`make ci-local` runs `make build`, `make cv-pdf`, `make check-links`, and
+`make check-pages-build`. It is useful, but it is not a hermetic "works on any
+Linux machine" command: it requires Ruby/Bundler dependencies, `pdflatex`, `act`,
+Docker, and network access for external link checks. It also does not check live
+GitHub Pages repository settings; use `make check-pages-config` for that.
+
 ## Common Commands
 
 - Install dependencies: `make install`
@@ -193,7 +205,6 @@ Recommended pre-push flow:
 Notes:
 
 - `_site/` is the generated output directory.
-- The `Rakefile` includes a `publish` task inherited from an old template remote; do not rely on that task unless you intentionally reconfigure its git remote.
 
 If CI fails with a message like `Liquid syntax error: Unknown tag 'bibliography'`:
 

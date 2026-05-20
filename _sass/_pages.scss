@@ -36,6 +36,65 @@
   height: 100%;
 }
 
+.pandoc-post span.smallcaps {
+  font-variant: small-caps;
+}
+
+.pandoc-post .columns {
+  display: flex;
+  gap: min(4vw, 1.5em);
+}
+
+.pandoc-post .column {
+  flex: auto;
+  overflow-x: auto;
+}
+
+.pandoc-post .hanging-indent {
+  margin-left: 1.5em;
+  text-indent: -1.5em;
+}
+
+.pandoc-post ul.task-list[class] {
+  list-style: none;
+}
+
+.pandoc-post ul.task-list li input[type="checkbox"] {
+  font-size: inherit;
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+
+.pandoc-post .display.math {
+  display: block;
+  text-align: center;
+  margin: 0.5rem auto;
+}
+
+.pandoc-post .csl-entry {
+  clear: both;
+}
+
+.pandoc-post .hanging-indent .csl-entry {
+  margin-left: 2em;
+  text-indent: -2em;
+}
+
+.pandoc-post .csl-left-margin {
+  min-width: 2em;
+  float: left;
+}
+
+.pandoc-post .csl-right-inline {
+  margin-left: 2em;
+  padding-left: 1em;
+}
+
+.pandoc-post .csl-indent {
+  margin-left: 2em;
+}
+
 // Inline PDF viewer - full width, toggles on CV click
 .pdf-viewer {
   width: 100vw;
