@@ -867,59 +867,60 @@ img {
 // Persistent content editor link. Authorization happens in Decap/GitHub, not here.
 .cms-editor-toolbar {
   position: fixed;
-  right: clamp(0.75rem, 2vw, 1.25rem);
-  bottom: clamp(0.75rem, 2vw, 1.25rem);
-  z-index: 1200;
-  max-width: min(calc(100vw - 1.5rem), 44rem);
-  color: var(--text-primary);
+  right: calc(env(safe-area-inset-right, 0px) + clamp(0.75rem, 2vw, 1.25rem));
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(0.75rem, 2vw, 1.25rem));
+  z-index: 2000;
+  max-width: calc(100vw - 1.5rem);
+  pointer-events: none;
 }
 
 .cms-editor-toolbar-inner {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.35rem;
-  padding: 0.42rem;
-  border: 1px solid rgba(var(--accent-cool-rgb), 0.24);
-  border-radius: 0.75rem;
-  background: rgba(var(--bg-secondary-rgb), 0.96);
-  box-shadow: 0 18px 42px rgba(20, 35, 45, 0.18);
-  backdrop-filter: blur(12px);
+  pointer-events: auto;
 }
 
 .cms-editor-toolbar-link,
 .cms-editor-toolbar-link:visited {
-  min-height: 2.1rem;
+  min-height: 2.25rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-color);
-  border-radius: 0.55rem;
-  padding: 0.42rem 0.68rem;
+  border: 1px solid rgba(var(--link-hover-rgb), 0.42);
+  border-radius: 999px;
+  padding: 0.5rem 0.82rem;
   font-family: var(--font-family-ui);
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.1;
   text-decoration: none;
-  color: var(--text-primary);
-  background: rgba(var(--surface-accent-rgb), 0.74);
-  transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+  white-space: nowrap;
+  color: #fff;
+  background: rgb(var(--link-color-rgb));
+  box-shadow: 0 10px 24px rgba(20, 35, 45, 0.22);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .cms-editor-toolbar-link:hover,
 .cms-editor-toolbar-link:focus-visible {
-  color: var(--link-hover-color);
+  color: #fff;
   text-decoration: none;
-  border-color: rgba(var(--link-color-rgb), 0.34);
-  background: rgba(var(--link-color-rgb), 0.1);
+  border-color: rgba(var(--link-hover-rgb), 0.72);
+  background: rgb(var(--link-hover-rgb));
+  box-shadow: 0 12px 28px rgba(20, 35, 45, 0.26);
   transform: translateY(-1px);
+}
+
+.cms-editor-toolbar-link:focus-visible {
+  outline: 3px solid rgba(var(--accent-cool-rgb), 0.38);
+  outline-offset: 3px;
 }
 
 @media (max-width: 640px) {
   .cms-editor-toolbar {
     right: 0.75rem;
-    left: 0.75rem;
-    bottom: 0.75rem;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
   }
 
   .cms-editor-toolbar-inner {
@@ -927,6 +928,7 @@ img {
   }
 
   .cms-editor-toolbar-link {
-    flex: 1 1 auto;
+    min-height: 2.35rem;
+    padding: 0.58rem 0.86rem;
   }
 }
