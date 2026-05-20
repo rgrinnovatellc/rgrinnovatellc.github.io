@@ -115,6 +115,23 @@ make check-pages-build
 
 ## Content Editing Guide
 
+### Browser-Based CMS
+
+This repository includes a static-safe Decap CMS setup:
+
+- CMS dashboard: `/admin/`
+- Public config: `admin/config.yml`
+- Live-site edit control: **Edit this page** appears on editable pages.
+- Admin recovery controls: `/admin/` includes Site and Reset login actions for
+  failed or stale auth sessions.
+- Security/runbook: `docs/cms-editor.md`
+
+Because this is a public GitHub Pages site, do not commit tokens, OAuth client
+secrets, passwords, or API keys. GitHub OAuth requires an external auth helper
+such as Netlify Identity/Git Gateway or a small OAuth proxy. Only the public
+proxy URL belongs in `admin/config.yml`; the secret belongs in the provider's
+secret store.
+
 ### Pages
 
 - Add or edit site pages in `_pages/`.

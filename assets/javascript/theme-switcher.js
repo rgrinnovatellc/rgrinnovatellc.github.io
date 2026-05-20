@@ -20,7 +20,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Check for saved theme preference or default to 'light'
-    const currentTheme = localStorage.getItem('theme') || 'light';
+    function getStoredTheme() {
+        try {
+            return localStorage.getItem('theme') || 'light';
+        } catch (error) {
+            return 'light';
+        }
+    }
+
+    function setStoredTheme(theme) {
+        try {
+            localStorage.setItem('theme', theme);
+        } catch (error) {
+            // Theme switching still works for the current page if storage is blocked.
+        }
+    }
+
+    const currentTheme = getStoredTheme();
     html.setAttribute('data-theme', currentTheme);
     
     updateThemeUI(currentTheme);
@@ -32,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
             html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            setStoredTheme(newTheme);
             updateThemeUI(newTheme);
         });
     }
