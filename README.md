@@ -97,6 +97,7 @@ make check-pages-build
 - Clean all CV generated files (including PDF): `make cv-pdf-clean`
 - Run local link-check workflow: `make check-links`
 - Run local Pages build workflow: `make check-pages-build`
+- Verify Pages settings for both GitHub remotes: `make check-pages-config`
 - Run local CI combo (build + cv + link check + pages build): `make ci-local`
 
 ## Repository Layout
@@ -113,24 +114,17 @@ make check-pages-build
 - `cv/`: CV and related documents.
 - `_site/`: Generated output (build artifact; not source of truth).
 
-## Content Editing Guide
+## Content Editing
 
-### Browser-Based CMS
+### Live Edit Button
 
-This repository includes a static-safe Decap CMS setup:
-
-- CMS dashboard: `/admin/`
-- Public config: `admin/config.yml`
-- Live-site edit control: **Edit this page** appears on editable pages.
-- Admin recovery controls: `/admin/` includes Site and Reset login actions for
-  failed or stale auth sessions.
-- Security/runbook: `docs/cms-editor.md`
-
-Because this is a public GitHub Pages site, do not commit tokens, OAuth client
-secrets, passwords, or API keys. GitHub OAuth requires an external auth helper
-such as Netlify Identity/Git Gateway or a small OAuth proxy. Only the public
-proxy URL belongs in `admin/config.yml`; the secret belongs in the provider's
-secret store.
+- **Edit this page** appears on editable pages and opens the matching source
+  file in GitHub's editor.
+- The button is host-aware for both GitHub Pages remotes:
+  `rgrinnovatellc/rgrinnovatellc.github.io` and
+  `uddhavpgautam/uddhavpgautam.github.io`.
+- Host-to-repository mapping lives in `_data/site.yml` under
+  `urls.repository_hosts`.
 
 ### Pages
 
@@ -179,8 +173,12 @@ This repository is configured for GitHub Pages-style static hosting.
 Important for this repository:
 
 - This site depends on `jekyll-scholar` and custom gems from `Gemfile`.
-- In GitHub repository settings, set Pages Source to `GitHub Actions`.
+- In both GitHub repositories, set Pages Source to `GitHub Actions`.
 - Do not use `Deploy from a branch` for this repo, because that path runs the restricted `actions/jekyll-build-pages` environment (`github-pages` gem / Jekyll 3.10) and does not support `jekyll-scholar` tags.
+- `make check-pages-config` checks that
+  `rgrinnovatellc/rgrinnovatellc.github.io` and
+  `uddhavpgautam/uddhavpgautam.github.io` are both using the workflow-based
+  Pages build type.
 
 Typical deployment flow:
 
@@ -201,7 +199,8 @@ If CI fails with a message like `Liquid syntax error: Unknown tag 'bibliography'
 
 1. Open `Settings -> Pages` in GitHub.
 2. Under `Build and deployment`, set `Source` to `GitHub Actions`.
-3. Re-run the failed workflow or push a new commit.
+3. Repeat this in both GitHub remotes if needed.
+4. Re-run the failed workflow or push a new commit.
 
 ## Troubleshooting
 

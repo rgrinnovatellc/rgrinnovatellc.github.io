@@ -19,6 +19,10 @@ urls:
   site: "https://rgrinnovatellc.github.io"
   baseurl: ""
   repository: "rgrinnovatellc/rgrinnovatellc.github.io"
+  repository_branch: "master"
+  repository_hosts:
+    rgrinnovatellc.github.io: "rgrinnovatellc/rgrinnovatellc.github.io"
+    uddhavpgautam.github.io: "uddhavpgautam/uddhavpgautam.github.io"
   github_repo: "https://github.com/rgrinnovatellc/rgrinnovatellc.github.io"
   github_api: "https://api.github.com/repos/rgrinnovatellc/rgrinnovatellc.github.io"
 

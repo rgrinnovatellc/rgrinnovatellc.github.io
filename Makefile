@@ -9,6 +9,7 @@ JEKYLL_CONFIG ?= _config.yml
 
 LINK_WORKFLOW := .github/workflows/link-check.yml
 PAGES_WORKFLOW := .github/workflows/jekyll.yml
+PAGES_REPOS ?= rgrinnovatellc/rgrinnovatellc.github.io uddhavpgautam/uddhavpgautam.github.io
 
 CV_TEX ?= cv/Resume_UddhavGautam.tex
 CV_DIR := $(dir $(CV_TEX))
@@ -29,7 +30,7 @@ ifeq ($(strip $(MAKECMDGOALS)),)
 $(error Use an explicit target (for example: make help, make serve, make build, make cv-pdf, make ci-local))
 endif
 
-.PHONY: help install serve build clean cv-pdf cv-pdf-clean check-links check-pages-build ci-local
+.PHONY: help install serve build clean cv-pdf cv-pdf-clean check-links check-pages-build check-pages-config ci-local
 
 help:
 	@echo "Available targets:"
@@ -41,6 +42,7 @@ help:
 	@echo "  make cv-pdf-clean       - Remove CV generated files (.pdf and LaTeX intermediates)"
 	@echo "  make check-links        - Run .github/workflows/link-check.yml locally with act"
 	@echo "  make check-pages-build  - Run Pages build job locally with act"
+	@echo "  make check-pages-config - Verify both GitHub Pages repos use Actions deployment"
 	@echo "  make ci-local           - Run local CI checks (build + cv-pdf + check-links + pages build)"
 
 install:
@@ -74,5 +76,22 @@ check-pages-build:
 	@command -v $(ACT) >/dev/null || (echo "Missing act. Install it first: https://github.com/nektos/act" && exit 1)
 	mkdir -p "$(ACT_ARTIFACT_DIR)"
 	$(ACT) -W $(PAGES_WORKFLOW) -j build --artifact-server-path "$(ACT_ARTIFACT_DIR)"
+
+check-pages-config:
+	@command -v gh >/dev/null || (echo "Missing gh. Install GitHub CLI first." && exit 1)
+	@failed=0; \
+	for repo in $(PAGES_REPOS); do \
+		build_type=$$(gh api "repos/$$repo/pages" --jq '.build_type' 2>/dev/null || true); \
+		if [[ -z "$$build_type" ]]; then \
+			echo "$$repo: unable to read Pages settings"; \
+			failed=1; \
+		elif [[ "$$build_type" != "workflow" ]]; then \
+			echo "$$repo: build_type=$$build_type (expected workflow)"; \
+			failed=1; \
+		else \
+			echo "$$repo: build_type=workflow"; \
+		fi; \
+	done; \
+	exit $$failed
 
 ci-local: build cv-pdf check-links check-pages-build

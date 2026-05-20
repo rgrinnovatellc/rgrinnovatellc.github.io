@@ -1,0 +1,94 @@
+{% comment %}
+  Static-safe editor toolbar.
+  This only creates public navigation links into GitHub. Authorization is
+  enforced by GitHub login, repository permissions, and pull-request review.
+{% endcomment %}
+{% assign edit_source_path = page.path | default: '' %}
+{% assign edit_post_entry = '' %}
+{% assign edit_source_target = '' %}
+{% assign edit_github_repo = site.data.site.urls.repository | default: 'rgrinnovatellc/rgrinnovatellc.github.io' %}
+{% assign edit_github_branch = site.data.site.urls.repository_branch | default: 'master' %}
+{% assign edit_repository_hosts = site.data.site.urls.repository_hosts %}
+{% if edit_source_path contains '_pages/' %}
+  {% assign edit_source_target = edit_source_path %}
+{% endif %}
+
+{% if edit_source_path contains '_posts/' %}
+  {% assign edit_post_entry = edit_source_path | split: '/' | last | remove: '.md' | remove: '.markdown' %}
+  {% capture edit_source_target %}_includes/blogs_html/{{ edit_post_entry }}.html{% endcapture %}
+{% endif %}
+
+{% capture edit_github_url %}https://github.com/{{ edit_github_repo }}/edit/{{ edit_github_branch }}/{{ edit_source_target }}{% endcapture %}
+
+{% if edit_source_target != '' %}
+<aside class="edit-page-toolbar" data-edit-page-source-path="{{ edit_source_path | escape }}" data-github-edit-source-path="{{ edit_source_target | strip | escape }}">
+  <div class="edit-page-toolbar-inner" role="group" aria-label="Content editing tools">
+    <a
+      class="edit-page-toolbar-link"
+      href="{{ edit_github_url | strip | escape }}"
+      rel="nofollow"
+      data-github-edit-link
+      data-github-edit-path="{{ edit_source_target | strip | escape }}"
+      data-github-edit-branch="{{ edit_github_branch | escape }}"
+      data-github-edit-repo="{{ edit_github_repo | escape }}"
+      data-github-edit-repos="{{ edit_repository_hosts | jsonify | escape }}">Edit this page</a>
+  </div>
+</aside>
+<script>
+  (function() {
+    function normalizeHost(hostname) {
+      return String(hostname || "")
+        .toLowerCase()
+        .replace(/\.$/, "")
+        .replace(/^www\./, "");
+    }
+
+    function parseRepoMap(link) {
+      try {
+        var parsed = JSON.parse(link.getAttribute("data-github-edit-repos") || "{}");
+        return parsed && Object.prototype.toString.call(parsed) === "[object Object]" ? parsed : {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function repoFromGithubPagesHost(hostname) {
+      var match = /^([a-z0-9-]+)\.github\.io$/i.exec(hostname);
+      return match ? match[1] + "/" + match[1] + ".github.io" : "";
+    }
+
+    function encodePath(path) {
+      return String(path || "")
+        .replace(/^\/+/, "")
+        .split("/")
+        .map(function(part) { return encodeURIComponent(part); })
+        .join("/");
+    }
+
+    function editUrl(repo, branch, path) {
+      if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {
+        return "";
+      }
+
+      return "https://github.com/" + repo + "/edit/" + encodeURIComponent(branch || "master") + "/" + encodePath(path);
+    }
+
+    function updateEditLink(link) {
+      var host = normalizeHost(window.location.hostname);
+      var repos = parseRepoMap(link);
+      var repo = repos[host] || repoFromGithubPagesHost(host) || link.getAttribute("data-github-edit-repo");
+      var url = editUrl(repo, link.getAttribute("data-github-edit-branch"), link.getAttribute("data-github-edit-path"));
+
+      if (url) {
+        link.href = url;
+      }
+    }
+
+    var links = document.querySelectorAll("[data-github-edit-link]");
+
+    for (var index = 0; index < links.length; index += 1) {
+      updateEditLink(links[index]);
+    }
+  }());
+</script>
+{% endif %}
