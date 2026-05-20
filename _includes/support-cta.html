@@ -1,0 +1,22 @@
+{% assign support_url = site.data.site.footer.support_url | default: "" | strip %}
+{% assign support_url_protocol = support_url | slice: 0, 8 %}
+{% assign support_url_is_https = false %}
+{% if support_url != blank and support_url_protocol == "https://" %}
+    {% assign support_url_is_https = true %}
+{% endif %}
+<div class="support-cta">
+    <p class="hero-support">{{ site.data.site.footer.support_text | default: "Enjoy my apps or blogs? Support my work." | escape }}</p>
+    <div class="cta-row">
+        {% if support_url_is_https %}
+        <a class="btn btn-outline-primary" href="{{ support_url | escape }}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">
+            <i class="fa fa-coffee" aria-hidden="true"></i>
+            {{ site.data.site.footer.support_label | default: "Buy Me a Coffee" | escape }}
+        </a>
+        {% else %}
+        <span class="btn btn-outline-primary disabled" aria-disabled="true">
+            <i class="fa fa-coffee" aria-hidden="true"></i>
+            {{ site.data.site.footer.support_label | default: "Buy Me a Coffee" | escape }}
+        </span>
+        {% endif %}
+    </div>
+</div>

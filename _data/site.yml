@@ -88,7 +88,9 @@ footer:
   source_code_link: "https://github.com/rgrinnovatellc/rgrinnovatellc.github.io"
   template_credit: "Based on Academic Website Template"
   support_label: "Buy Me a Coffee"
-  support_url: ""
+  support_text: "Enjoy my apps or blogs? Support my work."
+  # Use a public HTTPS Buy Me a Coffee, Ko-fi, PayPal, or Stripe payment/profile URL to make the support button clickable.
+  support_url: "https://buymeacoffee.com/upgautam"
   
 # Navigation Configuration
 navigation:
@@ -110,7 +112,7 @@ navigation:
       url: "/software"
       icon: "fa-code"
     - name: "blogs"
-      title: "Writing"
+      title: "Blogs"
       url: "/blogs"
       icon: "fa-blog"
     - name: "about"
@@ -136,7 +138,7 @@ navigation:
         title: "Software"
         url: "/software"
       - name: "blogs"
-        title: "Writing"
+        title: "Blogs"
         url: "/blogs"
         
     legal:
