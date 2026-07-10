@@ -1,4 +1,3 @@
-
 \documentclass[10pt]{article}
 \usepackage[margin=0.6in]{geometry}
 \usepackage[T1]{fontenc}
@@ -8,218 +7,188 @@
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{titlesec}
-\usepackage{array}
-\usepackage{tabularx}
 \usepackage{xcolor}
 \usepackage{multicol}
+\usepackage{needspace}
 
 % Academic CV color scheme
-\definecolor{sectioncolor}{RGB}{0,102,153}
+\definecolor{sectioncolor}{RGB}{0,82,136}
 \definecolor{linkcolor}{RGB}{0,51,102}
-\definecolor{subtextcolor}{RGB}{100,100,100}
+\definecolor{subtextcolor}{RGB}{90,90,90}
 
 \hypersetup{
-    colorlinks=true,
-    linkcolor=linkcolor,
-    urlcolor=linkcolor,
-  pdftitle={Uddhav P. Gautam - Curriculum Vitae},
-  pdfsubject={Academic CV: Systems Research, eBPF, Linux Kernel, Embedded Security, BLE Security},
-    pdfauthor={Uddhav P. Gautam},
-  pdfkeywords={eBPF, Linux kernel, embedded security, IoT security, Bluetooth Low Energy, systems research, runtime enforcement},
-    pdfcreator={LaTeX with hyperref},
-    pdfproducer={pdflatex},
-    pdfborderstyle={/S/U/W 0}
+ colorlinks=true,
+ linkcolor=linkcolor,
+ urlcolor=linkcolor,
+ pdftitle={Uddhav P. Gautam - Curriculum Vitae},
+ pdfsubject={Academic CV: Trust Architectures for Software Systems -- Supply-Chain Intake Verification, Independent Verification of AI-Generated Code, OTA Security-Policy Evolution for Embedded Devices, eBPF and Linux Kernel},
+ pdfauthor={Uddhav P. Gautam},
+ pdfkeywords={software supply chain security, release assurance, XZ backdoor, AI-assisted development, verifier independence, DevSecOps, eBPF, Linux kernel, Bluetooth Low Energy, embedded security, OTA updates, Zephyr RTOS, mobile forensics, SCADA},
+ pdfcreator={LaTeX with hyperref},
+ pdfproducer={pdflatex},
+ pdfborderstyle={/S/U/W 0}
 }
 
-% Formatting helpers
-\setlist[itemize]{leftmargin=*, itemsep=2pt, topsep=2pt, parsep=0pt}
-\titlespacing*{\section}{0pt}{10pt}{4pt}
-\titleformat{\section}{\large\bfseries\color{sectioncolor}}{}{0em}{}[\titlerule]
+\setlist[itemize]{leftmargin=1.2em, itemsep=3pt, topsep=3pt, parsep=0pt, partopsep=0pt}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titleformat{\section}{\large\bfseries\color{sectioncolor}}{}{0em}{}[\vspace{-2pt}\titlerule]
 \setlength{\parindent}{0pt}
 \pagestyle{empty}
 
-% Custom commands
-\newcommand{\header}[1]{%
-  \begin{center}
-    \textbf{\LARGE #1}
-  \end{center}
-  \vspace{-8pt}
+\newcommand{\entry}[2]{%
+ \par\needspace{2\baselineskip}\vspace{6pt}%
+ {\noindent\textbf{#1}\hfill\mbox{\small\itshape #2}\par}%
 }
-\newcommand{\subheader}[1]{%
-  \vspace{-3pt}
-  \begin{center}
-    \small #1
-  \end{center}
-  \vspace{-3pt}
+\newcommand{\entrysub}[1]{%
+ {\noindent\small\hspace*{8pt}#1\par}%
 }
-\newcommand{\positionsimple}[2]{%
-  \vspace{1pt}
-  \noindent\textbf{#1}\hfill{\small\textit{#2}}\\[-1pt]
+\newcommand{\thread}[1]{%
+ \par\needspace{3\baselineskip}\vspace{6pt}%
+ {\noindent\textbf{#1}\par}%
 }
-\newcommand{\project}[1]{%
-  \vspace{2pt}
-  \noindent\textbf{#1}
-}
+\newcommand{\cvsection}[1]{\needspace{5\baselineskip}\section*{#1}}
 
 \begin{document}
-% ==================== HEADER ====================
-\header{Uddhav P. Gautam}
-\subheader{Ph.D. Candidate in Computer Engineering, Virginia Tech}
+
 \begin{center}
-{\small
-  Raleigh-Durham-Chapel Hill, NC \;|\; +1 (919) 729-4141 \;|\; \href{mailto:upgautam@vt.edu}{upgautam@vt.edu}\\[2pt]
-  \href{https://rgrinnovatellc.github.io}{Website}
-  \;|\; \href{https://github.com/rgrinnovatellc}{GitHub}
-  \;|\; \href{https://www.linkedin.com/in/uddhavpgautam/}{LinkedIn}
-}
+ {\LARGE\bfseries Uddhav P. Gautam}\\[5pt]
+ {\small +1 (919) 729-4141 \;\textbullet\; \href{mailto:upgautam@vt.edu}{upgautam@vt.edu}
+  \;\textbullet\; \href{https://uddhavpgautam.github.io}{uddhavpgautam.github.io}} \\[4pt] 
+  {\small\textit{Seeking positions as Software Architect, IT Director, IT Manager, or Research Scientist}} 
 \end{center}
-\vspace{4pt}
+
+\vspace{20pt}
+
+\cvsection{Research Interests}
+\noindent\hangindent=3em\hangafter=1
+\textbf{Security}: supply-chain compromise; fail-closed evidence semantics; BLE and embedded
+post-compromise defense; mobile forensics; SCADA monitoring.
+
+\hangindent=3em\hangafter=1
+\textbf{Systems}: sandboxed eBPF extensibility; reboot-free OTA security-policy
+lifecycles; verifier-to-runtime conformance.
+
+\hangindent=3em\hangafter=1
+\textbf{Software Engineering}: verifier independence for AI-assisted development; externalized evidence
+contracts.
+
+\cvsection{Publications}
+\thread{Manuscripts Under Review}
+\begin{itemize}[itemsep=3pt]
+ \item \textbf{Uddhav P. Gautam}, et al. ``Breaking Self-Referential Trust in Source Releases:
+ A Parity Gate for OS Package Supply Chains.'' \textit{Ready for submission, USENIX Security 2027.}
+ \item \textbf{Uddhav P. Gautam}, et al. ``Breaking Self-Referential Trust with AIE Verification in
+ AI-Assisted Development and Release Assurance.'' \textit{Under review, ICSE 2027.}
+ \item \textbf{Uddhav P. Gautam}, et al. ``ZeroDown: Firmware-Decoupled OTA Security-Policy Updates
+ for MCU-Class BLE Peripherals.'' \textit{Under review, EuroSys 2027.}
+ \item \textit{Sahil Dudani}, \textbf{Uddhav P. Gautam}, et al. ``Ghost in the Device: The Parallel
+ World of Spy Apps Forensics.'' \textit{Under review, Forensic Science International: Digital Investigation., Elsevier}
+ \item \textit{Ashraf Saeed}, \textbf{Uddhav P. Gautam}, et al. ``AI-Code Verification Readiness in
+ CS1: A Seeded-Flaw Diagnostic.'' \textit{Under review, Koli Calling.}
+\end{itemize}
+
+\thread{Peer-Reviewed Publications}
+\begin{itemize}[itemsep=3pt]
+ \item Milo Craun, Khizar Hussain, \textbf{Uddhav P. Gautam},
+ et al. ``Eliminating eBPF Tracing Overhead
+ on Untraced Processes.'' \textit{Proc. ACM SIGCOMM Workshop on eBPF \& Kernel Ext.}, 2024.
+ DOI: \href{https://doi.org/10.1145/3672197.3673431}{10.1145/3672197.3673431}
+ \item Syed Akailvi, \textbf{Uddhav P. Gautam}, et al.
+ ``HELOT---Hunting Evil Life in Operational Technology.''
+ \textit{IEEE Trans. Smart Grid}, vol. 14, no. 4, pp. 3058--3071, Jul. 2023.
+ DOI: \href{https://doi.org/10.1109/TSG.2022.3222261}{10.1109/TSG.2022.3222261}
+\end{itemize}
+
+\cvsection{Professional Experience}
+\entry{Android Technical Lead \& Architect, Perficient}{Jun 2021 -- May 2023}
+\entrysub{Clients: TD Ameritrade, Charles Schwab}
+\begin{itemize}
+ \item Architected migration infrastructure supporting the transition of 30M+ TD Ameritrade users across Android,
+ iOS, and web platforms to Charles Schwab systems after acquisition
+ \item Led an 8-engineer Android team, established engineering standards, and maintained architecture and delivery
+ documentation for a regulated codebase
+ \item Migrated build configuration to Kotlin DSL, integrated static analysis, and restructured CI/CD pipeline 
+ for multi-flavor production delivery
+ \item Optimized a shared C++ core and the surrounding mobile performance pipeline, contributing to a measured
+ 40\% reduction in crash rate through production telemetry
+\end{itemize}
+
+\entry{Sr. Android Developer, Viper Design LLC}{Mar 2020 -- Feb 2021}
+\begin{itemize}
+ \item Built the IoT software stack for Shark robot-vacuum products spanning embedded firmware and
+ cross-platform mobile applications
+ \item Applied modular Android architecture, dependency injection, and serialization patterns to improve
+ maintainability and testability
+ \item Improved application robustness through performance tuning, code shrinking, crash analytics, and automated
+ testing
+\end{itemize}
+
+\entry{U.S. Army Reserve}{Apr 2019 -- Apr 2023}
+\begin{itemize}
+ \item Served four years; achieved 96th percentile on the Armed Forces Classification Test
+\end{itemize}
+
+\vspace{6pt}
 \noindent
-{\small\textcolor{subtextcolor}{%
-Systems researcher specializing in eBPF systems, Linux kernel extensibility, Bluetooth Low Energy security,
-and secure runtime policy enforcement for resource-constrained embedded devices.}}
+{\small\textit{\textbf{Prior roles}: 3 years as Android Developer; before that, 4 years as System/Network Administrator
+after earning Microsoft and Ethical Hacking certifications.}}
 
-% ==================== RESEARCH INTERESTS ====================
-\section*{Research Interests}
-eBPF and Linux kernel systems; embedded and IoT security; Bluetooth Low Energy security; secure over-the-air policy
-enforcement; runtime monitoring for resource-constrained systems.
+\cvsection{Education} 
+\entry{Ph.D. Computer Engineering (GPA: 4.0/4.0), Virginia Tech}{2024 -- Present} 
+\entrysub{Advisors: \href{https://ece.vt.edu/people/profile/wangh.html}{Haining Wang}, \href{https://security.vt.edu/about/staff/randy-marchany/}{Randy Marchany}} 
+\vspace{-3pt} 
+\entry{Ph.D. Computer Science (GPA: 4.0/4.0), UA Little Rock}{2018 -- 2020} 
+\entrysub{Transferred to Virginia Tech} 
+\vspace{-3pt} 
+\entry{M.S. Computer Science (GPA: 3.58/4.0), UA Little Rock}{2015 -- 2017} 
+\vspace{-3pt} 
+\entry{B.S. Computer Science (GPA: 3.91/4.0), Tribhuvan University, Nepal}{2009 -- 2013}
 
-% ==================== EDUCATION ====================
-\section*{Education}
-\positionsimple{Ph.D. Computer Engineering (GPA: 4.0/4.0), Virginia Tech}{2024 -- Present}
-{\small Advisors: \href{https://ece.vt.edu/people/profile/wangh.html}{Prof. Haining Wang}, \href{https://security.vt.edu/about/staff/randy-marchany/}{Prof. Randy Marchany}}
-
-\vspace{3pt}
-
-\positionsimple{Ph.D. Computer Science (GPA: 4.0/4.0), UA Little Rock}{2018 -- 2020}
-{\small Transferred to Virginia Tech}
-
-\positionsimple{M.S. Computer Science (GPA: 3.58/4.0), UA Little Rock}{2015 -- 2017}
-
-\positionsimple{B.S. Computer Science (GPA: 3.91/4.0), Tribhuvan University, Nepal}{2009 -- 2013}
-
-% ==================== PUBLICATIONS ====================
-\section*{Publications}
-\textbf{Peer-Reviewed Publications}
-\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep]
-
-  \item \hangindent=1em Milo Craun, Khizar Hussain, \textbf{Uddhav P. Gautam},
-  Zhengjie Ji, Tanuj Rao, and Dan Williams. ``Eliminating eBPF Tracing Overhead
-  on Untraced Processes.'' \textit{Proc. ACM SIGCOMM Workshop on eBPF \& Kernel Ext.}, 2024.
-  DOI: \href{https://doi.org/10.1145/3672197.3673431}{10.1145/3672197.3673431}
-
-  \item \hangindent=1em Syed Akailvi, \textbf{Uddhav P. Gautam}, Praveshika
-  Bhandari, Hadi Rashid, Philip D. Huff, and Jan P. Springer.
-  ``HELOT---Hunting Evil Life in Operational Technology.''
-  \textit{IEEE Trans. Smart Grid}, vol. 14, no. 4, pp. 3058--3071, Jul. 2023.
-  DOI: \href{https://doi.org/10.1109/TSG.2022.3222261}{10.1109/TSG.2022.3222261}
-\end{itemize}
-
-% ==================== RESEARCH EXPERIENCE ====================
-\section*{Research Experience}
-
-\positionsimple{Graduate Research Assistant, Virginia Tech}{Sep 2023 -- Present}
-
-\vspace{3pt}
-\textbf{eBPF \& Linux Kernel Research}
-\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
-  \item Published research on reducing eBPF tracing overhead for untraced processes at the ACM SIGCOMM Workshop on eBPF \& Kernel Extensions
-  \item Developed kernel-level protobuf parsing by porting the user-space pbtools library into a kernel module and implementing a custom kfunc for in-kernel message processing
-  \item Prototyped a high-performance application-layer firewall using TC clsact qdisc and protobuf payload filtering at kernel speeds
-  \item Built automated KVM-based development infrastructure with Terraform for a multi-researcher systems environment
-\end{itemize}
-
-\vspace{3pt}
-\textbf{Critical Infrastructure Security (HELOT Project)}
-\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
-  \item Published research on operational technology security monitoring in \textit{IEEE Transactions on Smart Grid}
-  \item Designed an end-to-end SCADA monitoring pipeline using GRR, Filebeat, Logstash, and Elasticsearch for continuous event capture and real-time mobile alerting
-  \item Conducted research on runtime security monitoring for DNP3, Modbus, and IEC 61850 environments in power grid infrastructure
-\end{itemize}
-
-% ==================== SELECTED SYSTEMS PROJECTS ====================
-\section*{Selected Systems Projects}
-
-\project{Protobuf-Driven Kernel Firewall}
-\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep]
-  \item Ported the user-space protobuf parser \textit{pbtools} into a kernel module with a custom kfunc for BPF integration
-  \item Prototyped a TC clsact-based firewall for application-layer inspection at kernel speeds
-  \item Demonstrated the viability of complex protocol parsing in eBPF programs through kernel-module augmentation
-\end{itemize}
-
-% ==================== PROFESSIONAL EXPERIENCE ====================
-\section*{Professional Experience}
-
-\positionsimple{Android Technical Lead \& Architect, Perficient (Client: TD Ameritrade/Charles Schwab)}{Jun 2021 -- May 2023}
-\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
-  \item Architected migration infrastructure supporting the transition of 30M+ TD Ameritrade users across Android, iOS, and web platforms to Charles Schwab systems after acquisition
-  \item Led an 8-engineer Android team, established engineering standards, and maintained architecture and delivery documentation for a large regulated codebase
-  \item Modernized the build and release workflow through Kotlin DSL migration, static analysis integration, and CI/CD improvements for multi-flavor production delivery
-  \item Optimized a shared C++ core and the surrounding mobile performance pipeline, contributing to a measured 40\% reduction in crash rate through production telemetry
-\end{itemize}
-
-\vspace{4pt}
-\positionsimple{Sr. Android Developer, Viper Design LLC}{Mar 2020 -- Feb 2021}
-\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
-  \item Built an end-to-end IoT software stack for Shark robot-vacuum products spanning embedded firmware and cross-platform mobile applications
-  \item Applied modular Android architecture, dependency injection, and modern serialization patterns to improve maintainability and testability
-  \item Improved application robustness through performance tuning, code shrinking, crash analytics, and automated testing
-\end{itemize}
-
-\vspace{4pt}
-\positionsimple{U.S. Army}{Apr 2019 -- Apr 2023}
-\begin{itemize}[topsep=2pt,partopsep=0pt,itemsep=2pt]
-  \item Served for four years, developing leadership and operational discipline, and achieved the 96th percentile on the Armed Forces Classification Test
-\end{itemize}
-
-\vspace{2pt}
-\noindent
-{\small\textit{Prior roles: Worked 3 years as Android Developer and before that worked 4 years as System/Network Admin after completing various Microsoft and Ethical Hacking etc.\ trainings.}}
-
-% ==================== TECHNICAL EXPERTISE ====================
-\section*{Technical Expertise}
+\cvsection{Technical Expertise}
 \begin{multicols}{2}
 \noindent\textbf{Systems \& Kernel}
-\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep,leftmargin=*]
-  \item eBPF (TC, XDP, tracing)
-  \item Linux kernel development
-  \item C/C++, Rust
-  \item Performance profiling
+\begin{itemize}[topsep=1pt,noitemsep]
+ \item eBPF (TC, XDP, tracing, uBPF sandbox)
+ \item Linux kernel development
+ \item C/C++, Python
 \end{itemize}
 
-\noindent\textbf{Embedded \& Security}
-\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep,leftmargin=*]
-  \item BLE protocol security
-  \item Zephyr RTOS
-  \item OTA update systems
-  \item SCADA protocols (DNP3, Modbus, IEC 61850)
+\vspace{4pt}
+\noindent\textbf{Embedded \& IoT Security}
+\begin{itemize}[topsep=1pt,noitemsep]
+ \item BLE protocol security
+ \item Zephyr RTOS, Nordic nRF52840
+ \item Authenticated OTA updates
+ \item Runtime policy enforcement
 \end{itemize}
 
 \columnbreak
 
-\noindent\textbf{Software Platforms}
-\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep,leftmargin=*]
-  \item Kotlin, Java, Android AOSP
-  \item Clean Architecture
-  \item Coroutines, CI/CD workflows
-  \item Security tooling (ProGuard, MobSF)
+\noindent\textbf{Security \& Assurance}
+\begin{itemize}[topsep=1pt,noitemsep]
+ \item Software supply-chain security
+ \item Reproducible builds, SBOM, SARIF
+ \item Trivy, OWASP Dep.-Check, MVT
+ \item Mobile forensics (Cellebrite UFED)
+ \item SCADA (DNP3, Modbus, IEC 61850)
 \end{itemize}
 
-\noindent\textbf{Infrastructure}
-\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep,leftmargin=*]
-  \item Terraform, Docker, Kubernetes
-  \item AWS, GCP, Firebase
-  \item Elasticsearch, Logstash, Filebeat
-  \item Infrastructure as Code
+\vspace{4pt}
+\noindent\textbf{Software \& Infrastructure}
+\begin{itemize}[topsep=1pt,noitemsep]
+ \item Kotlin, Java, Android AOSP
+ \item DevSecOps, Docker
+ \item AWS, GCP, Firebase
+ \item Elasticsearch, Logstash, Filebeat
 \end{itemize}
 \end{multicols}
 
-% ==================== HONORS & AWARDS ====================
-\section*{Honors \& Awards}
-\begin{itemize}[topsep=0pt,partopsep=0pt,noitemsep]
-  \item First Place, Complete Societal Award; Societal Impact Award; and Best Graduate Project Award, UA Little Rock
-  \item 2nd Place, TechLaunch Entrepreneurial Competition
-  \item Top-5 Final Year Project, Tribhuvan University
+
+\cvsection{References} 
+\begin{itemize}[itemsep=2pt] 
+  \item \textbf{Haining Wang} Prof., Bradley Dept.\ of Electrical \& Computer Engineering, Virginia Tech, \href{mailto:hnw@vt.edu}{hnw@vt.edu}, (757) 813-4390 
+  \item \textbf{Randy Marchany} CISO \& Director, IT Security Lab, Virginia Tech, \href{mailto:marchany@vt.edu}{marchany@vt.edu}, (540) 250-7681  
+  \item \textbf{Brad Tilley} Director, Security Architecture \& Red Team, Virginia Tech, \href{mailto:btilley@vt.edu}{btilley@vt.edu}, (540) 231-3133  
 \end{itemize}
 
 \end{document}

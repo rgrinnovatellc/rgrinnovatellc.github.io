@@ -45,3 +45,7 @@ config/secrets.yml
 credentials.yml
 token.txt
 *.token
+
+papers/*
+!papers/Eliminating_eBPF_Tracing_Overhead_on_Untraced_Processes.pdf
+!papers/papers/HELOTHunting_Evil_Life_in_Operational_Technology.pdf
