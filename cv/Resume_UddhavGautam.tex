@@ -1,5 +1,5 @@
 \documentclass[10pt]{article}
-\usepackage[margin=0.6in]{geometry}
+\usepackage[hmargin=1in, vmargin=0.6in]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -10,11 +10,17 @@
 \usepackage{xcolor}
 \usepackage{multicol}
 \usepackage{needspace}
+\usepackage{amssymb}
+\usepackage{tikz}
 
-% Academic CV color scheme
-\definecolor{sectioncolor}{RGB}{0,82,136}
+% Academic CV color scheme: color is reserved for links; structure comes from weight and rules
+\definecolor{sectioncolor}{RGB}{25,25,25}
 \definecolor{linkcolor}{RGB}{0,51,102}
 \definecolor{subtextcolor}{RGB}{90,90,90}
+% Teaching-timeline role colors (validated categorical palette)
+\definecolor{roleGRA}{HTML}{2A78D6}
+\definecolor{roleGTA}{HTML}{1BAF7A}
+\definecolor{roleSL}{HTML}{EB6834}
 
 \hypersetup{
  colorlinks=true,
@@ -23,7 +29,7 @@
  pdftitle={Uddhav P. Gautam - Curriculum Vitae},
  pdfsubject={Academic CV: Trust Architectures for Software Systems -- Supply-Chain Intake Verification, Independent Verification of AI-Generated Code, OTA Security-Policy Evolution for Embedded Devices, eBPF and Linux Kernel},
  pdfauthor={Uddhav P. Gautam},
- pdfkeywords={software supply chain security, release assurance, XZ backdoor, AI-assisted development, verifier independence, DevSecOps, eBPF, Linux kernel, Bluetooth Low Energy, embedded security, OTA updates, Zephyr RTOS, mobile forensics, SCADA},
+ pdfkeywords={software supply chain security, release assurance, XZ backdoor, AI-assisted development, verifier independence, DevSecOps, eBPF, Linux kernel, Bluetooth Low Energy, embedded security, OTA updates, Zephyr RTOS, mobile forensics, SCADA, Android development},
  pdfcreator={LaTeX with hyperref},
  pdfproducer={pdflatex},
  pdfborderstyle={/S/U/W 0}
@@ -40,7 +46,7 @@
  {\noindent\textbf{#1}\hfill\mbox{\small\itshape #2}\par}%
 }
 \newcommand{\entrysub}[1]{%
- {\noindent\small\hspace*{8pt}#1\par}%
+ {\noindent\small\color{subtextcolor}\hspace*{8pt}#1\par}%
 }
 \newcommand{\thread}[1]{%
  \par\needspace{3\baselineskip}\vspace{6pt}%
@@ -51,13 +57,36 @@
 \begin{document}
 
 \begin{center}
- {\LARGE\bfseries Uddhav P. Gautam}\\[5pt]
- {\small +1 (919) 729-4141 \;\textbullet\; \href{mailto:upgautam@vt.edu}{upgautam@vt.edu}
-  \;\textbullet\; \href{https://uddhavpgautam.github.io}{uddhavpgautam.github.io}} \\[4pt] 
-  {\small\textit{Seeking positions as Software Architect, IT Director, IT Manager, or Research Scientist}} 
+{\LARGE\bfseries Uddhav P. Gautam}\\[0.5em]
+{\small
++1 (919) 729-4141 \;\textbullet\;
+\href{mailto:upgautam@vt.edu}{upgautam@vt.edu}
+\;\textbullet\;
+\href{https://uddhavpgautam.github.io}{Website}
+\;\textbullet\;
+\href{https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ}{Google Scholar}
+\;\textbullet\;
+\href{https://github.com/uddhavpgautam}{GitHub}
+\;\textbullet\;
+\href{https://www.linkedin.com/in/uddhavpgautam/}{LinkedIn}
+}
 \end{center}
 
-\vspace{20pt}
+\vspace{7pt}
+
+\begin{center}
+{\large $\ast\,\ast\,\ast$}\\[0.3em]
+{\small\textit{Seeking full-time roles across software architecture, technical leadership, and applied research}}
+\end{center}
+
+\vspace{7pt}
+
+\begin{center}
+{\small\textbf{Software veteran and open-source enthusiast} --- a decade as Software Engineer, Tech Lead, and Architect}\\[2pt]
+{\small\itshape I build reliable, modular, scalable, and maintainable software using proven development best practices}
+\end{center}
+
+\vspace{8pt}
 
 \cvsection{Research Interests}
 \noindent\hangindent=3em\hangafter=1
@@ -77,12 +106,15 @@ contracts.
 \begin{itemize}[itemsep=3pt]
  \item \textbf{Uddhav P. Gautam}, et al. ``Breaking Self-Referential Trust in Source Releases:
  A Parity Gate for OS Package Supply Chains.'' \textit{Ready for submission, USENIX Security 2027.}
+ Artifact: {\color{subtextcolor}\textit{link to be added}}
  \item \textbf{Uddhav P. Gautam}, et al. ``Breaking Self-Referential Trust with AIE Verification in
  AI-Assisted Development and Release Assurance.'' \textit{Under review, ICSE 2027.}
+ Artifact: \href{https://figshare.com/s/d0871296649a28ecd956}{figshare}
  \item \textbf{Uddhav P. Gautam}, et al. ``ZeroDown: Firmware-Decoupled OTA Security-Policy Updates
  for MCU-Class BLE Peripherals.'' \textit{Under review, EuroSys 2027.}
+ Artifact: {\color{subtextcolor}\textit{link to be added}}
  \item \textit{Sahil Dudani}, \textbf{Uddhav P. Gautam}, et al. ``Ghost in the Device: The Parallel
- World of Spy Apps Forensics.'' \textit{Under review, Forensic Science International: Digital Investigation., Elsevier}
+ World of Spy Apps Forensics.'' \textit{Under review, Forensic Science International: Digital Investigation, Elsevier.}
  \item \textit{Ashraf Saeed}, \textbf{Uddhav P. Gautam}, et al. ``AI-Code Verification Readiness in
  CS1: A Seeded-Flaw Diagnostic.'' \textit{Under review, Koli Calling.}
 \end{itemize}
@@ -99,33 +131,83 @@ contracts.
  DOI: \href{https://doi.org/10.1109/TSG.2022.3222261}{10.1109/TSG.2022.3222261}
 \end{itemize}
 
-\cvsection{Professional Experience}
-\entry{Android Technical Lead \& Architect, Perficient}{Jun 2021 -- May 2023}
-\entrysub{Clients: TD Ameritrade, Charles Schwab}
-\begin{itemize}
- \item Architected migration infrastructure supporting the transition of 30M+ TD Ameritrade users across Android,
- iOS, and web platforms to Charles Schwab systems after acquisition
- \item Led an 8-engineer Android team, established engineering standards, and maintained architecture and delivery
- documentation for a regulated codebase
- \item Migrated build configuration to Kotlin DSL, integrated static analysis, and restructured CI/CD pipeline 
- for multi-flavor production delivery
- \item Optimized a shared C++ core and the surrounding mobile performance pipeline, contributing to a measured
- 40\% reduction in crash rate through production telemetry
+\cvsection{Teaching \& Research Experience}
+\noindent\textbf{Courses Taught}
+\begin{itemize}[itemsep=4pt]
+ \item \tikz[baseline=-0.55ex]{\fill[roleSL,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\; \textbf{Sole Lecturer} --- Android Apps Development, upper-division (UA Little Rock, Fall 2018);\, Discrete Mathematics (St.\ Lawrence College, Nepal, Spring 2014)
+ \item \tikz[baseline=-0.55ex]{\fill[roleGTA,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\; \textbf{Graduate Teaching Assistant} --- Java Programming (Virginia Tech, Spring 2025);\, Operating Systems and Microprocessor Programming (UA Little Rock)
+\end{itemize}
+
+\vspace{7pt}
+\noindent
+\begin{tikzpicture}[
+    lbl/.style={below,text=subtextcolor,font=\scriptsize,inner sep=2pt},
+    inst/.style={above,font=\footnotesize\bfseries,inner sep=3pt}
+  ]
+  \def\h{0.54}
+  % --- St.\ Lawrence College ---
+  \begin{scope}
+    \clip[rounded corners=3.5pt] (0,0) rectangle (2.3,\h);
+    \fill[roleSL] (0,0) rectangle (2.3,\h);
+  \end{scope}
+  \node[inst] at (1.15,\h) {St.\ Lawrence College};
+  \node[lbl]  at (1.15,0) {Spring 2014};
+  % --- UA Little Rock ---
+  \begin{scope}
+    \clip[rounded corners=3.5pt] (2.8,0) rectangle (7.4,\h);
+    \fill[roleGTA] (2.8,0) rectangle (5.1,\h);
+    \fill[roleSL]  (5.1,0) rectangle (7.4,\h);
+  \end{scope}
+  \draw[white,line width=1pt] (5.1,0)--(5.1,\h);
+  \node[inst] at (5.1,\h) {UA Little Rock};
+  \node[lbl]  at (3.95,0) {Spring 2018};
+  \node[lbl]  at (6.25,0) {Fall 2018};
+  % --- Virginia Tech ---
+  \begin{scope}
+    \clip[rounded corners=3.5pt] (7.9,0) rectangle (14.8,\h);
+    \fill[roleGRA] (7.9,0)  rectangle (10.2,\h);
+    \fill[roleGTA] (10.2,0) rectangle (12.5,\h);
+    \fill[roleGRA] (12.5,0) rectangle (14.8,\h);
+  \end{scope}
+  \draw[white,line width=1pt] (10.2,0)--(10.2,\h) (12.5,0)--(12.5,\h);
+  \node[inst] at (11.35,\h) {Virginia Tech};
+  \node[lbl]  at (9.05,0)  {Spring--Fall 2024};
+  \node[lbl]  at (11.35,0) {Spring 2025};
+  \node[lbl]  at (13.65,0) {Sum 2025--Fall 2026};
+\end{tikzpicture}
+
+\vspace{9pt}
+\noindent{\footnotesize
+\tikz[baseline=-0.55ex]{\fill[roleSL,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\, Sole Lecturer \hspace{1.4em}
+\tikz[baseline=-0.55ex]{\fill[roleGTA,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\, Teaching Assistant (GTA) \hspace{1.4em}
+\tikz[baseline=-0.55ex]{\fill[roleGRA,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\, Research Assistant (GRA)}
+
+\cvsection{Software}
+Founder and sole developer, RGR Innovate LLC (2024 -- Present). Three free, ad-free Android applications
+published as a public service on
+\href{https://play.google.com/store/apps/dev?id=6755050398195804153}{Google Play}.
+\begin{itemize}[itemsep=3pt]
+ \item \textbf{Earthquakes by RGR}: real-time seismic mapping over USGS GeoJSON feeds with location
+ search and radius/magnitude filtering (Google Maps, Google Places)
+ \item \textbf{SmartConvert}: fully offline multi-tool for document scanning with edge detection,
+ image/unit/color conversion, screen ruler, and ARCore room measurement (no accounts, no network required)
+ \item \textbf{Passport \& ID Photo Studio}: print-ready passport, visa, and ID photos for 155+ countries
+ using on-device face detection, background removal, and automated compliance checks
 \end{itemize}
 
 \entry{Sr. Android Developer, Viper Design LLC}{Mar 2020 -- Feb 2021}
 \begin{itemize}
- \item Built the IoT software stack for Shark robot-vacuum products spanning embedded firmware and
+ \item Built the full IoT software stack for Shark robot-vacuum products, from embedded firmware to
  cross-platform mobile applications
- \item Applied modular Android architecture, dependency injection, and serialization patterns to improve
- maintainability and testability
- \item Improved application robustness through performance tuning, code shrinking, crash analytics, and automated
- testing
+ \item Improved maintainability and testability by re-architecting the Android app around modular design,
+ dependency injection, and serialization patterns
+ \item Strengthened production stability through performance tuning, code shrinking, crash analytics, and
+ automated testing
 \end{itemize}
 
 \entry{U.S. Army Reserve}{Apr 2019 -- Apr 2023}
 \begin{itemize}
- \item Served four years; achieved 96th percentile on the Armed Forces Classification Test
+ \item Served four years and scored in the 96\textsuperscript{th} percentile on the Armed Forces Classification Test
 \end{itemize}
 
 \vspace{6pt}
@@ -134,15 +216,34 @@ contracts.
 after earning Microsoft and Ethical Hacking certifications.}}
 
 \cvsection{Education} 
-\entry{Ph.D. Computer Engineering (GPA: 4.0/4.0), Virginia Tech}{2024 -- Present} 
+\entry{Ph.D. Computer Engineering, Virginia Tech \textmd{(GPA: 4.0/4.0)}}{2024 -- Present} 
 \entrysub{Advisors: \href{https://ece.vt.edu/people/profile/wangh.html}{Haining Wang}, \href{https://security.vt.edu/about/staff/randy-marchany/}{Randy Marchany}} 
 \vspace{-3pt} 
-\entry{Ph.D. Computer Science (GPA: 4.0/4.0), UA Little Rock}{2018 -- 2020} 
-\entrysub{Transferred to Virginia Tech} 
+\entry{M.S. Computer Science, UA Little Rock \textmd{(GPA: 3.58/4.0)}}{2015 -- 2017} 
 \vspace{-3pt} 
-\entry{M.S. Computer Science (GPA: 3.58/4.0), UA Little Rock}{2015 -- 2017} 
-\vspace{-3pt} 
-\entry{B.S. Computer Science (GPA: 3.91/4.0), Tribhuvan University, Nepal}{2009 -- 2013}
+\entry{B.S. Computer Science, Tribhuvan University, Nepal \textmd{(GPA: 3.91/4.0)}}{2009 -- 2013}
+
+% \cvsection{Professional Experience}
+% \entry{Android Technical Lead \& Architect, Perficient}{Jun 2021 -- May 2023}
+% \entrysub{Clients: TD Ameritrade, Charles Schwab}
+% \begin{itemize}
+%  \item Architected migration infrastructure supporting the transition of 30M+ TD Ameritrade users across Android,
+%  iOS, and web platforms to Charles Schwab systems after acquisition
+%  \item Led an 8-engineer Android team, established engineering standards, and maintained architecture and delivery
+%  documentation for a regulated codebase
+%  \item Migrated build configuration to Kotlin DSL, integrated static analysis, and restructured CI/CD pipeline 
+%  for multi-flavor production delivery
+%  \item Optimized a shared C++ core and the surrounding mobile performance pipeline, contributing to a measured
+%  40\% reduction in crash rate through production telemetry
+% \end{itemize}
+
+\cvsection{Honors \& Awards}
+\begin{itemize}[itemsep=3pt]
+ \item \textbf{UA Little Rock} --- 1st Place: Complete Societal Award, Societal Impact Award, and Best
+ Graduate Project Award; 2nd Place: Personal Achievement Award and TechLaunch Entrepreneurial Team
+ Projects Competition
+ \item \textbf{Tribhuvan University, Nepal} --- Top-5 Final-Year Project Award, Nepal Telecom Authority (NTA)
+\end{itemize}
 
 \cvsection{Technical Expertise}
 \begin{multicols}{2}
@@ -176,19 +277,24 @@ after earning Microsoft and Ethical Hacking certifications.}}
 \vspace{4pt}
 \noindent\textbf{Software \& Infrastructure}
 \begin{itemize}[topsep=1pt,noitemsep]
- \item Kotlin, Java, Android AOSP
+ \item Kotlin, Java, Android development
  \item DevSecOps, Docker
  \item AWS, GCP, Firebase
  \item Elasticsearch, Logstash, Filebeat
 \end{itemize}
 \end{multicols}
 
+\cvsection{Certifications}
+\noindent
+{\small Software Architecture, CI/CD \& DevOps, Deep Learning (NVIDIA), Java/Kotlin Design Patterns,
+React Native, Scrum Master, Decision Making, Delegating Tasks, and multiple Microsoft certifications
+(full list on \href{https://www.linkedin.com/in/uddhavpgautam/}{LinkedIn}).}
 
-\cvsection{References} 
+\cvsection{References}
 \begin{itemize}[itemsep=2pt] 
-  \item \textbf{Haining Wang} Prof., Bradley Dept.\ of Electrical \& Computer Engineering, Virginia Tech, \href{mailto:hnw@vt.edu}{hnw@vt.edu}, (757) 813-4390 
-  \item \textbf{Randy Marchany} CISO \& Director, IT Security Lab, Virginia Tech, \href{mailto:marchany@vt.edu}{marchany@vt.edu}, (540) 250-7681  
-  \item \textbf{Brad Tilley} Director, Security Architecture \& Red Team, Virginia Tech, \href{mailto:btilley@vt.edu}{btilley@vt.edu}, (540) 231-3133  
+  \item \textbf{Haining Wang} Prof., Bradley Dept.\ of Electrical \& Computer Engineering, Virginia Tech, \href{mailto:hnw@vt.edu}{hnw@vt.edu}, \mbox{(757) 813-4390}
+  \item \textbf{Randy Marchany} CISO \& Director, IT Security Lab, Virginia Tech, \href{mailto:marchany@vt.edu}{marchany@vt.edu}, \mbox{(540) 250-7681}
+  \item \textbf{Brad Tilley} Director, Security Architecture \& Red Team, Virginia Tech, \href{mailto:btilley@vt.edu}{btilley@vt.edu}, \mbox{(540) 231-3133}
 \end{itemize}
 
 \end{document}
