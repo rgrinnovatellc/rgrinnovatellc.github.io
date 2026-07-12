@@ -11,12 +11,12 @@ LINK_WORKFLOW := .github/workflows/link-check.yml
 PAGES_WORKFLOW := .github/workflows/jekyll.yml
 PAGES_REPOS ?= rgrinnovatellc/rgrinnovatellc.github.io uddhavpgautam/uddhavpgautam.github.io
 
-CV_TEX ?= cv/Resume_UddhavGautam.tex
-CV_DIR := $(dir $(CV_TEX))
-CV_FILE := $(notdir $(CV_TEX))
-CV_BASE := $(basename $(CV_FILE))
-CV_PDF := $(CV_DIR)$(CV_BASE).pdf
-CV_PDF_AUX := "$(CV_DIR)$(CV_BASE).aux" "$(CV_DIR)$(CV_BASE).log" "$(CV_DIR)$(CV_BASE).out" "$(CV_DIR)$(CV_BASE).toc" "$(CV_DIR)$(CV_BASE).fls" "$(CV_DIR)$(CV_BASE).fdb_latexmk"
+CV_DIR := cv
+# Every standalone LaTeX document in cv/ (files containing \documentclass).
+# \input-only fragments such as references.tex are skipped automatically.
+CV_TEX_ALL := $(shell grep -l '\documentclass' $(CV_DIR)/*.tex 2>/dev/null)
+CV_PDF_ALL := $(CV_TEX_ALL:.tex=.pdf)
+CV_AUX_ALL := $(foreach e,aux log out toc fls fdb_latexmk,$(CV_TEX_ALL:.tex=.$(e)))
 
 JEKYLL_BUILD_ARGS :=
 ifneq ($(strip $(JEKYLL_CONFIG)),)
@@ -38,7 +38,7 @@ help:
 	@echo "  make serve              - Run Jekyll server (via rake, auto-picks a free port)"
 	@echo "  make build              - Pristine Jekyll build (clean + build)"
 	@echo "  make clean              - Clean Jekyll build output"
-	@echo "  make cv-pdf             - Pristine CV PDF build (fresh compile; keeps only .pdf + .tex)"
+	@echo "  make cv-pdf             - Build all CV PDFs in cv/ (fresh compile; keeps only .pdf + .tex)"
 	@echo "  make cv-pdf-clean       - Remove CV generated files (.pdf and LaTeX intermediates)"
 	@echo "  make check-links        - Run .github/workflows/link-check.yml locally with act"
 	@echo "  make check-pages-build  - Run Pages build job locally with act"
@@ -60,13 +60,19 @@ clean:
 
 cv-pdf:
 	@command -v $(TEX_ENGINE) >/dev/null || (echo "Missing $(TEX_ENGINE). Install TeX Live (e.g., texlive-latex-extra)." && exit 1)
-	rm -f "$(CV_PDF)" $(CV_PDF_AUX)
-	cd "$(CV_DIR)" && $(TEX_ENGINE) -interaction=nonstopmode -halt-on-error "$(CV_FILE)"
-	cd "$(CV_DIR)" && $(TEX_ENGINE) -interaction=nonstopmode -halt-on-error "$(CV_FILE)"
-	rm -f $(CV_PDF_AUX)
+	@if [ -z "$(strip $(CV_TEX_ALL))" ]; then echo "No LaTeX documents found in $(CV_DIR)/"; exit 1; fi
+	rm -f $(CV_PDF_ALL) $(CV_AUX_ALL)
+	@for tex in $(CV_TEX_ALL); do \
+		f=$$(basename "$$tex"); \
+		echo "==> $$f"; \
+		( cd "$(CV_DIR)" && $(TEX_ENGINE) -interaction=nonstopmode -halt-on-error "$$f" \
+		           && $(TEX_ENGINE) -interaction=nonstopmode -halt-on-error "$$f" ) || exit 1; \
+	done
+	rm -f $(CV_AUX_ALL)
+	@echo "Built: $(CV_PDF_ALL)"
 
 cv-pdf-clean:
-	rm -f "$(CV_PDF)" $(CV_PDF_AUX)
+	rm -f $(CV_PDF_ALL) $(CV_AUX_ALL)
 
 check-links:
 	@command -v $(ACT) >/dev/null || (echo "Missing act. Install it first: https://github.com/nektos/act" && exit 1)

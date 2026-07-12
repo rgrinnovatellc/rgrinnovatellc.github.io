@@ -1,0 +1,59 @@
+% Standalone references sheet. Shares its reference data with the resume via
+% \input{references.tex}, so both stay in sync. Compile: pdflatex References_UddhavGautam.tex
+\documentclass[10pt]{article}
+\usepackage[hmargin=1in, vmargin=0.6in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+% Styling shared with Resume_UddhavGautam.tex
+\definecolor{sectioncolor}{RGB}{25,25,25}
+\definecolor{linkcolor}{RGB}{0,51,102}
+\definecolor{subtextcolor}{RGB}{90,90,90}
+
+\hypersetup{
+ colorlinks=true,
+ linkcolor=linkcolor,
+ urlcolor=linkcolor,
+ pdftitle={Uddhav P. Gautam - References},
+ pdfauthor={Uddhav P. Gautam},
+ pdfborderstyle={/S/U/W 0}
+}
+
+\setlist[itemize]{leftmargin=1.2em, itemsep=3pt, topsep=3pt, parsep=0pt, partopsep=0pt}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titleformat{\section}{\large\bfseries\color{sectioncolor}}{}{0em}{}[\vspace{-2pt}\titlerule]
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+
+\newcommand{\cvsection}[1]{\section*{#1}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Uddhav P. Gautam}\\[0.5em]
+{\small
++1 (919) 729-4141 \;\textbullet\;
+\href{mailto:upgautam@vt.edu}{upgautam@vt.edu}
+\;\textbullet\;
+\href{https://uddhavpgautam.github.io}{Website}
+\;\textbullet\;
+\href{https://scholar.google.com/citations?hl=en&user=Rbmabp4AAAAJ}{Google Scholar}
+\;\textbullet\;
+\href{https://github.com/uddhavpgautam}{GitHub}
+\;\textbullet\;
+\href{https://www.linkedin.com/in/uddhavpgautam/}{LinkedIn}
+}
+\end{center}
+
+\vspace{10pt}
+
+\cvsection{References}
+\input{references.tex}
+
+\end{document}
