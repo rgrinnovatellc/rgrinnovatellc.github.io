@@ -3,27 +3,13 @@ title: "Publications"
 layout: gridlay
 sitemap: true
 permalink: /publications/
-description: "Journal and conference publications by Uddhav P. Gautam."
+description: "Peer-reviewed publications and manuscripts by Uddhav P. Gautam."
 image: /images/Uddhav.jpg
 ---
 
 <section class="page-hero surface-panel">
     <h1>Publications</h1>
-    <p class="hero-lead">Journal and conference papers.</p>
-</section>
-
-<section class="surface-panel bibliography-section">
-    <p class="eyebrow">Manuscripts</p>
-    <h2 class="section-heading">Submitted and under review</h2>
-    <div class="resource-stack">
-        {% for manuscript in site.data.manuscripts %}
-        <article class="resource-card">
-            <h3>{{ manuscript.title }}</h3>
-            <p>{{ manuscript.summary }}</p>
-            <span class="tag-chip">{{ manuscript.status }} · {{ manuscript.year }}</span>
-        </article>
-        {% endfor %}
-    </div>
+    <p class="hero-lead">Peer-reviewed papers, manuscripts under review, and manuscripts in preparation.</p>
 </section>
 
 <section class="surface-panel bibliography-section">
@@ -36,4 +22,31 @@ image: /images/Uddhav.jpg
     <p class="eyebrow">Conferences</p>
     <h2 class="section-heading">Conference proceedings</h2>
     {% bibliography --query @inproceedings %}
+</section>
+
+{% assign under_review = site.data.manuscripts | where: "group", "Under review" %}
+{% assign in_preparation = site.data.manuscripts | where: "group", "In preparation" %}
+
+<section class="surface-panel bibliography-section">
+    <p class="eyebrow">Manuscripts</p>
+    <h2 class="section-heading">Under review</h2>
+    <div class="resource-stack">
+        {% for manuscript in under_review %}
+        <article class="resource-card">
+            <p class="publication-entry-copy">{{ manuscript.authors }} &ldquo;{{ manuscript.title }}.&rdquo; <em>{{ manuscript.venue }}.</em>{% if manuscript.artifact %} <a href="{{ manuscript.artifact.url }}" target="_blank" rel="noopener noreferrer">{{ manuscript.artifact.label }}</a>{% endif %}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="surface-panel bibliography-section">
+    <p class="eyebrow">Manuscripts</p>
+    <h2 class="section-heading">In preparation</h2>
+    <div class="resource-stack">
+        {% for manuscript in in_preparation %}
+        <article class="resource-card">
+            <p class="publication-entry-copy">{{ manuscript.authors }} &ldquo;{{ manuscript.title }}.&rdquo; <em>{{ manuscript.venue }}.</em>{% if manuscript.artifact %} <a href="{{ manuscript.artifact.url }}" target="_blank" rel="noopener noreferrer">{{ manuscript.artifact.label }}</a>{% endif %}</p>
+        </article>
+        {% endfor %}
+    </div>
 </section>

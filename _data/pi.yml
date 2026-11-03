@@ -1,5 +1,6 @@
 # =============================================================================
 # PRINCIPAL INVESTIGATOR DATA
+# Source of truth for facts: cv/Resume_UddhavGautam.tex (keep the two in sync)
 # =============================================================================
 
 name: "Uddhav P. Gautam"
@@ -20,6 +21,12 @@ links:
 documents:
   cv: "cv/Resume_UddhavGautam.pdf"
 
+# Short bio used by the Home and About heroes
+bio:
+  subtitle: "Ph.D. Candidate, Computer Engineering, Virginia Tech"
+  lead: "Ph.D. Candidate in Computer Engineering at Virginia Tech, advised by Haining Wang and Randy Marchany, after a decade building and leading production software."
+  support: "I work on systems-and-security research across the stack — from the Linux kernel and embedded devices to the software supply chain and AI-assisted development. Principal Investigator, Meta Project Aria Gen 2 Research Partnership."
+
 # Education History
 education:
   - degree: "PhD in Computer Engineering"
@@ -38,69 +45,119 @@ education:
     institution: "University of Arkansas at Little Rock"
     period: "2018-2020"
     status: "Transferred"
-    
+
   - degree: "M.S. Computer Science"
     institution: "University of Arkansas at Little Rock"
     period: "2015-2017"
     status: "Completed"
-    
+
   - degree: "BSc Computer Science"
     institution: "Tribhuvan University"
     period: "2009-2013"
     location: "Nepal"
     status: "Completed"
-    
+
   - degree: "B.S. Mathematics"
     institution: "Trichandra Campus"
     period: "2007-2010"
     location: "Nepal"
     status: "Completed"
 
-# Research Interests
+# Research Interests (identical to the resume's Research Interests section)
 research_interests:
-  - "Computer Security"
-  - "eBPF and Linux Kernel"
-  - "Embedded and IoT Security"
-  - "Bluetooth Low Energy Security"
-  - "System Performance"
-  - "Network Security"
+  - name: "AI Safety"
+    detail: "verification of AI-generated code; resilience and power safety of AI data centers"
+  - name: "Security"
+    detail: "embedded systems; software supply chains; mobile and wearable forensics; operational technology"
+  - name: "Systems"
+    detail: "eBPF; Linux kernel; Android OS/internals; on-the-fly over-the-air updates for microcontrollers"
+  - name: "Software Engineering"
+    detail: "release assurance; verification and validation; testing of diagnostic APIs"
 
-# Current Projects
+# Current Projects (identical to the resume's Research Highlights; bullets verbatim)
 current_projects:
-# HIDDEN: double-blind review — uncomment after decision
-#   - name: "ZeroDown"
-#     description: "A zero-downtime IoT policy enforcement framework for MCU-class devices with OTA policy updates, runtime toggling, and embedded uBPF execution."
-#     status: "Active"
+  - name: "ZeroDown: on-the-fly eBPF security-policy updates for microcontrollers"
+    status: "In preparation, IEEE IoT-J"
+    bullets:
+      - "Idea: the device's owner writes its security policy as one versioned YAML file — the rules, exceptions for particular peers, and the name of the eBPF program that decides each event — so a change means editing the file, not the firmware"
+      - "Built the system that installs a new policy file on a Bluetooth Low Energy (BLE) device and activates it without a reboot, instead of waiting months for a firmware update and a restart"
+      - "In hardware tests, all 72 updates applied without a reset, taking a median 2.8 s; in a separate 60-update test with a peer connected, the connection never dropped and the device's notifications to the peer paused for a median 2.5 s"
+      - "Designed the update process: authenticated delivery, crash-consistent storage in two flash slots, and a confirmation step — the device keeps a new policy only if the owner reconnects and confirms it, and reverts it otherwise"
+      - "Protected against bad updates: in all 7 tests with a corrupted or interrupted update, the existing policy stayed in place; and when a new policy locked the owner out, resetting the device restored the previous one in all 120 trials"
+      - "Hardened the eBPF interpreter that runs the rules (step limit, memory checks, divide-by-zero fix): no crash in 146.9M host-side fuzzing executions; deciding one event takes about 0.3 ms"
 
-# HIDDEN: double-blind review — uncomment after decision
-#   - name: "BlueSentry"
-#     description: "An application-layer BLE security framework combining FSM enforcement and runtime eBPF policies for embedded-device threat detection."
-#     status: "Active"
+  - name: "Android 17 JobScheduler: its reports of why jobs wait can be wrong while its scheduling is right"
+    status: "Lost Boundaries (in preparation, IEEE TMC); Correct Decisions (under review, ACM HotMobile 2027)"
+    artifact:
+      label: "Artifact (GitHub)"
+      url: "https://github.com/rgrinnovatellc/CorrectDecisions"
+    bullets:
+      - "Found that Android 17's report can show a job waiting longer than it has existed, and show a system policy (App Standby) holding the job longer than the app's own requested delay — pointing a developer at the wrong cause (30 of 30 qualifying emulator attempts)"
+      - "Showed the reported wait shrinking by over 8 s while the job kept waiting — a decrease no correct count can produce (2 of 2 emulator boots)"
+      - "Traced the cause: two wait conditions reported under one reason share one start time; the second to start waiting overwrites it, and the first to finish deletes it — so later waits are measured from the wrong moment, even from the job's creation"
+      - "Proved that two different wait histories can leave identical stored data, so no change to the calculation alone can report both correctly"
+      - "Explained why the error goes unnoticed: scheduling never reads the reported durations, so it stays correct, and none of the 7 upstream tests for this report checks the duration of a shared reason"
+      - "Proposed a 4-part test format (property, history, observations, assertion) to catch such errors"
+      - "Built a one-commit fix: on both repaired emulator images, neither the ranking reversal nor the reported decrease reappeared"
 
-  - name: "eBPF tracing overhead analysis"
-    description: "Kernel observability work on reducing tracing overhead and improving measurement quality under real workloads."
-    status: "Published and ongoing"
+  - name: "AIE Verification: approving AI-written code and software releases"
+    status: "In preparation, ACM TOSEM"
+    bullets:
+      - "Showed that AI-written tests can pass wrong code: in 25 constructed LLM coding tasks (Codex CLI), all passed their own tests, including 12 labeled flawed for following a prompt's wrong assumption"
+      - "Wrote checks from the real requirement: they rejected all 12 flawed results and accepted the other 13"
+      - "Defined 3 conditions for trusting an approval: it checks the real requirement, its inputs are controlled outside the build pipeline, and it applies to the exact file delivered"
+      - "Built a release check in an Android app's release CI/CD pipeline: it rejected all 9 bad test inputs and accepted all 4 good ones"
 
-  - name: "Kernel protobuf firewall prototypes"
-    description: "Application-layer firewall and protobuf parsing work in the Linux kernel using custom kfunc support and TC-based enforcement."
-    status: "Prototype"
+  - name: "eBPF & HELOT: Linux kernel tracing and power-grid forensics"
+    status: "Published"
+    bullets:
+      - "Co-authored a published method that removes the slowdown eBPF tracing imposes on untraced programs (ACM SIGCOMM eBPF workshop 2024)"
+      - "Co-authored HELOT, a DOE-funded prototype that collects forensic evidence from power-substation devices without shutting them down (IEEE Trans. Smart Grid 2023)"
+      - "Moved the pbtools message parser into a Linux kernel module; prototyped a message-filtering firewall (custom kfunc support and TC-based enforcement)"
+
+  - name: "Meta Project Aria Gen 2 Research Partnership"
+    status: "Principal Investigator, 2026 – Present"
+    bullets:
+      - "Lead the lab's Aria Gen 2 wearable-security research program and set its research directions"
+      - "Serve as primary liaison with Meta Reality Labs Research"
+      - "Collaborate on all Aria-based lab projects and publications"
 
 # Professional Experience
 experience:
+  - title: "Principal Investigator, Meta Project Aria Gen 2 Research Partnership"
+    role: "Research leadership"
+    organization: "Virginia Tech"
+    organization_url: "https://www.vt.edu/"
+    period: "2026-present"
+    description: "Lead the lab's Aria Gen 2 wearable-security research program and set its research directions. Serve as primary liaison with Meta Reality Labs Research. Collaborate on all Aria-based lab projects and publications."
+    status: "Current"
+
+  - title: "Founder and Sole Developer"
+    role: "Independent software"
+    organization: "RGR Innovate LLC"
+    organization_url: "/software/"
+    period: "2024-present"
+    description: "3 free, ad-free apps on Google Play: Earthquakes by RGR, SmartConvert, and Passport & ID Photo Studio."
+    status: "Current"
+
   - title: "Graduate Research Assistant"
-    role: "Linux kernel, eBPF, embedded security, and systems research"
+    role: "Systems and security research"
     organization: "Virginia Tech"
     organization_url: "https://www.vt.edu/"
     period: "Sep 2023-present"
-    description: "Research on eBPF tracing overhead, runtime IoT policy enforcement, BLE security, kernel instrumentation, and deployable systems prototypes."
+    description: "Research on in-place eBPF security-policy updates for microcontrollers (ZeroDown), Android JobScheduler diagnostic-report correctness, verification of AI-assisted development and software releases, eBPF tracing overhead, and Aria Gen 2 wearable security."
     status: "Current"
-    
-  - title: "Mobile Solutions Technical Lead & Architect"
+
+  - title: "Android Technical Lead & Mobile Architect"
     role: "Technical Lead"
-    organization: "Perficient Inc"
+    organization: "Perficient"
     organization_url: "https://www.perficient.com/"
     period: "Jun 2021-May 2023"
-    description: "Led Android architecture and delivery for TD Ameritrade to Charles Schwab migration work across a large regulated mobile platform."
+    bullets:
+      - "Architected infrastructure to migrate 30M+ TD Ameritrade users (Android, iOS, web) to Charles Schwab"
+      - "Led an 8-engineer Android team on a regulated codebase; set engineering and documentation standards"
+      - "Optimized a shared C++ core and a mobile performance pipeline, helping cut production crash rate 40%"
+      - "Migrated builds to Kotlin DSL, added static analysis, and restructured CI/CD for multi-flavor releases"
     status: "Previous"
 
   - title: "Senior Android Developer"
@@ -108,7 +165,10 @@ experience:
     organization: "Viper Design LLC"
     organization_url: "https://www.viperdesignllc.com/"
     period: "Mar 2020-Feb 2021"
-    description: "Built IoT and mobile software for Shark robot vacuum products across firmware-adjacent and cross-platform application layers."
+    bullets:
+      - "Built the IoT stack for Shark robot vacuums, from embedded firmware to cross-platform mobile apps"
+      - "Re-architected the Android app around modular design and dependency injection to improve testability"
+      - "Improved stability through performance tuning, code shrinking, crash analytics, and automated testing"
     status: "Previous"
 
   - title: "U.S. Army"
@@ -116,12 +176,12 @@ experience:
     organization: "United States Army"
     organization_url: "https://www.army.mil/"
     period: "Apr 2019-Apr 2023"
-    description: "Served four years while developing leadership and operational discipline alongside graduate study and engineering work."
+    description: "Served four years while developing leadership and operational discipline alongside graduate study and engineering work. Scored in the 96th percentile on the Armed Forces Classification Test."
     status: "Previous"
 
   - title: "Early Career"
     role: ""
     organization: ""
     period: "2008-2015"
-    description: "Worked 3 years as Android Developer and before that worked 4 years as System/Network Admin after completing various Microsoft and Ethical Hacking etc. trainings."
+    description: "Worked 3 years as Android Developer and before that worked 4 years as System/Network Admin after completing various Microsoft and Ethical Hacking trainings."
     status: "Previous"

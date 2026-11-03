@@ -3,8 +3,8 @@ title: "Home"
 layout: gridlay
 sitemap: true
 permalink: /
-description: "Uddhav P. Gautam — PhD candidate in Computer Engineering at Virginia Tech. Research on Linux kernel instrumentation, eBPF observability, and platform security."
-keywords: "Uddhav Gautam, Uddhav P. Gautam, Virginia Tech, Computer Engineering, Linux kernel, eBPF, observability, Android security, IoT security"
+description: "Uddhav P. Gautam — Ph.D. Candidate in Computer Engineering at Virginia Tech. Systems-and-security research from the Linux kernel and embedded devices to the software supply chain and AI-assisted development."
+keywords: "Uddhav Gautam, Uddhav P. Gautam, Virginia Tech, Computer Engineering, AI safety, verification of AI-generated code, release assurance, eBPF, Linux kernel, Android internals, embedded security, IoT security, mobile forensics"
 image: /images/Uddhav.jpg
 ---
 
@@ -14,9 +14,9 @@ image: /images/Uddhav.jpg
     <section class="hero-panel surface-panel hero-panel-main">
         <div class="hero-copy">
             <h1>Uddhav P. Gautam</h1>
-            <p class="hero-subtitle">PhD Candidate, Computer Engineering, Virginia Tech</p>
-            <p class="hero-lead">I study Linux kernel instrumentation, eBPF observability, and Android/IoT security under <a href="https://ece.vt.edu/people/profile/wangh.html" target="_blank" rel="noopener noreferrer">Haining Wang</a> and <a href="https://security.vt.edu/about/staff/randy-marchany/" target="_blank" rel="noopener noreferrer">Randy Marchany</a>.</p>
-            <p class="hero-support">My work focuses on kernel tracing, overhead-aware instrumentation, and security for resource-constrained platforms.</p>
+            <p class="hero-subtitle">{{ pi_data.bio.subtitle }}</p>
+            <p class="hero-lead">Ph.D. Candidate in Computer Engineering at Virginia Tech, advised by <a href="https://ece.vt.edu/people/profile/wangh.html" target="_blank" rel="noopener noreferrer">Haining Wang</a> and <a href="https://security.vt.edu/about/staff/randy-marchany/" target="_blank" rel="noopener noreferrer">Randy Marchany</a>, after a decade building and leading production software.</p>
+            <p class="hero-support">{{ pi_data.bio.support }}</p>
 
             <div class="cta-row">
                 <a class="btn btn-primary btn-lg" href="{{ '/about/' | relative_url }}">About</a>
@@ -44,7 +44,8 @@ image: /images/Uddhav.jpg
         <div class="focus-grid">
             {% for interest in pi_data.research_interests %}
             <article class="focus-card surface-panel">
-                <h3>{{ interest }}</h3>
+                <h3>{{ interest.name }}</h3>
+                <p>{{ interest.detail }}</p>
             </article>
             {% endfor %}
         </div>

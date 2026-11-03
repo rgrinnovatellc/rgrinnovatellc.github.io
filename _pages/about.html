@@ -3,8 +3,8 @@ title: "About"
 layout: gridlay
 sitemap: true
 permalink: /about/
-description: "Uddhav P. Gautam — PhD candidate in Computer Engineering at Virginia Tech. Education, research, and experience."
-keywords: "Uddhav Gautam, Virginia Tech, Computer Engineering, systems security, eBPF, Linux kernel"
+description: "Uddhav P. Gautam — Ph.D. Candidate in Computer Engineering at Virginia Tech. Education, research, and experience."
+keywords: "Uddhav Gautam, Virginia Tech, Computer Engineering, systems security, AI-assisted development, eBPF, Linux kernel, Android, embedded security"
 image: /images/Uddhav.jpg
 ---
 
@@ -14,8 +14,9 @@ image: /images/Uddhav.jpg
     <div class="page-hero-grid">
         <div class="hero-copy">
             <h1>{{ pi_data.name }}</h1>
-            <p class="hero-lead">PhD candidate in Computer Engineering at Virginia Tech, studying Linux kernel instrumentation, eBPF observability, and platform security.</p>
-            <p class="hero-support">Advised by <a href="https://ece.vt.edu/people/profile/wangh.html" target="_blank" rel="noopener noreferrer">Haining Wang</a> and <a href="https://security.vt.edu/about/staff/randy-marchany/" target="_blank" rel="noopener noreferrer">Randy Marchany</a>.</p>
+            <p class="hero-lead">{{ pi_data.bio.lead }}</p>
+            <p class="hero-support">{{ pi_data.bio.support }}</p>
+            <p class="hero-support">Advised by <a href="https://ece.vt.edu/people/profile/wangh.html" target="_blank" rel="noopener noreferrer">Haining Wang</a> and <a href="https://security.vt.edu/about/staff/randy-marchany/" target="_blank" rel="noopener noreferrer">Randy Marchany</a>. Contact: <a href="mailto:upgautam@vt.edu">upgautam@vt.edu</a>.</p>
         </div>
 
         <div class="hero-visual">
@@ -70,7 +71,14 @@ image: /images/Uddhav.jpg
                     <span class="timeline-period">{{ item.period }}</span>
                 </div>
                 <p class="timeline-subtitle">{% if item.organization_url %}<a href="{{ item.organization_url }}" target="_blank" rel="noopener noreferrer">{{ item.organization }}</a>{% else %}{{ item.organization }}{% endif %}</p>
-                <p>{{ item.description }}</p>
+                {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+                {% if item.bullets %}
+                <ul class="compact-list">
+                    {% for bullet in item.bullets %}
+                    <li>{{ bullet }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </li>
             {% endfor %}
         </ul>

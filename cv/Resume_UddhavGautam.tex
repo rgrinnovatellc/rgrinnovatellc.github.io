@@ -12,52 +12,66 @@
 \usepackage{needspace}
 \usepackage{amssymb}
 \usepackage{tikz}
+\input{glyphtounicode}
+\pdfgentounicode=1
 
 % Academic CV color scheme: color is reserved for links; structure comes from weight and rules
 \definecolor{sectioncolor}{RGB}{25,25,25}
 \definecolor{linkcolor}{RGB}{0,51,102}
 \definecolor{subtextcolor}{RGB}{90,90,90}
-% Teaching-timeline role colors (validated categorical palette)
-\definecolor{roleGRA}{HTML}{2A78D6}
-\definecolor{roleGTA}{HTML}{1BAF7A}
-\definecolor{roleSL}{HTML}{EB6834}
+% Teaching-timeline role shades: grayscale, and each bar also prints its role
+\definecolor{roleGRA}{HTML}{D0D0D0}
+\definecolor{roleGTA}{HTML}{6E6E6E}
+\definecolor{roleSL}{HTML}{1A1A1A}
 
 \hypersetup{
  colorlinks=true,
  linkcolor=linkcolor,
  urlcolor=linkcolor,
- pdftitle={Uddhav P. Gautam - Curriculum Vitae},
- pdfsubject={Academic CV: Trust Architectures for Software Systems -- Supply-Chain Intake Verification, Independent Verification of AI-Generated Code, OTA Security-Policy Evolution for Embedded Devices, eBPF and Linux Kernel},
+ pdftitle={Uddhav P. Gautam - Resume},
+ pdfsubject={Resume: software engineering leadership and Ph.D. research in systems and security},
  pdfauthor={Uddhav P. Gautam},
- pdfkeywords={software supply chain security, release assurance, XZ backdoor, AI-assisted development, verifier independence, DevSecOps, eBPF, Linux kernel, Bluetooth Low Energy, embedded security, OTA updates, Zephyr RTOS, mobile forensics, SCADA, Android development},
+ pdfkeywords={AI safety, AI data center resilience, power safety, AI-assisted development, release assurance, software supply chain security, verifier independence, DevSecOps, eBPF, Linux kernel, Bluetooth Low Energy, embedded systems security, firmware updates, over-the-air updates, microcontrollers, Internet of Things, runtime security policies, Zephyr RTOS, Android internals, diagnostic APIs, test oracles, mobile forensics, wearable forensics, operational technology, SCADA, Android development, technical leadership},
  pdfcreator={LaTeX with hyperref},
  pdfproducer={pdflatex},
  pdfborderstyle={/S/U/W 0}
 }
 
-\setlist[itemize]{leftmargin=1.2em, itemsep=3pt, topsep=3pt, parsep=0pt, partopsep=0pt}
-\titlespacing*{\section}{0pt}{14pt}{6pt}
+\setlist[itemize]{leftmargin=1.2em, itemsep=4pt, topsep=4pt, parsep=0pt, partopsep=0pt}
+\titlespacing*{\section}{0pt}{24pt}{8pt}
 \titleformat{\section}{\large\bfseries\color{sectioncolor}}{}{0em}{}[\vspace{-2pt}\titlerule]
 \setlength{\parindent}{0pt}
 \pagestyle{empty}
 
 \newcommand{\entry}[2]{%
- \par\needspace{2\baselineskip}\vspace{6pt}%
+ \par\needspace{3\baselineskip}\vspace{12pt}%
  {\noindent\textbf{#1}\hfill\mbox{\small\itshape #2}\par}%
 }
 \newcommand{\entrysub}[1]{%
  {\noindent\small\color{subtextcolor}\hspace*{8pt}#1\par}%
 }
 \newcommand{\thread}[1]{%
- \par\needspace{3\baselineskip}\vspace{6pt}%
- {\noindent\textbf{#1}\par}%
+ \par\needspace{3\baselineskip}\vspace{14pt}%
+ {\noindent\fontsize{11}{13}\selectfont\bfseries #1\par}%
+}
+% Level 3 under a \thread: name in bold, description in regular weight, status at right
+\newcommand{\project}[3]{%
+ \par\needspace{3\baselineskip}\vspace{10pt}%
+ {\noindent\hspace*{1.8em}\textbf{#1}#2\hfill\mbox{\small\itshape #3}\par}%
 }
 \newcommand{\cvsection}[1]{\needspace{5\baselineskip}\section*{#1}}
+\newcommand{\subitemnote}[1]{{\noindent\hspace*{1.8em}\small\color{subtextcolor}#1\par}}
+\newcommand{\refsize}{\fontsize{9.5}{11.5}\selectfont}
+\newcommand{\rolebox}[1]{\tikz[baseline=-0.55ex]{\filldraw[fill=#1,draw=black!70,line width=0.3pt,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}}
 
+\linespread{1.05}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+\emergencystretch=1.5em
 \begin{document}
 
 \begin{center}
-{\LARGE\bfseries Uddhav P. Gautam}\\[0.5em]
+{\LARGE\bfseries Uddhav P. Gautam}\;{\small (Ph.D. Candidate)}\\[0.5em]
 {\small
 +1 (919) 729-4141 \;\textbullet\;
 \href{mailto:upgautam@vt.edu}{upgautam@vt.edu}
@@ -77,70 +91,105 @@
 {\small\textbf{Software Engineer, Tech Lead, and Architect} --- shipping production systems at scale}
 \end{center}
 
-\vspace{10pt}
+\vspace{2pt}
 
 \cvsection{Summary}
-{A decade building and leading production software, now with systems-and-security research across the stack --- from the Linux kernel and embedded devices to the software supply chain and AI-assisted development. Positioned for the senior technical-leadership and research roles that follow: principal architect, engineering director, or research scientist.}
-
+A decade building and leading production software, now with systems-and-security research across the stack --- from the Linux kernel and embedded devices to the software supply chain and AI-assisted development. Positioned for the senior technical-leadership and research roles that follow: principal architect, engineering director, or research scientist.
 
 \cvsection{Research Interests}
-\noindent\hangindent=3em\hangafter=1
-\textbf{Security}: supply-chain compromise; fail-closed evidence semantics; BLE and embedded
-post-compromise defense; mobile forensics; SCADA monitoring.
-
-\hangindent=3em\hangafter=1
-\textbf{Systems}: sandboxed eBPF extensibility; reboot-free OTA security-policy
-lifecycles; assurance that what a verifier checks is what actually runs.
-
-\hangindent=3em\hangafter=1
-\textbf{Software Engineering}: verifier independence for AI-assisted development; externalized evidence
-contracts.
-
-\cvsection{Professional Experience}
-\entry{Android Technical Lead \& Architect, Perficient}{Jun 2021 -- May 2023}
-\entrysub{Clients: TD Ameritrade, Charles Schwab}
 \begin{itemize}
- \item Architected migration infrastructure supporting the transition of 30M+ TD Ameritrade users across Android,
- iOS, and web platforms to Charles Schwab systems after acquisition
- \item Led an 8-engineer Android team, established engineering standards, and maintained architecture and delivery
- documentation for a regulated codebase
- \item Migrated build configuration to Kotlin DSL, integrated static analysis, and restructured CI/CD pipeline 
- for multi-flavor production delivery
- \item Optimized a shared C++ core and the surrounding mobile performance pipeline, contributing to a measured
- 40\% reduction in crash rate through production telemetry
+ \item \textbf{AI Safety}: verification of AI-generated code; resilience and power safety of AI data centers
+ \item \textbf{Security}: embedded systems; software supply chains; mobile and wearable forensics; operational technology
+ \item \textbf{Systems}: eBPF; Linux kernel; Android OS/internals; on-the-fly over-the-air updates for microcontrollers
+ \item \textbf{Software Engineering}: release assurance; verification and validation; testing of diagnostic APIs
 \end{itemize}
 
-\entry{Sr. Android Developer, Viper Design LLC}{Mar 2020 -- Feb 2021}
+\cvsection{Professional Experience}
+\entry{Android Technical Lead \& Mobile Architect, Perficient}{Jun 2021 -- May 2023}
 \begin{itemize}
- \item Built the full IoT software stack for Shark robot-vacuum products, from embedded firmware to
- cross-platform mobile applications
- \item Improved maintainability and testability by re-architecting the Android app around modular design,
- dependency injection, and serialization patterns
- \item Strengthened production stability through performance tuning, code shrinking, crash analytics, and
- automated testing
+ \item Architected infrastructure to migrate 30M+ TD Ameritrade users (Android, iOS, web) to Charles Schwab
+ \item Led an 8-engineer Android team on a regulated codebase; set engineering and documentation standards
+ \item Optimized a shared C++ core and a mobile performance pipeline, helping cut production crash rate 40\%
+ \item Migrated builds to Kotlin DSL, added static analysis, and restructured CI/CD for multi-flavor releases
+\end{itemize}
+
+\entry{Senior Android Developer, Viper Design LLC}{Mar 2020 -- Feb 2021}
+\begin{itemize}
+ \item Built the IoT stack for Shark robot vacuums, from embedded firmware to cross-platform mobile apps
+ \item Re-architected the Android app around modular design and dependency injection to improve testability
+ \item Improved stability through performance tuning, code shrinking, crash analytics, and automated testing
 \end{itemize}
 
 \entry{U.S. Army Reserve}{Apr 2019 -- Apr 2023}
 \begin{itemize}
- \item Served four years and scored in the 96\textsuperscript{th} percentile on the Armed Forces Classification Test
+ \item Served 4 years; scored in the 96\textsuperscript{th} percentile on the Armed Forces Classification Test
 \end{itemize}
 
 \vspace{9pt}
 \noindent
 {\textit{\textbf{Prior roles}: 3 years as Android Developer; before that, 4 years as System/Network Administrator.}}
 
-\cvsection{Teaching \& Research Experience}
-\noindent\textbf{Courses Taught}
+\cvsection{Research \& Teaching Experience}
+\thread{Research Leadership}
+\project{Principal Investigator}{, Meta Project Aria Gen 2 Research Partnership}{2026 -- Present}
+\begin{itemize}[leftmargin=3em]
+ \item Lead the lab's Aria Gen 2 wearable-security research program and set its research directions
+ \item Serve as primary liaison with Meta Reality Labs Research
+ \item Collaborate on all Aria-based lab projects and publications
+\end{itemize}
+
+\thread{Research Highlights}
+
+\project{ZeroDown}{: on-the-fly eBPF security-policy updates for microcontrollers}{In preparation, IEEE IoT-J}
+\begin{itemize}[leftmargin=3em]
+ \item Idea: the device's owner writes its security policy as one versioned YAML file --- the rules, exceptions for particular peers, and the name of the eBPF program that decides each event --- so a change means editing the file, not the firmware
+ \item Built the system that installs a new policy file on a Bluetooth Low Energy (BLE) device and activates it without a reboot, instead of waiting months for a firmware update and a restart
+ \item In hardware tests, all 72 updates applied without a reset, taking a median 2.8\,s; in a separate 60-update test with a peer connected, the connection never dropped and the device's notifications to the peer paused for a median 2.5\,s
+ \item Designed the update process: authenticated delivery, crash-consistent storage in two flash slots, and a confirmation step --- the device keeps a new policy only if the owner reconnects and confirms it, and reverts it otherwise
+ \item Protected against bad updates: in all 7 tests with a corrupted or interrupted update, the existing policy stayed in place; and when a new policy locked the owner out, resetting the device restored the previous one in all 120 trials
+ \item Hardened the eBPF interpreter that runs the rules (step limit, memory checks, divide-by-zero fix): no crash in 146.9M host-side fuzzing executions; deciding one event takes about 0.3\,ms
+\end{itemize}
+
+\project{Android 17 JobScheduler}{: its reports of why jobs wait can be wrong while its scheduling is right}{}
+\subitemnote{Lost Boundaries (in preparation, IEEE TMC); Correct Decisions (under review, ACM HotMobile '27)}
+\begin{itemize}[leftmargin=3em]
+ \item Found that Android 17's report can show a job waiting longer than it has existed, and show a system policy (App Standby) holding the job longer than the app's own requested delay --- pointing a developer at the wrong cause (30 of 30 qualifying emulator attempts)
+ \item Showed the reported wait shrinking by over 8\,s while the job kept waiting --- a decrease no correct count can produce (2 of 2 emulator boots)
+ \item Traced the cause: two wait conditions reported under one reason share one start time; the second to start waiting overwrites it, and the first to finish deletes it --- so later waits are measured from the wrong moment, even from the job's creation
+ \item Proved that two different wait histories can leave identical stored data, so no change to the calculation alone can report both correctly
+ \item Explained why the error goes unnoticed: scheduling never reads the reported durations, so it stays correct, and none of the 7 upstream tests for this report checks the duration of a shared reason
+ \item Proposed a 4-part test format (property, history, observations, assertion) to catch such errors
+ \item Built a one-commit fix: on both repaired emulator images, neither the ranking reversal nor the reported~decrease~reappeared
+\end{itemize}
+
+\project{AIE Verification}{: approving AI-written code and software releases}{In preparation, ACM TOSEM}
+\begin{itemize}[leftmargin=3em]
+ \item Showed that AI-written tests can pass wrong code: in 25 constructed LLM coding tasks (Codex CLI), all passed their own tests, including 12 labeled flawed for following a prompt's wrong assumption
+ \item Wrote checks from the real requirement: they rejected all 12 flawed results and accepted the other 13
+ \item Defined 3 conditions for trusting an approval: it checks the real requirement, its inputs are controlled outside the build pipeline, and it applies to the exact file delivered
+ \item Built a release check in an Android app's release CI/CD pipeline: it rejected all 9 bad test inputs and accepted all 4 good ones
+\end{itemize}
+
+\project{eBPF \& HELOT}{: Linux kernel tracing and power-grid forensics}{}
+\begin{itemize}[leftmargin=3em]
+ \item Co-authored a published method that removes the slowdown eBPF tracing imposes on untraced programs (ACM SIGCOMM eBPF workshop 2024)
+ \item Co-authored HELOT, a DOE-funded prototype that collects forensic evidence from power-substation devices without shutting them down (IEEE Trans.\ Smart Grid '23)
+ \item Moved the pbtools message parser into a Linux kernel module; prototyped a message-filtering firewall
+\end{itemize}
+
+\thread{Teaching \& Research Appointments}
 \begin{itemize}[itemsep=4pt]
- \item \tikz[baseline=-0.55ex]{\fill[roleSL,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\; \textbf{Sole Lecturer} --- Android Apps Development, upper-division (UA Little Rock, Fall 2018);\, Discrete Mathematics (St.\ Lawrence College, Nepal, Spring 2014)
- \item \tikz[baseline=-0.55ex]{\fill[roleGTA,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\; \textbf{Graduate Teaching Assistant} --- Java Programming (Virginia Tech, Spring 2025);\, Operating Systems and Microprocessor Programming (UA Little Rock)
+ \item \textbf{Sole Lecturer} --- Discrete Mathematics;\, Android Apps Development, upper-division
+ \item \textbf{Graduate Teaching Assistant} --- Operating Systems and Microprocessor Programming;\, Java
 \end{itemize}
 
 \vspace{7pt}
 \noindent
 \begin{tikzpicture}[
     lbl/.style={below,text=subtextcolor,font=\scriptsize,inner sep=2pt},
-    inst/.style={above,font=\footnotesize\bfseries,inner sep=3pt}
+    inst/.style={above,font=\footnotesize\bfseries,inner sep=3pt,text depth=0.25ex},
+    role/.style={font=\scriptsize,inner sep=0pt},
+    edge/.style={draw=black!70,line width=0.4pt,rounded corners=3.5pt}
   ]
   \def\h{0.54}
   % --- St.\ Lawrence College ---
@@ -148,6 +197,8 @@ contracts.
     \clip[rounded corners=3.5pt] (0,0) rectangle (2.3,\h);
     \fill[roleSL] (0,0) rectangle (2.3,\h);
   \end{scope}
+  \draw[edge] (0,0) rectangle (2.3,\h);
+  \node[role,text=white] at (1.15,\h/2) {Sole Lecturer};
   \node[inst] at (1.15,\h) {St.\ Lawrence College};
   \node[lbl]  at (1.15,0) {Spring 2014};
   % --- UA Little Rock ---
@@ -157,57 +208,60 @@ contracts.
     \fill[roleSL]  (5.1,0) rectangle (7.4,\h);
   \end{scope}
   \draw[white,line width=1pt] (5.1,0)--(5.1,\h);
+  \draw[edge] (2.8,0) rectangle (7.4,\h);
+  \node[role,text=white] at (3.95,\h/2) {GTA};
+  \node[role,text=white] at (6.25,\h/2) {Sole Lecturer};
   \node[inst] at (5.1,\h) {UA Little Rock};
   \node[lbl]  at (3.95,0) {Spring 2018};
   \node[lbl]  at (6.25,0) {Fall 2018};
   % --- Virginia Tech ---
   \begin{scope}
-    \clip[rounded corners=3.5pt] (7.9,0) rectangle (14.8,\h);
+    \clip[rounded corners=3.5pt] (7.9,0) rectangle (15.6,\h);
     \fill[roleGRA] (7.9,0)  rectangle (10.2,\h);
     \fill[roleGTA] (10.2,0) rectangle (12.5,\h);
-    \fill[roleGRA] (12.5,0) rectangle (14.8,\h);
+    \fill[roleGRA] (12.5,0) rectangle (15.6,\h);
   \end{scope}
   \draw[white,line width=1pt] (10.2,0)--(10.2,\h) (12.5,0)--(12.5,\h);
-  \node[inst] at (11.35,\h) {Virginia Tech};
+  \draw[edge] (7.9,0) rectangle (15.6,\h);
+  \node[role] at (9.05,\h/2) {GRA};
+  \node[role,text=white] at (11.35,\h/2) {GTA};
+  \node[role] at (14.05,\h/2) {GRA};
+  \node[inst] at (11.75,\h) {Virginia Tech};
   \node[lbl]  at (9.05,0)  {Spring--Fall 2024};
   \node[lbl]  at (11.35,0) {Spring 2025};
-  \node[lbl]  at (13.65,0) {Sum 2025--Fall 2026};
+  \node[lbl]  at (14.05,0) {Summer 2025--Fall 2026};
 \end{tikzpicture}
 
 \vspace{9pt}
 \noindent{\footnotesize
-\tikz[baseline=-0.55ex]{\fill[roleSL,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\, Sole Lecturer \hspace{1.4em}
-\tikz[baseline=-0.55ex]{\fill[roleGTA,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\, Teaching Assistant (GTA) \hspace{1.4em}
-\tikz[baseline=-0.55ex]{\fill[roleGRA,rounded corners=1pt] (0,0) rectangle (1.7ex,1.7ex);}\, Research Assistant (GRA)}
+\rolebox{roleGTA}\, Graduate Teaching Assistant (GTA) \hspace{1.4em}
+\rolebox{roleGRA}\, Graduate Research Assistant (GRA)}
 
 \cvsection{Software}
-Founder and sole developer, RGR Innovate LLC (2024 -- Present). Three free, ad-free Android applications
-published as a public service on
+Founder and sole developer, RGR Innovate LLC (2024 -- Present): 3 free, ad-free apps on
 \href{https://play.google.com/store/apps/dev?id=6755050398195804153}{Google Play}.
-\begin{itemize}[itemsep=3pt]
- \item \textbf{Earthquakes by RGR}: real-time seismic mapping over USGS GeoJSON feeds with location
- search and radius/magnitude filtering (Google Maps, Google Places)
- \item \textbf{SmartConvert}: fully offline multi-tool for document scanning with edge detection,
- image/unit/color conversion, screen ruler, and ARCore room measurement (no accounts, no network required)
- \item \textbf{Passport \& ID Photo Studio}: print-ready passport, visa, and ID photos for 155+ countries
- using on-device face detection, background removal, and automated compliance checks
+\begin{itemize}
+ \item \textbf{Earthquakes by RGR}: real-time USGS earthquake map with location search and magnitude filters
+ \item \textbf{SmartConvert}: offline document scanner, image/unit/color converter, and ARCore room measurement
+ \item \textbf{Passport \& ID Photo Studio}: print-ready passport, visa, and ID photos for 155+ countries, with on-device face detection, background removal, and compliance checks
 \end{itemize}
 
 \cvsection{Technical Expertise}
+\raggedcolumns
 \begin{multicols}{2}
 \noindent\textbf{Systems \& Kernel}
 \begin{itemize}[topsep=1pt,noitemsep]
- \item eBPF (TC, XDP, tracing, uBPF sandbox)
- \item Linux kernel development
- \item C/C++, Python
+ \item eBPF (TC, XDP, tracing, kfuncs, uBPF)
+ \item Linux kernel, Android OS/internals
+ \item C/C++, Rust, Python
 \end{itemize}
 
 \vspace{4pt}
 \noindent\textbf{Embedded \& IoT Security}
 \begin{itemize}[topsep=1pt,noitemsep]
- \item BLE protocol security
- \item Zephyr RTOS, Nordic nRF52840
- \item Authenticated OTA updates
+ \item BLE protocols and security (SMP, GATT, L2CAP)
+ \item Zephyr RTOS, Nordic nRF52840 (Arm Cortex-M4)
+ \item Authenticated over-the-air policy updates
  \item Runtime policy enforcement
 \end{itemize}
 
@@ -217,76 +271,81 @@ published as a public service on
 \begin{itemize}[topsep=1pt,noitemsep]
  \item Software supply-chain security
  \item Reproducible builds, SBOM, SARIF
- \item Trivy, OWASP Dep.-Check, MVT
- \item Mobile forensics (Cellebrite UFED)
- \item SCADA (DNP3, Modbus, IEC 61850)
+ \item Trivy, OWASP Dependency-Check, MVT, fuzzing
+ \item Mobile/wearable forensics (UFED, Project Aria)
+ \item SCADA/OT security (DNP3, Modbus, IEC 61850)
 \end{itemize}
 
 \vspace{4pt}
 \noindent\textbf{Software \& Infrastructure}
 \begin{itemize}[topsep=1pt,noitemsep]
- \item Kotlin, Java, Android development
- \item DevSecOps, Docker
+ \item Kotlin, Java, Android SDK/NDK
+ \item DevSecOps, Docker, Kubernetes, Terraform, KVM
  \item AWS, GCP, Firebase
- \item Elasticsearch, Logstash, Filebeat
+ \item Elasticsearch, Logstash, Filebeat, GRR
 \end{itemize}
 \end{multicols}
 
-\cvsection{Education} 
-\entry{Ph.D. Computer Engineering, Virginia Tech \textmd{(GPA: 4.0/4.0)}}{2024 -- Present} 
-\entrysub{Advisors: \href{https://ece.vt.edu/people/profile/wangh.html}{Haining Wang}, \href{https://security.vt.edu/about/staff/randy-marchany/}{Randy Marchany}} 
-\vspace{-3pt} 
-\entry{M.S. Computer Science, UA Little Rock \textmd{(GPA: 3.58/4.0)}}{2015 -- 2017} 
-\vspace{-3pt} 
-\entry{B.S. Computer Science, Tribhuvan University, Nepal \textmd{(GPA: 3.91/4.0)}}{2009 -- 2013}
-
-\cvsection{Honors \& Awards}
-\begin{itemize}[itemsep=3pt]
- \item \textbf{UA Little Rock} --- 1st Place: Complete Societal Award, Societal Impact Award, Best
- Graduate Project Award; 2nd Place: Personal Achievement Award \& TechLaunch Entrepreneurial Team
- Projects Competition
- \item \textbf{Tribhuvan University, Nepal} --- Top-5 Final-Year Project Award, Nepal Telecom Authority (NTA)
+\cvsection{Education}
+\begin{itemize}
+ \item \textbf{Ph.D. Computer Engineering, Virginia Tech} (GPA: 4.0/4.0)\hfill\mbox{\small\itshape 2024 -- Present}\\
+ {\small\color{subtextcolor}Advisors: \href{https://ece.vt.edu/people/profile/wangh.html}{Haining Wang}, \href{https://security.vt.edu/about/staff/randy-marchany/}{Randy Marchany}}
+ \item \textbf{M.S. Computer Science, UA Little Rock} (GPA: 3.58/4.0)\hfill\mbox{\small\itshape 2015 -- 2017}
+ \item \textbf{B.S. Computer Science, Tribhuvan University, Nepal} (GPA: 3.91/4.0)\hfill\mbox{\small\itshape 2009 -- 2013}
 \end{itemize}
 
+\needspace{9\baselineskip}
+\cvsection{Honors \& Awards}
+\begin{itemize}
+ \item \textbf{UA Little Rock} --- 1\textsuperscript{st} Place: Complete Societal Award, Societal Impact Award, Best
+ Graduate Project Award; 2\textsuperscript{nd} Place: Personal Achievement Award \& TechLaunch Entrepreneurial Team
+ Projects Competition
+ \item \textbf{Tribhuvan University} --- Top-5 Final-Year Project Award, Nepal Telecommunications Authority
+\end{itemize}
 
 \cvsection{Publications}
-\thread{Manuscripts Under Review \& In Preparation}
-\begin{itemize}[itemsep=3pt]
- \item \textbf{Uddhav P. Gautam}, et al. ``Breaking Self-Referential Trust in Source Releases:
- A Parity Gate for OS Package Supply Chains.'' \textit{In preparation (targeting USENIX Security 2027).}
- Artifact: {\color{subtextcolor}\textit{link to be added}}
- \item \textbf{Uddhav P. Gautam}, et al. ``Breaking Self-Referential Trust with AIE Verification in
- AI-Assisted Development and Release Assurance.'' \textit{Under review, ICSE 2027.}
- Artifact: \href{https://figshare.com/s/d0871296649a28ecd956}{figshare}
- \item \textbf{Uddhav P. Gautam}, et al. ``ZeroDown: Firmware-Decoupled OTA Security-Policy Updates
- for MCU-Class BLE Peripherals.'' \textit{Under review, EuroSys 2027.}
- Artifact: {\color{subtextcolor}\textit{link to be added}}
- \item \textit{Sahil Dudani}, \textbf{Uddhav P. Gautam}, et al. ``Ghost in the Device: The Parallel
- World of Spy Apps Forensics.'' \textit{Under review, Forensic Science International: Digital Investigation, Elsevier.}
- \item \textit{Ashraf Saeed}, \textbf{Uddhav P. Gautam}, et al. ``AI-Code Verification Readiness in
- CS1: A Seeded-Flaw Diagnostic.'' \textit{Under review, Koli Calling.}
-\end{itemize}
-
 \thread{Peer-Reviewed Publications}
-\begin{itemize}[itemsep=3pt]
+\begin{itemize}\refsize
  \item Milo Craun, Khizar Hussain, \textbf{Uddhav P. Gautam},
- et al. ``Eliminating eBPF Tracing Overhead
- on Untraced Processes.'' \textit{Proc. ACM SIGCOMM Workshop on eBPF \& Kernel Ext.}, 2024.
+ et al.\ ``Eliminating eBPF Tracing Overhead
+ on Untraced Processes.'' \textit{ACM SIGCOMM Workshop on eBPF and Kernel Extensions}, 2024.
  DOI: \href{https://doi.org/10.1145/3672197.3673431}{10.1145/3672197.3673431}
  \item Syed Akailvi, \textbf{Uddhav P. Gautam}, et al.
- ``HELOT---Hunting Evil Life in Operational Technology.''
- \textit{IEEE Trans. Smart Grid}, vol. 14, no. 4, pp. 3058--3071, Jul. 2023.
+ ``HELOT--Hunting Evil Life in Operational Technology.''
+ \textit{IEEE~Transactions on Smart Grid}, vol.~14, no.~4, pp.~3058--3071, Jul.~2023.
  DOI: \href{https://doi.org/10.1109/TSG.2022.3222261}{10.1109/TSG.2022.3222261}
 \end{itemize}
 
+\thread{Manuscripts Under Review}
+\begin{itemize}\refsize
+ \item \textbf{Uddhav P. Gautam} et al.\ ``Correct Decisions, Incorrect Diagnostic Reports.''
+ \textit{ACM HotMobile 2027.} \href{https://github.com/rgrinnovatellc/CorrectDecisions}{Artifact}
+ \item Sahil Dudani, \textbf{Uddhav P. Gautam}, et al.\ ``FAIR-ARIA: Forensic Activity Indexing for
+ Review Using Sensor-First Analysis of Smart-Glasses Artifacts.'' \textit{ACM HotMobile.}
+\end{itemize}
+
+\thread{Manuscripts in Preparation}
+\begin{itemize}\refsize
+ \item \textbf{Uddhav P. Gautam} et al.\ ``ZeroDown: Authenticated, Owner-Confirmed In-Place Updates
+ of eBPF Security Policies for Microcontroller-Class IoT Devices.'' \textit{Targeting IEEE Internet of Things Journal (IoT-J).}
+ \item \textbf{Uddhav P. Gautam} et al.\ ``Breaking Self-Referential Trust with AIE Verification in
+ AI-Assisted Development and Release Assurance.'' \href{https://figshare.com/s/d0871296649a28ecd956}{Artifact}.
+ \textit{Targeting ACM Transactions on Software Engineering and Methodology~(TOSEM).}
+ \item \textbf{Uddhav P. Gautam} et al.\ ``Lost Boundaries: Label-Keyed Boundary Collapse and Exact
+ Repair in Android JobScheduler.'' \textit{Targeting IEEE Transactions on Mobile Computing (TMC).}
+ \item Sahil Dudani, \textbf{Uddhav P. Gautam}, et al.\ ``SPADE: Spyware and Parental-Control Artifact
+ Discovery and Examination on Android Devices.'' \textit{Targeting Forensic Science International: Digital Investigation.}
+\end{itemize}
 
 \cvsection{Certifications}
 \noindent
 {\small Software Architecture, CI/CD \& DevOps, Deep Learning (NVIDIA), Java/Kotlin Design Patterns,
-React Native, Scrum Master, Decision Making, Delegating Tasks, and multiple Microsoft certifications
+React Native, Scrum Master, and Microsoft certifications
 (full list on \href{https://www.linkedin.com/in/uddhavpgautam/}{LinkedIn}).}
 
 \cvsection{References}
+{\refsize
 \input{references.tex}
+}
 
 \end{document}

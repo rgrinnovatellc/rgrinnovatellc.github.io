@@ -1,11 +1,36 @@
-# HIDDEN: double-blind review — uncomment after decision
-# - title: "ZeroDown: A Zero-Downtime IoT Policy Enforcement Framework"
-#   status: "Submitted to ACM WiSec"
-#   year: "2026"
-#   summary: "A zero-downtime post-commissioning policy enforcement framework for MCU-class IoT devices using an embedded uBPF runtime and secure OTA policy lifecycle management."
+# Manuscripts — kept identical to the resume's Publications section
+# (cv/Resume_UddhavGautam.tex). Group values: "Under review" | "In preparation".
+# Artifact links are listed only where the resume lists them.
 
-# HIDDEN: double-blind review — uncomment after decision
-# - title: "BlueSentry: Dynamic Runtime eBPF Policies for Comprehensive BLE Security on Embedded Devices"
-#   status: "Under review"
-#   year: "2025"
-#   summary: "A BLE security framework combining FSM-based enforcement and runtime-tunable eBPF policies for embedded-device threat detection without kernel or controller changes."
+- group: "Under review"
+  authors: "Uddhav P. Gautam et al."
+  title: "Correct Decisions, Incorrect Diagnostic Reports"
+  venue: "ACM HotMobile 2027"
+  artifact:
+    label: "Artifact (GitHub)"
+    url: "https://github.com/rgrinnovatellc/CorrectDecisions"
+
+- group: "Under review"
+  authors: "Sahil Dudani, Uddhav P. Gautam, et al."
+  title: "FAIR-ARIA: Forensic Activity Indexing for Review Using Sensor-First Analysis of Smart-Glasses Artifacts"
+  venue: "ACM HotMobile"
+
+- group: "In preparation"
+  authors: "Uddhav P. Gautam et al."
+  title: "ZeroDown: Authenticated, Owner-Confirmed In-Place Updates of eBPF Security Policies for Microcontroller-Class IoT Devices"
+  venue: "Targeting IEEE Internet of Things Journal (IoT-J)"
+
+- group: "In preparation"
+  authors: "Uddhav P. Gautam et al."
+  title: "Breaking Self-Referential Trust with AIE Verification in AI-Assisted Development and Release Assurance"
+  venue: "Targeting ACM Transactions on Software Engineering and Methodology (TOSEM)"
+
+- group: "In preparation"
+  authors: "Uddhav P. Gautam et al."
+  title: "Lost Boundaries: Label-Keyed Boundary Collapse and Exact Repair in Android JobScheduler"
+  venue: "Targeting IEEE Transactions on Mobile Computing (TMC)"
+
+- group: "In preparation"
+  authors: "Sahil Dudani, Uddhav P. Gautam, et al."
+  title: "SPADE: Spyware and Parental-Control Artifact Discovery and Examination on Android Devices"
+  venue: "Targeting Forensic Science International: Digital Investigation"

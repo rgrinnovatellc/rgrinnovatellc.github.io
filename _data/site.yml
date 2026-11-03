@@ -5,8 +5,8 @@
 # Site Metadata
 metadata:
   title: "Uddhav P. Gautam | RGR Innovate LLC | Systems Research and Software"
-  description: "Uddhav P. Gautam — PhD candidate in Computer Engineering at Virginia Tech, founder of RGR Innovate LLC. Research on Linux kernel instrumentation, eBPF observability, and platform security."
-  keywords: "Uddhav P. Gautam, Uddhav Gautam, Virginia Tech, Computer Engineering, Linux kernel, eBPF, observability, Android security, IoT security, systems research"
+  description: "Uddhav P. Gautam — Ph.D. Candidate in Computer Engineering at Virginia Tech, founder of RGR Innovate LLC. Systems-and-security research from the Linux kernel and embedded devices to the software supply chain and AI-assisted development."
+  keywords: "Uddhav P. Gautam, Uddhav Gautam, Virginia Tech, Computer Engineering, AI safety, verification of AI-generated code, release assurance, eBPF, Linux kernel, Android internals, embedded security, IoT security, mobile forensics, systems research"
   author: "Uddhav P. Gautam"
   person_aliases:
     - "Uddhav Gautam"
