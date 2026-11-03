@@ -9,7 +9,7 @@ image: /images/Uddhav.jpg
 
 <section class="page-hero surface-panel">
     <h1>Publications</h1>
-    <p class="hero-lead">Peer-reviewed papers, manuscripts under review, and manuscripts in preparation.</p>
+    <p class="hero-lead">Peer-reviewed journal and conference papers.</p>
 </section>
 
 <section class="surface-panel bibliography-section">
@@ -24,9 +24,11 @@ image: /images/Uddhav.jpg
     {% bibliography --query @inproceedings %}
 </section>
 
-{% assign under_review = site.data.manuscripts | where: "group", "Under review" %}
-{% assign in_preparation = site.data.manuscripts | where: "group", "In preparation" %}
+{% assign public_manuscripts = site.data.manuscripts | where_exp: "m", "m.public != false" %}
+{% assign under_review = public_manuscripts | where: "group", "Under review" %}
+{% assign in_preparation = public_manuscripts | where: "group", "In preparation" %}
 
+{% if under_review.size > 0 %}
 <section class="surface-panel bibliography-section">
     <p class="eyebrow">Manuscripts</p>
     <h2 class="section-heading">Under review</h2>
@@ -38,7 +40,9 @@ image: /images/Uddhav.jpg
         {% endfor %}
     </div>
 </section>
+{% endif %}
 
+{% if in_preparation.size > 0 %}
 <section class="surface-panel bibliography-section">
     <p class="eyebrow">Manuscripts</p>
     <h2 class="section-heading">In preparation</h2>
@@ -50,3 +54,4 @@ image: /images/Uddhav.jpg
         {% endfor %}
     </div>
 </section>
+{% endif %}

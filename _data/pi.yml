@@ -17,9 +17,7 @@ links:
   linkedin: "https://www.linkedin.com/in/uddhavpgautam/"
   googleplay: "https://play.google.com/store/apps/dev?id=6755050398195804153"
 
-# CV and Documents
-documents:
-  cv: "cv/Resume_UddhavGautam.pdf"
+# CV: not linked publicly (file remains under cv/ but no page points to it)
 
 # Short bio used by the Home and About heroes
 bio:
@@ -75,9 +73,12 @@ research_interests:
     detail: "release assurance; verification and validation; testing of diagnostic APIs"
 
 # Current Projects (identical to the resume's Research Highlights; bullets verbatim)
+# public: false  -> hidden on the site while the paper is under double-anonymous review
+#                   or still in preparation. Flip to true after the decision.
 current_projects:
   - name: "ZeroDown: on-the-fly eBPF security-policy updates for microcontrollers"
     status: "In preparation, IEEE IoT-J"
+    public: false
     bullets:
       - "Idea: the device's owner writes its security policy as one versioned YAML file — the rules, exceptions for particular peers, and the name of the eBPF program that decides each event — so a change means editing the file, not the firmware"
       - "Built the system that installs a new policy file on a Bluetooth Low Energy (BLE) device and activates it without a reboot, instead of waiting months for a firmware update and a restart"
@@ -88,6 +89,7 @@ current_projects:
 
   - name: "Android 17 JobScheduler: its reports of why jobs wait can be wrong while its scheduling is right"
     status: "Lost Boundaries (in preparation, IEEE TMC); Correct Decisions (under review, ACM HotMobile 2027)"
+    public: false
     artifact:
       label: "Artifact (GitHub)"
       url: "https://github.com/rgrinnovatellc/CorrectDecisions"
@@ -102,6 +104,7 @@ current_projects:
 
   - name: "AIE Verification: approving AI-written code and software releases"
     status: "In preparation, ACM TOSEM"
+    public: false
     bullets:
       - "Showed that AI-written tests can pass wrong code: in 25 constructed LLM coding tasks (Codex CLI), all passed their own tests, including 12 labeled flawed for following a prompt's wrong assumption"
       - "Wrote checks from the real requirement: they rejected all 12 flawed results and accepted the other 13"
@@ -145,7 +148,7 @@ experience:
     organization: "Virginia Tech"
     organization_url: "https://www.vt.edu/"
     period: "Sep 2023-present"
-    description: "Research on in-place eBPF security-policy updates for microcontrollers (ZeroDown), Android JobScheduler diagnostic-report correctness, verification of AI-assisted development and software releases, eBPF tracing overhead, and Aria Gen 2 wearable security."
+    description: "Systems-and-security research: embedded and IoT security, Android internals, verification of AI-assisted development, eBPF and the Linux kernel, and Aria Gen 2 wearable security."
     status: "Current"
 
   - title: "Android Technical Lead & Mobile Architect"

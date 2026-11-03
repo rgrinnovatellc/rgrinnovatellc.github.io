@@ -12,7 +12,7 @@ image: /images/Uddhav.jpg
 <section class="page-hero surface-panel">
     <p class="eyebrow">Research</p>
     <h1>Systems and security, from the kernel to AI-assisted development</h1>
-    <p class="hero-lead">Systems-and-security research across the stack — from the Linux kernel and embedded devices to the software supply chain and AI-assisted development. Every result below is stated with its denominator, as in the papers.</p>
+    <p class="hero-lead">Systems-and-security research across the stack — from the Linux kernel and embedded devices to the software supply chain and AI-assisted development.</p>
 </section>
 
 <section class="page-section">
@@ -36,7 +36,8 @@ image: /images/Uddhav.jpg
     <div class="surface-panel">
         <h2 class="section-heading">Research highlights</h2>
         <div class="resource-stack">
-            {% for project in pi_data.current_projects %}
+            {% assign public_projects = pi_data.current_projects | where_exp: "p", "p.public != false" %}
+            {% for project in public_projects %}
             <article class="resource-card">
                 <h3>{{ project.name }}</h3>
                 {% if project.description %}<p>{{ project.description }}</p>{% endif %}

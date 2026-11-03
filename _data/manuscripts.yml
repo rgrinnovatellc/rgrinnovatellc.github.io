@@ -1,8 +1,10 @@
 # Manuscripts — kept identical to the resume's Publications section
 # (cv/Resume_UddhavGautam.tex). Group values: "Under review" | "In preparation".
 # Artifact links are listed only where the resume lists them.
+# public: false -> hidden on the site (double-anonymous review / in preparation). Flip after the decision.
 
-- group: "Under review"
+- public: false
+  group: "Under review"
   authors: "Uddhav P. Gautam et al."
   title: "Correct Decisions, Incorrect Diagnostic Reports"
   venue: "ACM HotMobile 2027"
@@ -10,27 +12,32 @@
     label: "Artifact (GitHub)"
     url: "https://github.com/rgrinnovatellc/CorrectDecisions"
 
-- group: "Under review"
+- public: false
+  group: "Under review"
   authors: "Sahil Dudani, Uddhav P. Gautam, et al."
   title: "FAIR-ARIA: Forensic Activity Indexing for Review Using Sensor-First Analysis of Smart-Glasses Artifacts"
   venue: "ACM HotMobile"
 
-- group: "In preparation"
+- public: false
+  group: "In preparation"
   authors: "Uddhav P. Gautam et al."
   title: "ZeroDown: Authenticated, Owner-Confirmed In-Place Updates of eBPF Security Policies for Microcontroller-Class IoT Devices"
   venue: "Targeting IEEE Internet of Things Journal (IoT-J)"
 
-- group: "In preparation"
+- public: false
+  group: "In preparation"
   authors: "Uddhav P. Gautam et al."
   title: "Breaking Self-Referential Trust with AIE Verification in AI-Assisted Development and Release Assurance"
   venue: "Targeting ACM Transactions on Software Engineering and Methodology (TOSEM)"
 
-- group: "In preparation"
+- public: false
+  group: "In preparation"
   authors: "Uddhav P. Gautam et al."
   title: "Lost Boundaries: Label-Keyed Boundary Collapse and Exact Repair in Android JobScheduler"
   venue: "Targeting IEEE Transactions on Mobile Computing (TMC)"
 
-- group: "In preparation"
+- public: false
+  group: "In preparation"
   authors: "Sahil Dudani, Uddhav P. Gautam, et al."
   title: "SPADE: Spyware and Parental-Control Artifact Discovery and Examination on Android Devices"
   venue: "Targeting Forensic Science International: Digital Investigation"
